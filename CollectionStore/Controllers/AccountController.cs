@@ -46,7 +46,34 @@ namespace CollectionStore.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Login(string returnUrl = null) => View(new LoginViewModel { ReturnUrl = returnUrl });
 
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+                if (result.Succeeded)
+                {
+                    if(!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Action", "Home");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login or password");
+                }
+            }
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> LogOut()
         {
             await signInManager.SignOutAsync();
