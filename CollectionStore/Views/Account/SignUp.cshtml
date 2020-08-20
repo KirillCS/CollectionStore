@@ -13,19 +13,23 @@
                 <article class="card-body">
                     <form asp-controller="Account" asp-action="SignUp" method="post">
                         <div class="form-group">
-                            <input asp-for="UserName" class="form-control" placeholder="Username" />
+                            <label class="col-form-label" for="usernameField">Username</label>
+                            <input asp-for="UserName" class="form-control" id="usernameField" />
                             <small><span asp-validation-for="UserName" class="text-danger"></span></small>
                         </div>
                         <div class="form-group">
-                            <input asp-for="Email" class="form-control" placeholder="Email" />
+                            <label class="col-form-label" for="emailField">Email</label>
+                            <input asp-for="Email" class="form-control" id="emailField"/>
                             <small><span asp-validation-for="Email" class="text-danger"></span></small>
                         </div>
                         <div class="form-group">
-                            <input asp-for="Password" class="form-control" placeholder="Password" />
+                            <label class="col-form-label" for="passwordField">Password</label>
+                            <input asp-for="Password" class="form-control" id="passwordField" />
                             <small><span asp-validation-for="Password" class="text-danger"></span></small>
                         </div>
                         <div class="form-group">
-                            <input asp-for="PasswordConfirm" class="form-control" placeholder="Confirm password" />
+                            <label class="col-form-label" for="passwordConfirmField">Confirm password</label>
+                            <input asp-for="PasswordConfirm" class="form-control" id="passwordConfirmField" />
                             <small><span asp-validation-for="PasswordConfirm" class="text-danger"></span></small>
                         </div>
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
