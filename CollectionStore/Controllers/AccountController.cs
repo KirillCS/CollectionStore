@@ -62,7 +62,7 @@ namespace CollectionStore.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Action", "Home");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 else
