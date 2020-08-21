@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CollectionStore.Models;
+using CollectionStore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +30,7 @@ namespace CollectionStore
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.Configure<EmailService>(Configuration);
             services.AddControllersWithViews();
         }
 
