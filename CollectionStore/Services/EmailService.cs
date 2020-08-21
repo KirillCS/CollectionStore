@@ -22,7 +22,7 @@ namespace CollectionStore.Services
             var emailMessage = GetMessage(subject, message, emailAddress);
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync(configuration["Host"], 25, false);
+                await client.ConnectAsync(configuration["Host"], 587, false);
                 await client.AuthenticateAsync(configuration["EmailAddress:Address"], configuration["EmailAddress:Password"]);
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);
