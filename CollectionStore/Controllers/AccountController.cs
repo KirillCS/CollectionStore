@@ -28,7 +28,7 @@ namespace CollectionStore.Controllers
         {
             if(ModelState.IsValid)
             {
-                var user = new User { UserName = model.UserName, Email = model.Email };
+                var user = new User { UserName = model.UserName };
                 var result = await userManager.CreateAsync(user, model.Password);
                 if(result.Succeeded)
                 {
