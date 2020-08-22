@@ -11,7 +11,7 @@
                     <h4 class="text-center">Login</h4>
                 </header>
                 <article class="card-body">
-                    <form asp-controller="Account" asp-action="Login" method="post">
+                    <form asp-controller="Account" asp-action="Login" asp-route-returlUrl="@Model.ReturnUrl" method="post">
                         <div class="form-group">
                             <label class="col-form-label" for="usernameField">Username</label>
                             <input asp-for="UserName" class="form-control" id="usernameField"/>

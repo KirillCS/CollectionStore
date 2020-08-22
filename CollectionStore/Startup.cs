@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using CollectionStore.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,12 @@ namespace CollectionStore
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = "563333279070-qot7douv2pavou8h31lj7b4gt7mivuos.apps.googleusercontent.com";
+                    options.ClientSecret = "sMr2VuiC85vlupqX5HbUR5dc";
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
