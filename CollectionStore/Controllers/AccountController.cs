@@ -47,7 +47,15 @@ namespace CollectionStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(string returnUrl = null) => View(new LoginViewModel { ReturnUrl = returnUrl });
+        public async Task<IActionResult> Login(string returnUrl = null)
+        {
+            var model = new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+            return View(model);
+        }
 
         public async Task<IActionResult> Login(LoginViewModel model)
         {
