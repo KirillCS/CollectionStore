@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CollectionStore.Models;
 using CollectionStore.ViewModels;
@@ -57,6 +58,7 @@ namespace CollectionStore.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if(ModelState.IsValid)
@@ -79,6 +81,62 @@ namespace CollectionStore.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return new ChallengeResult(provider, properties);
+        }
+
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            var model = new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+            if(remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error external login: {remoteError}");
+                return View("Login", model);
+            }
+            var info = await signInManager.GetExternalLoginInfoAsync();
+            if(info == null)
+            {
+                ModelState.AddModelError(string.Empty, "Error external login");
+                return View("Login", model);
+            }
+            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+            if(result.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if(email != null)
+                {
+                    var user = await userManager.FindByEmailAsync(email);
+                    if(user == null)
+                    {
+                        user = new User
+                        {
+                            UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                            Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        };
+                        await userManager.CreateAsync(user);
+                    }
+                    await userManager.AddLoginAsync(user, info);
+                    await signInManager.SignInAsync(user, false);
+                    return LocalRedirect(returnUrl);
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Error external login");
+            return View("Login", model);
         }
 
         [HttpGet]
