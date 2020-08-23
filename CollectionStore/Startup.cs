@@ -37,6 +37,11 @@ namespace CollectionStore
                 {
                     options.ClientId = "563333279070-qot7douv2pavou8h31lj7b4gt7mivuos.apps.googleusercontent.com";
                     options.ClientSecret = "sMr2VuiC85vlupqX5HbUR5dc";
+                })
+                .AddFacebook(options =>
+                {
+                    options.AppId = "1690823684418629";
+                    options.AppSecret = "45bad6dfca45f9b48a9cc811b236b0f9";
                 });
         }
 

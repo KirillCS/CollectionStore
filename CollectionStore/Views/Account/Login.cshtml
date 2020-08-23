@@ -5,7 +5,7 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-5">
+        <div class="col-lg-5">
             <div class="card">
                 <header class="card-header">
                     <h4 class="text-center">Login</h4>
@@ -31,28 +31,28 @@
                             <button type="submit" class="btn btn-primary btn-block">Login</button>
                         </div>
                     </form>
-                </article>
-            </div>
-            @{
-                if(!(Model.ExternalLogins.Count == 0))
-                {
-                    <form method="post" asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
-                        <div class="row justify-content-center m-2">
-                            <span>or</span>
-                        </div>
+                    @if(!(Model.ExternalLogins.Count == 0))
+                    {
+                        <form method="post" asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                            <div class="row justify-content-center m-2">
+                                <span>or login with</span>
+                            </div>
                             @foreach (var provider in Model.ExternalLogins)
                             {
-                                <div class="row m-1 justify-content-center">
-                                    <button type="submit" class="btn btn-secondary btn-sm" 
-                                            name="provider" value="@provider.Name" 
-                                            title="Login using your @provider.DisplayName account">
-                                        Login with @provider.DisplayName
-                                    </button>
+                                <div class="row my-1 justify-content-center">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm btn-block"
+                                                name="provider" value="@provider.Name"
+                                                title="Login using your @provider.DisplayName account">
+                                            @provider.DisplayName
+                                        </button>
+                                    </div>
                                 </div>
                             }
-                    </form>
-                }
-            }
+                        </form>
+                    }
+                </article>
+            </div>
         </div>
     </div>
 </div>
