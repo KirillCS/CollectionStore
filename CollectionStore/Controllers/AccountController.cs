@@ -80,6 +80,10 @@ namespace CollectionStore.Controllers
                     ModelState.AddModelError(string.Empty, "Invalid login or password");
                 }
             }
+            if(model.ExternalLogins == null)
+            {
+                model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            }
             return View(model);
         }
 
