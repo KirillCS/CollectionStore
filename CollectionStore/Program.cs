@@ -17,6 +17,19 @@ namespace CollectionStore
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+            await DbInitialize(host);
+            host.Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+
+        private static async Task DbInitialize(IHost host)
+        {
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -32,14 +45,6 @@ namespace CollectionStore
                     services.GetRequiredService<ILogger<Program>>().LogError(ex, "An error occurred while seeding the database.");
                 }
             }
-            host.Run();
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
     }
 }

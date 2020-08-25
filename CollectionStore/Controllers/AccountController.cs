@@ -33,6 +33,7 @@ namespace CollectionStore.Controllers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if(result.Succeeded)
                 {
+                    await userManager.AddToRoleAsync(user, "user");
                     await signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -133,6 +134,7 @@ namespace CollectionStore.Controllers
                             Email = info.Principal.FindFirstValue(ClaimTypes.Email)
                         };
                         await userManager.CreateAsync(user);
+                        await userManager.AddToRoleAsync(user, "user");
                     }
                     await userManager.AddLoginAsync(user, info);
                     await signInManager.SignInAsync(user, false);

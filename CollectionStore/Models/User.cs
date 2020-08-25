@@ -8,6 +8,6 @@ namespace CollectionStore.Models
 {
     public class User : IdentityUser
     {
-
+        public bool IsBlocked { get; set; }
     }
 }
