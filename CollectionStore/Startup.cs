@@ -33,10 +33,7 @@ namespace CollectionStore
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 });
             services
-                .AddIdentity<User, IdentityRole>(options => 
-                {
-                    options.User.AllowedUserNameCharacters = "_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                })
+                .AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddAuthentication()

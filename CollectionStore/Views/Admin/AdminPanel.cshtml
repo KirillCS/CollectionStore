@@ -6,44 +6,51 @@
 <div class="container-md">
     <h3 class="mt-2 ml-3">Admin panel</h3>
     <hr class="mb-4 mt-2"/>
-    <form asp-controller="Admin" asp-action="Manage" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger m-1"></div>
-        <div class="my-2 mx-1">
-            <div class="btn-group btn-group-sm">
-                <button type="submit" name="actionName" value="block" class="btn btn-primary" title="Block selected users">Block</button>
-                <button type="submit" name="actionName" value="unblock" class="btn btn-primary" title="Unblock selected users">Unblock</button>
-            </div>
-            <button type="submit" name="actionName" value="delete" class="btn btn-primary btn-sm mx-1" title="Delete selected users">Delete</button>
-            <div class="float-right">
-                <label class="text-secondary mr-1">Set role as:</label>
+    @if (!Model.Any())
+    {
+        <h2 class="ml-3">No users</h2>
+    }
+    else
+    { 
+        <form asp-controller="Admin" asp-action="Manage" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger m-1"></div>
+            <div class="my-2 mx-1">
                 <div class="btn-group btn-group-sm">
-                    <button type="submit" name="actionName" value="toUser" class="btn btn-primary" title="Set role as 'user' for selected user">User</button>
-                    <button type="submit" name="actionName" value="toAdmin" class="btn btn-primary" title="Set role as 'admin' for selected user">Admin</button>
+                    <button type="submit" name="actionName" value="block" class="btn btn-primary" title="Block selected users">Block</button>
+                    <button type="submit" name="actionName" value="unblock" class="btn btn-primary" title="Unblock selected users">Unblock</button>
+                </div>
+                <button type="submit" name="actionName" value="delete" class="btn btn-primary btn-sm mx-1" title="Delete selected users">Delete</button>
+                <div class="float-right">
+                    <label class="text-secondary mr-1">Set role as:</label>
+                    <div class="btn-group btn-group-sm">
+                        <button type="submit" name="actionName" value="toUser" class="btn btn-primary" title="Set role as 'user' for selected user">User</button>
+                        <button type="submit" name="actionName" value="toAdmin" class="btn btn-primary" title="Set role as 'admin' for selected user">Admin</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <table class="table table-bordered text-center">
-            <thead class="thead-light">
-                <tr>
-                    <th style="width: 50px"><input type="checkbox" id="mainCheckBox" onclick="mainCheckBoxClicked()" /></th>
-                    <th>Username</th>
-                    <th>Block state</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
-                    <tr class="clickable-row">
-                        <th style="width: 50px"><input type="checkbox" class="singleCheckBox" name="selectedIds" value="@user.Id" onclick="singleCheckBoxClicked(this)" /></th>
-                        <td><a class="link" href="#" title="Go to @user.UserName page">@user.UserName</a></td>
-                        <td class="@(user.IsBlocked ? "text-danger" : "text-success")"><strong>@(user.IsBlocked ? "Blocked" : "Active")</strong></td>
-                        <td class="@(user.IsAdmin ? "text-primary" : "text-secondary")">@(user.IsAdmin ? "Admin" : "User")</td>
+            <table class="table table-bordered text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width: 50px"><input type="checkbox" id="mainCheckBox" onclick="mainCheckBoxClicked()" /></th>
+                        <th>Username</th>
+                        <th>Block state</th>
+                        <th>Role</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </form>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr class="clickable-row">
+                            <th style="width: 50px"><input type="checkbox" class="singleCheckBox" name="selectedIds" value="@user.Id" onclick="singleCheckBoxClicked(this)" /></th>
+                            <td><a class="link" href="#" title="Go to @user.UserName page">@user.UserName</a></td>
+                            <td class="@(user.IsBlocked ? "text-danger" : "text-success")"><strong>@(user.IsBlocked ? "Blocked" : "Active")</strong></td>
+                            <td class="@(user.IsAdmin ? "text-primary" : "text-secondary")">@(user.IsAdmin ? "Admin" : "User")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+    }
 </div>
 
 <script src="~/js/TableCheckBoxesScript.js" asp-append-version="true"></script>
