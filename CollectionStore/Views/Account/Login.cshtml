@@ -1,6 +1,7 @@
 ﻿@model LoginViewModel
+@inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = Localizer["Login"];
 }
 
 <div class="container">
@@ -8,34 +9,34 @@
         <div class="col-lg-5">
             <div class="card">
                 <header class="card-header">
-                    <h4 class="text-center">Login</h4>
+                    <h4 class="text-center">@Localizer["Login"]</h4>
                 </header>
                 <article class="card-body">
                     <form asp-controller="Account" asp-action="Login" asp-route-returlUrl="@Model.ReturnUrl" method="post">
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                         <div class="form-group">
-                            <label class="col-form-label" for="usernameField">Username</label>
+                            <label class="col-form-label" for="usernameField">@Localizer["Username"]</label>
                             <input asp-for="UserName" class="form-control" id="usernameField" />
                             <small><span asp-validation-for="UserName" class="text-danger"></span></small>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label" for="passwordField">Password</label>
+                            <label class="col-form-label" for="passwordField">@Localizer["Password"]</label>
                             <input asp-for="Password" class="form-control" id="passwordField" />
                             <small><span asp-validation-for="Password" class="text-danger"></span></small>
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" asp-for="RememberMe" class="form-check-input" id="rememberCheckBox" />
-                            <label class="form-check-label" for="rememberCheckBox">Remember me</label>
+                            <label class="form-check-label" for="rememberCheckBox">@Localizer["RememberMe"]</label>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            <button type="submit" class="btn btn-primary btn-block">@Localizer["BtnLogin"]</button>
                         </div>
                     </form>
                     @if(!(Model.ExternalLogins.Count == 0))
                     {
                         <form method="post" asp-controller="Account" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
                             <div class="row justify-content-center m-2">
-                                <span>or login with</span>
+                                <span>@Localizer["Or"]</span>
                             </div>
                             @foreach (var provider in Model.ExternalLogins)
                             {

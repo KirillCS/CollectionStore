@@ -1,30 +1,37 @@
 ﻿@model IEnumerable<AdminPanelViewModel>
+@inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Admin panel";
+    ViewData["Title"] = Localizer["AdminPanel"];
 }
 
 <div class="container-md">
-    <h3 class="mt-2 ml-3">Admin panel</h3>
+    <h3 class="mt-2 ml-3">@Localizer["AdminPanel"]</h3>
     <hr class="mb-4 mt-2"/>
     @if (!Model.Any())
     {
-        <h2 class="ml-3">No users</h2>
+        <h3 class="ml-3">@Localizer["NoUsers"]</h3>
     }
     else
     { 
         <form asp-controller="Admin" asp-action="Manage" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger m-1"></div>
-            <div class="my-2 mx-1">
-                <div class="btn-group btn-group-sm">
-                    <button type="submit" name="actionName" value="block" class="btn btn-primary" title="Block selected users">Block</button>
-                    <button type="submit" name="actionName" value="unblock" class="btn btn-primary" title="Unblock selected users">Unblock</button>
-                </div>
-                <button type="submit" name="actionName" value="delete" class="btn btn-primary btn-sm mx-1" title="Delete selected users">Delete</button>
-                <div class="float-right">
-                    <label class="text-secondary mr-1">Set role as:</label>
-                    <div class="btn-group btn-group-sm">
-                        <button type="submit" name="actionName" value="toUser" class="btn btn-primary" title="Set role as 'user' for selected user">User</button>
-                        <button type="submit" name="actionName" value="toAdmin" class="btn btn-primary" title="Set role as 'admin' for selected user">Admin</button>
+            <div class="my-1">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="btn-group btn-group-sm m-1">
+                            <button type="submit" name="actionName" value="block" class="btn btn-primary">@Localizer["Block"]</button>
+                            <button type="submit" name="actionName" value="unblock" class="btn btn-primary">@Localizer["Unblock"]</button>
+                        </div>
+                        <button type="submit" name="actionName" value="delete" class="btn btn-primary btn-sm m-1">@Localizer["Delete"]</button>
+                    </div>
+                    <div class="col-6">
+                        <div class="float-right">
+                            <label class="text-secondary m-1">@Localizer["SetRights"]</label>
+                            <div class="btn-group btn-group-sm m-1">
+                                <button type="submit" name="actionName" value="toUser" class="btn btn-primary">@Localizer["User"]</button>
+                                <button type="submit" name="actionName" value="toAdmin" class="btn btn-primary">@Localizer["Admin"]</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -32,19 +39,19 @@
                 <thead class="thead-light">
                     <tr>
                         <th style="width: 50px"><input type="checkbox" id="mainCheckBox" onclick="mainCheckBoxClicked()" /></th>
-                        <th>Username</th>
-                        <th>Block state</th>
-                        <th>Role</th>
+                        <th>@Localizer["Username"]</th>
+                        <th>@Localizer["State"]</th>
+                        <th>@Localizer["Rights"]</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var user in Model)
                     {
-                        <tr class="clickable-row">
+                        <tr>
                             <th style="width: 50px"><input type="checkbox" class="singleCheckBox" name="selectedIds" value="@user.Id" onclick="singleCheckBoxClicked(this)" /></th>
-                            <td><a class="link" href="#" title="Go to @user.UserName page">@user.UserName</a></td>
-                            <td class="@(user.IsBlocked ? "text-danger" : "text-success")"><strong>@(user.IsBlocked ? "Blocked" : "Active")</strong></td>
-                            <td class="@(user.IsAdmin ? "text-primary" : "text-secondary")">@(user.IsAdmin ? "Admin" : "User")</td>
+                            <td><a class="link" href="#" title="@Localizer["GoToPage", user.UserName]">@user.UserName</a></td>
+                            <td class="@(user.IsBlocked ? "text-danger" : "text-success")"><strong>@(user.IsBlocked ? Localizer["Blocked"] : Localizer["Active"])</strong></td>
+                            <td class="@(user.IsAdmin ? "text-primary" : "text-secondary")">@(user.IsAdmin ? Localizer["Admin"] : Localizer["User"])</td>
                         </tr>
                     }
                 </tbody>

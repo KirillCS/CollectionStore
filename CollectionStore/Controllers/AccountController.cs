@@ -7,6 +7,7 @@ using CollectionStore.Models;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace CollectionStore.Controllers
 {
@@ -14,11 +15,14 @@ namespace CollectionStore.Controllers
     {
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
+        private readonly IStringLocalizer<AccountController> localizer;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, 
+            SignInManager<User> signInManager, IStringLocalizer<AccountController> localizer)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.localizer = localizer;
         }
 
         [HttpGet]
@@ -78,7 +82,7 @@ namespace CollectionStore.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login or password");
+                    ModelState.AddModelError(string.Empty, localizer["LoginError"]);
                 }
             }
             if(model.ExternalLogins == null)
@@ -106,13 +110,13 @@ namespace CollectionStore.Controllers
             };
             if(remoteError != null)
             {
-                ModelState.AddModelError(string.Empty, $"Error external login: {remoteError}");
+                ModelState.AddModelError(string.Empty, localizer["ExternalLoginError"]);
                 return View("Login", model);
             }
             var info = await signInManager.GetExternalLoginInfoAsync();
             if(info == null)
             {
-                ModelState.AddModelError(string.Empty, "Error external login");
+                ModelState.AddModelError(string.Empty, localizer["ExternalLoginError"]);
                 return View("Login", model);
             }
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
@@ -141,7 +145,7 @@ namespace CollectionStore.Controllers
                     return LocalRedirect(returnUrl);
                 }
             }
-            ModelState.AddModelError(string.Empty, "Error external login");
+            ModelState.AddModelError(string.Empty, localizer["ExternalLoginError"]);
             return View("Login", model);
         }
 

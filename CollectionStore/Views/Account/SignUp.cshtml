@@ -1,6 +1,7 @@
 ﻿@model SignUpViewModel
+@inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Sign Up";
+    ViewData["Title"] = Localizer["SignUp"];
 }
 
 <div class="container">
@@ -8,28 +9,28 @@
         <div class="col-lg-5">
             <div class="card">
                 <header class="card-header">
-                    <h4 class="text-center">Sign up</h4>
+                    <h4 class="text-center">@Localizer["SignUp"]</h4>
                 </header>
                 <article class="card-body">
                     <form asp-controller="Account" asp-action="SignUp" method="post">
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                         <div class="form-group">
-                            <label class="col-form-label" for="usernameField">Username</label>
+                            <label class="col-form-label" for="usernameField">@Localizer["Username"]</label>
                             <input asp-for="UserName" class="form-control" id="usernameField" />
                             <small><span asp-validation-for="UserName" class="text-danger"></span></small>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label" for="passwordField">Password</label>
+                            <label class="col-form-label" for="passwordField">@Localizer["Password"]</label>
                             <input asp-for="Password" class="form-control" id="passwordField" />
                             <small><span asp-validation-for="Password" class="text-danger"></span></small>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label" for="passwordConfirmField">Confirm password</label>
+                            <label class="col-form-label" for="passwordConfirmField">@Localizer["ConfirmPassword"]</label>
                             <input asp-for="PasswordConfirm" class="form-control" id="passwordConfirmField" />
                             <small><span asp-validation-for="PasswordConfirm" class="text-danger"></span></small>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+                            <button type="submit" class="btn btn-primary btn-block">@Localizer["BtnSignUp"]</button>
                         </div>
                     </form>
                 </article>

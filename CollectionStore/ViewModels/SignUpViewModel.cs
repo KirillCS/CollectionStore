@@ -8,16 +8,17 @@ namespace CollectionStore.ViewModels
 {
     public class SignUpViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Required")]
+        [DataType(DataType.Text)]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Password mismatch")]
+        [Compare("Password", ErrorMessage = "PasswordMismatch")]
         public string PasswordConfirm { get; set; }
     }
 }
