@@ -9,6 +9,7 @@ namespace CollectionStore.ViewModels
     public class SignUpViewModel
     {
         [Required(ErrorMessage = "Required")]
+        [RegularExpression(@"^\w*\d*_*$", ErrorMessage = "UserNameSyntaxError")]
         [DataType(DataType.Text)]
         public string UserName { get; set; }
 

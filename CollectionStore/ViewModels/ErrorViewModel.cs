@@ -1,6 +1,6 @@
 using System;
 
-namespace CollectionStore.Models
+namespace CollectionStore.ViewModels
 {
     public class ErrorViewModel
     {

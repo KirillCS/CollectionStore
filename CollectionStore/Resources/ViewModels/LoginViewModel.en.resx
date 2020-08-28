@@ -120,4 +120,7 @@
   <data name="Required" xml:space="preserve">
     <value>This field is required</value>
   </data>
+  <data name="UserNameSyntaxError" xml:space="preserve">
+    <value>This field may only сontain alphanumeric characters and symbal '_'</value>
+  </data>
 </root>

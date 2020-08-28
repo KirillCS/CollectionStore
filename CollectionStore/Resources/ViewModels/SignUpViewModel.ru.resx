@@ -123,4 +123,7 @@
   <data name="Required" xml:space="preserve">
     <value>Это поле обязательно для заполнения</value>
   </data>
+  <data name="UserNameSyntaxError" xml:space="preserve">
+    <value>Это поле может содержать только алфавитно-цифровые символы и символ '_'</value>
+  </data>
 </root>

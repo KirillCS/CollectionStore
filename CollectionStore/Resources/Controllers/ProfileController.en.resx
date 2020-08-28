@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Required" xml:space="preserve">
-    <value>Это поле обязательно для заполнения</value>
+  <data name="UserNotFoundTitle" xml:space="preserve">
+    <value>Your ID isn't found</value>
   </data>
-  <data name="UserNameSyntaxError" xml:space="preserve">
-    <value>Это поле может содержать только алфавитно-цифровые символы и символ '_'</value>
+  <data name="UserNotFountMessage" xml:space="preserve">
+    <value>Your ID is not found in database. You can get help by emailing to the address &lt;strong&gt;{0}&lt;/strong&gt;.</value>
   </data>
 </root>
