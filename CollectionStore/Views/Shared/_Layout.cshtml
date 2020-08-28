@@ -8,6 +8,7 @@
     <title>@ViewData["Title"] - CollectionStore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/dark-mode.css">
 </head>
 <body>
     <header>
@@ -28,7 +29,13 @@
                         }
                     </ul>
                     <ul class="navbar-nav">
-                        <li class="nav-item py-2" >
+                        <li class="nav-item">
+                            <div class="custom-control my-2 mx-1 custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="darkSwitch">
+                                <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+                            </div>
+                        </li>
+                        <li class="nav-item py-2">
                             @await Html.PartialAsync("_SelectLanguagePartial")
                         </li>
                         @if (User.Identity.IsAuthenticated)
@@ -68,6 +75,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/dark-mode-switch.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
