@@ -10,11 +10,11 @@ namespace CollectionStore.Models
         public int Id { get; set; }
         public string Content { get; set; }
 
-        public List<Item> Items { get; set; }
+        public List<ItemTag> ItemTags { get; set; }
 
         public Tag()
         {
-            Items = new List<Item>();
+            ItemTags = new List<ItemTag>();
         }
     }
 }

@@ -15,10 +15,28 @@ namespace CollectionStore.Models
         public DbSet<ItemField> ItemFields { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<ItemTag> ItemTags { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
+        }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<ItemTag>()
+                .HasKey(it => new { it.ItemId, it.TagId });
+
+            builder.Entity<ItemTag>()
+                .HasOne(it => it.Item)
+                .WithMany(i => i.ItemTags)
+                .HasForeignKey(it => it.ItemId);
+
+            builder.Entity<ItemTag>()
+                .HasOne(it => it.Tag)
+                .WithMany(t => t.ItemTags)
+                .HasForeignKey(it => it.TagId);
+
+            base.OnModelCreating(builder);
         }
     }
 }

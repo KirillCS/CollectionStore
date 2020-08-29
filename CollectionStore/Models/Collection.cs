@@ -15,7 +15,7 @@ namespace CollectionStore.Models
         public int? ThemeId { get; set; }
         public CollectionTheme Theme { get; set; }
 
-        public int? UserId { get; set; }
+        public string UserId { get; set; }
         public User User { get; set; }
 
         public List<Item> Items { get; set; }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectionStore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200825123610_DbInit")]
+    [Migration("20200829135236_DbInit")]
     partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

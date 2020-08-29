@@ -14,12 +14,12 @@ namespace CollectionStore.Models
         public Collection Collection { get; set; }
 
         public List<ItemField> Fields { get; set; }
-        public List<Tag> Tags { get; set; }
+        public List<ItemTag> ItemTags { get; set; }
 
         public Item()
         {
             Fields = new List<ItemField>();
-            Tags = new List<Tag>();
+            ItemTags = new List<ItemTag>();
         }
     }
 }
