@@ -102,7 +102,7 @@ namespace CollectionStore.Controllers
 
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             var model = new LoginViewModel
             {
                 ReturnUrl = returnUrl,

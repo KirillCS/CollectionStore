@@ -126,7 +126,16 @@
   <data name="MyCollections" xml:space="preserve">
     <value>My collections</value>
   </data>
+  <data name="NoCollectionsOwner" xml:space="preserve">
+    <value>Your collection list is empty.</value>
+  </data>
+  <data name="NoCollectionsUsers" xml:space="preserve">
+    <value>User's collection list is empty.</value>
+  </data>
   <data name="UserCollections" xml:space="preserve">
     <value>Collections of user "{0}"</value>
+  </data>
+  <data name="YouCanAdd" xml:space="preserve">
+    <value>You can add a collection by clicking on the "Add" button.</value>
   </data>
 </root>

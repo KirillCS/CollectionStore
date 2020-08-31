@@ -126,7 +126,16 @@
   <data name="MyCollections" xml:space="preserve">
     <value>Мои коллекции</value>
   </data>
+  <data name="NoCollectionsOwner" xml:space="preserve">
+    <value>Список ваших коллекций пуст.</value>
+  </data>
+  <data name="NoCollectionsUsers" xml:space="preserve">
+    <value>Список коллекций данного пользователя пуст.</value>
+  </data>
   <data name="UserCollections" xml:space="preserve">
     <value>Коллекции пользователя "{0}"</value>
+  </data>
+  <data name="YouCanAdd" xml:space="preserve">
+    <value>Вы можете добавить коллекцию нажав на кнопку "Добавить".</value>
   </data>
 </root>

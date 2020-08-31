@@ -28,7 +28,7 @@ namespace CollectionStore.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string userName = null)
         {
-            userName = userName ?? string.Empty;
+            userName ??= string.Empty;
             var user = await userManager.FindByNameAsync(userName);
             if (user == null)
             {
@@ -48,7 +48,7 @@ namespace CollectionStore.Controllers
         [HttpGet]
         public IActionResult Collection(int? collectionId = null)
         {
-            collectionId = collectionId ?? -1;
+            collectionId ??= -1;
             var collection = context.Collections.Where(c => c.Id == collectionId.Value).Include(c => c.Theme).Include(c => c.Items).SingleOrDefault(c => c.Id == collectionId.Value);
             if(collection == null)
             {

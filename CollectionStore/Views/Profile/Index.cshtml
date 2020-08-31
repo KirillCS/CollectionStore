@@ -11,26 +11,34 @@
         <hr class="mb-4 mt-2" />
         @if (User.Identity.Name == Model.UserName || User.IsInRole("admin"))
         {
-            <button class="btn btn-outline-primary btn-block btn-lg">@Localizer["Add"]</button>
+            <a class="btn btn-outline-primary btn-block btn-lg" asp-controller="Collection" asp-action="Add"
+                    asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)" asp-route-userName="@Model.UserName">@Localizer["Add"]</a>
         }
-        <div class="card-columns py-3">
-            @foreach (var collection in Model.Collections)
-            {
-            <div class="card bg-light shadow-sm">
-                @if(!string.IsNullOrEmpty(collection.ImagePath))
+        @if (Model.Collections.Count == 0)
+        {
+            <div class="alert alert-info text-center my-3">@(User.Identity.Name == Model.UserName ? Localizer["NoCollectionsOwner"] : Localizer["NoCollectionsUsers"]) @(User.Identity.Name == Model.UserName || User.IsInRole("admin") ? Localizer["YouCanAdd"].Value : string.Empty)</div>
+        }
+        else
+        {
+            <div class="card-columns py-3">
+                @foreach (var collection in Model.Collections)
                 {
-                    <a><img class="bd-placeholder-img card-img-top" src="@collection.ImagePath" focusable="false" role="img"></a>
-                }
-                <div class="card-body">
-                    <h5 class="card-title"><a class="card-link text-dark" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@collection.Id">@collection.Name (@collection.Theme.Name)</a></h5>
-                    <hr />
-                    <p class="card-text">@collection.Description</p>
-                    @if(User.Identity.Name == Model.UserName || User.IsInRole("admin"))
+                <div class="card bg-light shadow-sm">
+                    @if(!string.IsNullOrEmpty(collection.ImagePath))
                     {
-                        <button class="btn btn-sm btn-outline-danger btn-block">@Localizer["Delete"]</button>
+                        <a><img class="bd-placeholder-img card-img-top" src="@collection.ImagePath" focusable="false" role="img"></a>
                     }
+                    <div class="card-body">
+                        <h5 class="card-title"><a class="card-link text-dark" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@collection.Id">@collection.Name (@collection.Theme.Name)</a></h5>
+                        <hr />
+                        <p class="card-text">@collection.Description</p>
+                        @if(User.Identity.Name == Model.UserName || User.IsInRole("admin"))
+                        {
+                            <button class="btn btn-sm btn-outline-danger btn-block">@Localizer["Delete"]</button>
+                        }
+                    </div>
                 </div>
+                }
             </div>
-            }
-        </div>
+        }
     </div>
