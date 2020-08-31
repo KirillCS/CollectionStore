@@ -16,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using CollectionStore.Data;
 
 namespace CollectionStore
 {

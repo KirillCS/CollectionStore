@@ -1,0 +1,43 @@
+﻿@model CollectionViewModel
+@inject IViewLocalizer Localizer
+@{ 
+    ViewData["Title"] = "Collection " + Model.Collection.Name;
+}
+
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-lg-10 col-md-9 col-sm-8">
+            <h4 class="m-0 text-wrap">Collection "@Model.Collection.Name" (@Model.Collection.Theme.Name)</h4>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-secondary btn-sm btn-block">Редактировать</button>
+        </div>
+    </div>
+    <hr class="mb-4 mt-2" />
+    <div class="row">
+        <div class="col-md-5">
+            @if (!string.IsNullOrEmpty(Model.Collection.Description) || Model.Collection.ImagePath != null)
+            {
+                <div class="card bg-light shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Collection.Name</h5>
+                        <hr />
+                        <p class="card-text">@Model.Collection.Description</p>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Collection.ImagePath))
+                    {
+                        <img class="bd-placeholder-img card-img-bottom" src="@Model.Collection.ImagePath" focusable="false" role="img">
+                    }
+                </div>
+            }
+        </div>
+        <div class="col-md-7">
+            <div class="card">
+                <header class="card-header">Items</header>
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

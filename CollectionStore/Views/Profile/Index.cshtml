@@ -1,0 +1,36 @@
+﻿@model ProfileViewModel
+@inject IViewLocalizer Localizer
+@{ 
+    ViewData["Title"] = User.Identity.Name == Model.UserName ? Localizer["MyCollections"] : Localizer["UserCollections", Model.UserName];
+}
+
+    <div class="container">
+        <h4 class="mt-2 mx-2">
+            @(User.Identity.Name == Model.UserName ? Localizer["MyCollections"] : Localizer["UserCollections", Model.UserName])
+        </h4>
+        <hr class="mb-4 mt-2" />
+        @if (User.Identity.Name == Model.UserName || User.IsInRole("admin"))
+        {
+            <button class="btn btn-outline-primary btn-block btn-lg">@Localizer["Add"]</button>
+        }
+        <div class="card-columns py-3">
+            @foreach (var collection in Model.Collections)
+            {
+            <div class="card bg-light shadow-sm">
+                @if(!string.IsNullOrEmpty(collection.ImagePath))
+                {
+                    <a><img class="bd-placeholder-img card-img-top" src="@collection.ImagePath" focusable="false" role="img"></a>
+                }
+                <div class="card-body">
+                    <h5 class="card-title"><a class="card-link text-dark" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@collection.Id">@collection.Name (@collection.Theme.Name)</a></h5>
+                    <hr />
+                    <p class="card-text">@collection.Description</p>
+                    @if(User.Identity.Name == Model.UserName || User.IsInRole("admin"))
+                    {
+                        <button class="btn btn-sm btn-outline-danger btn-block">@Localizer["Delete"]</button>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>

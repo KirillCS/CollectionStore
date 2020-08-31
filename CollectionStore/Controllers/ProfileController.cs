@@ -7,33 +7,61 @@ using CollectionStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using CollectionStore.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollectionStore.Controllers
 {
     public class ProfileController : Controller
     {
         private readonly UserManager<User> userManager;
+        private readonly ApplicationDbContext context;
         private readonly IStringLocalizer<ProfileController> localizer;
 
-        public ProfileController(UserManager<User> userManager, IStringLocalizer<ProfileController> localizer)
+        public ProfileController(UserManager<User> userManager, ApplicationDbContext context, IStringLocalizer<ProfileController> localizer)
         {
             this.userManager = userManager;
+            this.context = context;
             this.localizer = localizer;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string id = null)
+        public async Task<IActionResult> Index(string userName = null)
         {
-            var user = await userManager.FindByIdAsync(id);
+            userName = userName ?? string.Empty;
+            var user = await userManager.FindByNameAsync(userName);
             if (user == null)
             {
                 return View("Error", new ErrorViewModel
                 {
-                    ErrorTitle = localizer["UserNotFoundTitle", "someaddress@problem.com"],
-                    ErrorMessage = localizer["UserNotFountMessage", "someaddress@problem.com"]
+                    ErrorTitle = localizer["UserNotFoundTitle"],
+                    ErrorMessage = localizer["UserNotFountMessage", string.IsNullOrEmpty(userName) ? "" : $" {userName}", "someaddress@problem.com"]
                 });
             }
-            return View();
+            return View(new ProfileViewModel 
+            { 
+                UserName = user.UserName,
+                Collections = context.Collections.Include(c => c.Theme).Where(c => c.UserId == user.Id).ToList()
+            });
+        }
+
+        [HttpGet]
+        public IActionResult Collection(int? collectionId = null)
+        {
+            collectionId = collectionId ?? -1;
+            var collection = context.Collections.Where(c => c.Id == collectionId.Value).Include(c => c.Theme).Include(c => c.Items).ThenInclude(i => i.Fields).SingleOrDefault(c => c.Id == collectionId.Value);
+            if(collection == null)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorTitle = localizer["CollectionNotFoundTitle"],
+                    ErrorMessage = localizer["CollectionNotFountMessage", "someaddress@problem.com"]
+                });
+            }
+            return View(new CollectionViewModel
+            {
+                Collection = collection
+            });
         }
     }
 }

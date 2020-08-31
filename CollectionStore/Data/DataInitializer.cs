@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CollectionStore.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
-namespace CollectionStore.Models
+namespace CollectionStore.Data
 {
     public class DataInitializer
     {

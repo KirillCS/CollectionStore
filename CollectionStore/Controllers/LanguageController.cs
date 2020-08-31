@@ -17,7 +17,7 @@ namespace CollectionStore.Controllers
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), IsEssential = true });
 
-            return LocalRedirect(returnUrl);
+            return Redirect(returnUrl);
         }
     }
 }

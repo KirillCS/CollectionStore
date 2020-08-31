@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CollectionNotFoundMessage" xml:space="preserve">
-    <value>This collection is not found. This could be because the collection was deleted by its owner. Anyway you can email us about this problem to the address &lt;strong&gt;{0}&lt;/strong&gt;.</value>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
   </data>
-  <data name="CollectionNotFoundTitle" xml:space="preserve">
-    <value>Collection isn't found</value>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
   </data>
-  <data name="UserNotFoundTitle" xml:space="preserve">
-    <value>User isn't found</value>
+  <data name="MyCollections" xml:space="preserve">
+    <value>My collections</value>
   </data>
-  <data name="UserNotFountMessage" xml:space="preserve">
-    <value>User{0} is not found in database. You can get help by emailing to the address &lt;strong&gt;{1}&lt;/strong&gt;.</value>
+  <data name="UserCollections" xml:space="preserve">
+    <value>Collections of user "{0}"</value>
   </data>
 </root>
