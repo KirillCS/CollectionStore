@@ -18,10 +18,12 @@ namespace CollectionStore.Models
         public string UserId { get; set; }
         public User User { get; set; }
 
+        public List<Field> Fields { get; set; }
         public List<Item> Items { get; set; }
 
         public Collection()
         {
+            Fields = new List<Field>();
             Items = new List<Item>();
         }
     }

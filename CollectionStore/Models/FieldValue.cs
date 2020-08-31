@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 
 namespace CollectionStore.Models
 {
-    public class ItemField
+    public class FieldValue
     {
         public int Id { get; set; }
-        public string Name { get; set; }
         public string Value { get; set; }
 
-        public int? TypeId { get; set; }
-        public ItemFieldType Type { get; set; }
+        public int FieldId { get; set; }
+        public Field Field { get; set; }
 
         public int? ItemId { get; set; }
         public Item Item { get; set; }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CollectionStore.Migrations
 {
-    public partial class InitDb : Migration
+    public partial class DbInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,7 +61,7 @@ namespace CollectionStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemFieldTypes",
+                name: "FieldTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -70,7 +70,7 @@ namespace CollectionStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemFieldTypes", x => x.Id);
+                    table.PrimaryKey("PK_FieldTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -222,6 +222,33 @@ namespace CollectionStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Fields",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    TypeId = table.Column<int>(nullable: false),
+                    CollectionId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fields", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Fields_Collections_CollectionId",
+                        column: x => x.CollectionId,
+                        principalTable: "Collections",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Fields_FieldTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "FieldTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
@@ -242,29 +269,28 @@ namespace CollectionStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemFields",
+                name: "FieldValues",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
                     Value = table.Column<string>(nullable: true),
-                    TypeId = table.Column<int>(nullable: true),
+                    FieldId = table.Column<int>(nullable: false),
                     ItemId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemFields", x => x.Id);
+                    table.PrimaryKey("PK_FieldValues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemFields_Items_ItemId",
+                        name: "FK_FieldValues_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FieldValues_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ItemFields_ItemFieldTypes_TypeId",
-                        column: x => x.TypeId,
-                        principalTable: "ItemFieldTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -343,14 +369,24 @@ namespace CollectionStore.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemFields_ItemId",
-                table: "ItemFields",
-                column: "ItemId");
+                name: "IX_Fields_CollectionId",
+                table: "Fields",
+                column: "CollectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemFields_TypeId",
-                table: "ItemFields",
+                name: "IX_Fields_TypeId",
+                table: "Fields",
                 column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldValues_FieldId",
+                table: "FieldValues",
+                column: "FieldId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FieldValues_ItemId",
+                table: "FieldValues",
+                column: "ItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_CollectionId",
@@ -381,7 +417,7 @@ namespace CollectionStore.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ItemFields");
+                name: "FieldValues");
 
             migrationBuilder.DropTable(
                 name: "ItemTags");
@@ -390,13 +426,16 @@ namespace CollectionStore.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ItemFieldTypes");
+                name: "Fields");
 
             migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
                 name: "Tags");
+
+            migrationBuilder.DropTable(
+                name: "FieldTypes");
 
             migrationBuilder.DropTable(
                 name: "Collections");

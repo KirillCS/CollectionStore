@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectionStore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200829193732_InitDb")]
-    partial class InitDb
+    [Migration("20200831101832_DbInit")]
+    partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,6 +67,71 @@ namespace CollectionStore.Migrations
                     b.ToTable("CollectionThemes");
                 });
 
+            modelBuilder.Entity("CollectionStore.Models.Field", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CollectionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CollectionId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("Fields");
+                });
+
+            modelBuilder.Entity("CollectionStore.Models.FieldType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FieldTypes");
+                });
+
+            modelBuilder.Entity("CollectionStore.Models.FieldValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FieldId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FieldId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("FieldValues");
+                });
+
             modelBuilder.Entity("CollectionStore.Models.Item", b =>
                 {
                     b.Property<int>("Id")
@@ -85,49 +150,6 @@ namespace CollectionStore.Migrations
                     b.HasIndex("CollectionId");
 
                     b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("CollectionStore.Models.ItemField", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("TypeId");
-
-                    b.ToTable("ItemFields");
-                });
-
-            modelBuilder.Entity("CollectionStore.Models.ItemFieldType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ItemFieldTypes");
                 });
 
             modelBuilder.Entity("CollectionStore.Models.ItemTag", b =>
@@ -370,22 +392,39 @@ namespace CollectionStore.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("CollectionStore.Models.Field", b =>
+                {
+                    b.HasOne("CollectionStore.Models.Collection", "Collection")
+                        .WithMany("Fields")
+                        .HasForeignKey("CollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollectionStore.Models.FieldType", "Type")
+                        .WithMany("Fields")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CollectionStore.Models.FieldValue", b =>
+                {
+                    b.HasOne("CollectionStore.Models.Field", "Field")
+                        .WithMany("FieldValues")
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollectionStore.Models.Item", "Item")
+                        .WithMany("FieldValues")
+                        .HasForeignKey("ItemId");
+                });
+
             modelBuilder.Entity("CollectionStore.Models.Item", b =>
                 {
                     b.HasOne("CollectionStore.Models.Collection", "Collection")
                         .WithMany("Items")
                         .HasForeignKey("CollectionId");
-                });
-
-            modelBuilder.Entity("CollectionStore.Models.ItemField", b =>
-                {
-                    b.HasOne("CollectionStore.Models.Item", "Item")
-                        .WithMany("Fields")
-                        .HasForeignKey("ItemId");
-
-                    b.HasOne("CollectionStore.Models.ItemFieldType", "Type")
-                        .WithMany("ItemFields")
-                        .HasForeignKey("TypeId");
                 });
 
             modelBuilder.Entity("CollectionStore.Models.ItemTag", b =>

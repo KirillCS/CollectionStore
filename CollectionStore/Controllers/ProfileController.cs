@@ -49,7 +49,7 @@ namespace CollectionStore.Controllers
         public IActionResult Collection(int? collectionId = null)
         {
             collectionId = collectionId ?? -1;
-            var collection = context.Collections.Where(c => c.Id == collectionId.Value).Include(c => c.Theme).Include(c => c.Items).ThenInclude(i => i.Fields).SingleOrDefault(c => c.Id == collectionId.Value);
+            var collection = context.Collections.Where(c => c.Id == collectionId.Value).Include(c => c.Theme).Include(c => c.Items).SingleOrDefault(c => c.Id == collectionId.Value);
             if(collection == null)
             {
                 return View("Error", new ErrorViewModel

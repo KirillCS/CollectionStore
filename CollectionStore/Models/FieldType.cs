@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace CollectionStore.Models
 {
-    public class ItemFieldType
+    public class FieldType
     {
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public List<ItemField> ItemFields { get; set; }
+        public List<Field> Fields { get; set; }
 
-        public ItemFieldType()
+        public FieldType()
         {
-            ItemFields = new List<ItemField>();
+            Fields = new List<Field>();
         }
     }
 }

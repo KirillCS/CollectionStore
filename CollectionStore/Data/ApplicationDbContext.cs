@@ -12,10 +12,11 @@ namespace CollectionStore.Data
     {
         public DbSet<CollectionTheme> CollectionThemes { get; set; }
         public DbSet<Collection> Collections { get; set; }
-        public DbSet<ItemFieldType> ItemFieldTypes { get; set; }
-        public DbSet<ItemField> ItemFields { get; set; }
-        public DbSet<Tag> Tags { get; set; }
+        public DbSet<FieldType> FieldTypes { get; set; }
+        public DbSet<Field> Fields { get; set; }
+        public DbSet<FieldValue> FieldValues { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Tag> Tags { get; set; }
         public DbSet<ItemTag> ItemTags { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
