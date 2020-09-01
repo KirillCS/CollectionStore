@@ -27,16 +27,17 @@
                         <input id="nameField" class="form-control" asp-for="Name" />
                         <small><span class="text-danger" asp-validation-for="Name"></span></small>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group js-markdown-block">
                         <label class="col-form-label" for="descriptionField">Collection description</label>
-                        <textarea id="descriptionField" rows="6" class="form-control" asp-for="Description"></textarea>
-                        <small><span class="text-danger" asp-validation-for="Description"></span></small>
+                        <textarea id="descriptionField" rows="6" class="form-control js-markdown-input" style="max-height: 250px" asp-for="Description"></textarea>
+                        <label class="col-form-label">Description preview</label>
+                        <div class="js-markdown-preview"></div>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label" for="themeField">Collection theme</label>
                         <select id="themeField" class="form-control" asp-items="@GetThemeSelectList()" asp-for="SelectedTheme"></select>
                     </div>
-                    <div class="form-group mt-3 js-picture-field">
+                    <div class="form-group mt-4 js-picture-field">
                         <div class="drop-zone">
                             <span class="drop-zone__prompt">Drop image here or click to upload</span>
                             <input class="drop-zone__input" type="file" accept="image/*" asp-for="File" />
@@ -52,4 +53,6 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="~/js/markdown-editor.js" asp-append-version="true"></script>
 <script src="~/js/drag-n-drop.js" asp-append-version="true"></script>
