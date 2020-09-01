@@ -1,16 +1,37 @@
 ﻿document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
     const dropZoneElement = inputElement.closest(".drop-zone");
+    const promptMessage = dropZoneElement.getElementsByClassName("drop-zone__prompt")[0].innerHTML;
+    const resetButtons = dropZoneElement.closest(".js-picture-field").getElementsByClassName("js-reset-button");
+    
+    for (let btn of resetButtons) {
+        btn.addEventListener("click", e => {
+            if (inputElement.files.length) {
+                inputElement.value = "";
+                resetImage(dropZoneElement, promptMessage);
+            }
+        })
+    }
+    
+    inputElement.addEventListener("change", (e) => {
+        setImage(inputElement.files[0], dropZoneElement);
+    });
 
     dropZoneElement.addEventListener("click", (e) => {
         inputElement.click();
     });
 
-    inputElement.addEventListener("change", (e) => {
-        if (inputElement.files.length) {
-            updateThumbnail(dropZoneElement, inputElement.files[0]);
+    dropZoneElement.addEventListener("drop", (e) => {
+        e.preventDefault();
+
+        if (e.dataTransfer.files.length) {
+            inputElement.files = e.dataTransfer.files;
+            setImage(inputElement.files[0], dropZoneElement);
         }
+
+        dropZoneElement.classList.remove("drop-zone--over");
     });
 
+    // animation
     dropZoneElement.addEventListener("dragover", (e) => {
         e.preventDefault();
         dropZoneElement.classList.add("drop-zone--over");
@@ -21,57 +42,45 @@
             dropZoneElement.classList.remove("drop-zone--over");
         });
     });
-
-    dropZoneElement.addEventListener("drop", (e) => {
-        e.preventDefault();
-
-        if (e.dataTransfer.files.length) {
-            inputElement.files = e.dataTransfer.files;
-            updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
-        }
-
-        dropZoneElement.classList.remove("drop-zone--over");
-    });
 });
 
-/**
- * Updates the thumbnail on a drop zone element.
- *
- * @param {HTMLElement} dropZoneElement
- * @param {File} file
- */
-function updateThumbnail(dropZoneElement, file) {
+function setImage(file, dropZoneElement) {
     if (file.type.startsWith("image/")) {
-        let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
-
-        // First time - remove the prompt
-        if (dropZoneElement.querySelector(".drop-zone__prompt")) {
-            dropZoneElement.querySelector(".drop-zone__prompt").remove();
+        let promptElement = dropZoneElement.querySelector(".drop-zone__prompt");
+        if (promptElement != null) {
+            promptElement.remove();
         }
 
-        // First time - there is no thumbnail element, so lets create it
+        let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
         if (!thumbnailElement) {
             thumbnailElement = document.createElement("div");
             thumbnailElement.classList.add("drop-zone__thumb");
+            thumbnailElement.dataset.label = file.name;
             dropZoneElement.appendChild(thumbnailElement);
         }
 
-        thumbnailElement.dataset.label = file.name;
-
-        // Show thumbnail for image files
-        if (file.type.startsWith("image/")) {
-            const reader = new FileReader();
-
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-            };
-        }
-        else {
-            thumbnailElement.style.backgroundImage = null;
-        }
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+        };
     }
     else {
         alert("Only images");
+    }
+}
+
+function resetImage(dropZoneElement, promptMessage) {
+    let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+    if (thumbnailElement) {
+        thumbnailElement.remove();
+    }
+
+    let promptElement = dropZoneElement.querySelector(".drop-zone__prompt");
+    if (!promptElement) {
+        promptElement = document.createElement("span");
+        promptElement.classList.add("drop-zone__prompt");
+        promptElement.innerHTML = promptMessage;
+        dropZoneElement.appendChild(promptElement);
     }
 }

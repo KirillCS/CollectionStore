@@ -19,7 +19,7 @@
     <h4 class="mt-2 mx-2">Creating a collection</h4>
     <hr class="mb-4 mt-2" />
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-6">
             <div class="card shadow-sm">
                 <article class="card-body">
                     <div class="form-group">
@@ -36,13 +36,19 @@
                         <label class="col-form-label" for="themeField">Collection theme</label>
                         <select id="themeField" class="form-control" asp-items="@GetThemeSelectList()" asp-for="SelectedTheme"></select>
                     </div>
-                    <div class="drop-zone mt-4">
-                        <span class="drop-zone__prompt">Drop picture here or click to upload</span>
-                        <input class="drop-zone__input" type="file" accept="image/*" asp-for="File">
+                    <div class="form-group mt-3 js-picture-field">
+                        <div class="drop-zone">
+                            <span class="drop-zone__prompt">Drop image here or click to upload</span>
+                            <input class="drop-zone__input" type="file" accept="image/*" asp-for="File" />
+                        </div>
+                        <button class="btn btn-block btn-outline-danger btn-sm mt-2 js-reset-button">Reset image</button>
                     </div>
                 </article>
             </div>
-        </div>    
+        </div>  
+        <div class="col-md-6">
+
+        </div>
     </div>
 </div>
 

@@ -38,7 +38,7 @@
             <table class="table table-bordered text-center">
                 <thead class="thead-light">
                     <tr>
-                        <th style="width: 50px"><input type="checkbox" id="js-mainCheckBox" onclick="mainCheckBoxClicked()" /></th>
+                        <th style="width: 50px"><input type="checkbox" class="js-main-check-box" onclick="mainCheckBoxClicked()" /></th>
                         <th>@Localizer["Username"]</th>
                         <th>@Localizer["State"]</th>
                         <th>@Localizer["Rights"]</th>
@@ -48,7 +48,7 @@
                     @foreach (var user in Model)
                     {
                         <tr>
-                            <th style="width: 50px"><input type="checkbox" class="js-checkBox" name="selectedIds" value="@user.Id" onclick="singleCheckBoxClicked(this)" /></th>
+                            <th style="width: 50px"><input type="checkbox" class="js-check-box" name="selectedIds" value="@user.Id" onclick="singleCheckBoxClicked(this)" /></th>
                             <td><a class="link" href="#" title="@Localizer["GoToPage", user.UserName]">@user.UserName</a></td>
                             <td class="@(user.IsBlocked ? "text-danger" : "text-success")"><strong>@(user.IsBlocked ? Localizer["Blocked"] : Localizer["Active"])</strong></td>
                             <td class="@(user.IsAdmin ? "text-primary" : "text-secondary")">@(user.IsAdmin ? Localizer["Admin"] : Localizer["User"])</td>
@@ -60,4 +60,4 @@
     }
 </div>
 
-<script src="~/js/TableCheckBoxesScript.js" asp-append-version="true"></script>
+<script src="~/js/table-select-all.js" asp-append-version="true"></script>
