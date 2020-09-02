@@ -1,54 +1,74 @@
 ﻿@model AddingCollectionViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Creating a collection";
+    ViewData["Title"] = Localizer["Title"];
 }
 
 @functions{
     IEnumerable<SelectListItem> GetThemeSelectList()
     {
-        return Model.Themes.Select(t => new SelectListItem 
-        { 
+        return Model.Themes.Select(t => new SelectListItem
+        {
             Value = t.Id.ToString(),
-            Text = t.Name 
+            Text = t.Name
+        });
+    }
+    IEnumerable<SelectListItem> GetTypesSelectList()
+    {
+        return Model.Types.Select(t => new SelectListItem
+        {
+            Value = t.Id.ToString(),
+            Text = t.Name
         });
     }
 }
 
 <div class="container">
-    <h4 class="mt-2 mx-2">Creating a collection</h4>
+    <h4 class="mt-2 mx-2">@Localizer["Title"]</h4>
     <hr class="mb-4 mt-2" />
-    <div class="row">
-        <div class="col-md-6">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
             <div class="card shadow-sm">
                 <article class="card-body">
                     <div class="form-group">
-                        <label class="col-form-label" for="nameField">Collection name</label>
+                        <label class="col-form-label" for="nameField">@Localizer["Name"]</label>
                         <input id="nameField" class="form-control" asp-for="Name" />
                         <small><span class="text-danger" asp-validation-for="Name"></span></small>
                     </div>
-                    <div class="form-group js-markdown-block">
-                        <label class="col-form-label" for="descriptionField">Collection description</label>
-                        <textarea id="descriptionField" rows="6" class="form-control js-markdown-input" style="max-height: 250px" asp-for="Description"></textarea>
-                        <label class="col-form-label">Description preview</label>
-                        <div class="js-markdown-preview"></div>
-                    </div>
                     <div class="form-group">
-                        <label class="col-form-label" for="themeField">Collection theme</label>
+                        <label class="col-form-label" for="themeField">@Localizer["Theme"]</label>
                         <select id="themeField" class="form-control" asp-items="@GetThemeSelectList()" asp-for="SelectedTheme"></select>
                     </div>
-                    <div class="form-group mt-4 js-picture-field">
-                        <div class="drop-zone">
-                            <span class="drop-zone__prompt">Drop image here or click to upload</span>
+                    <div class="form-group mb-5 js-markdown-block">
+                        <label class="col-form-label" for="descriptionField">@Localizer["Description"]</label>
+                        <textarea id="descriptionField" rows="6" class="form-control js-markdown-input" style="max-height: 250px" asp-for="Description"></textarea>
+                        <label class="col-form-label">@Localizer["Preview"]</label>
+                        <div class="js-markdown-preview"></div>
+                    </div>
+                    <div class="form-group js-picture-field">
+                        <div class="drop-zone mt-0 mb-2">
+                            <span class="drop-zone__prompt">@Localizer["DragNDrop"]</span>
                             <input class="drop-zone__input" type="file" accept="image/*" asp-for="File" />
                         </div>
-                        <button class="btn btn-block btn-outline-danger btn-sm mt-2 js-reset-button">Reset image</button>
+                        <button class="btn btn-block btn-outline-danger btn-sm mb-0 js-reset-button">@Localizer["ResetImage"]</button>
                     </div>
+                    <div class="form-group mt-4 js-additional-fields-block">
+                        <input class="js-additional-fields-button-label" type="hidden" value="@Localizer["Remove"]"/>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label class="col-form-label">@Localizer["FieldName"]</label>
+                                <input class="form-control js-additional-fields-name" type="text" />
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="col-form-label">@Localizer["FieldType"]</label>
+                                <select id="typesField" class="form-control js-additional-fields-type" asp-items="@GetTypesSelectList()"></select>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-primary btn-block btn-sm mb-2 js-additional-fields-add-button">@Localizer["Add"]</button>
+                    </div>
+                    <button class="btn btn-primary btn-block mt-5" type="submit">@Localizer["Create"]</button>
                 </article>
             </div>
-        </div>  
-        <div class="col-md-6">
-
         </div>
     </div>
 </div>
@@ -56,3 +76,4 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="~/js/markdown-editor.js" asp-append-version="true"></script>
 <script src="~/js/drag-n-drop.js" asp-append-version="true"></script>
+<script src="~/js/additional-fields.js" asp-append-version="true"></script>

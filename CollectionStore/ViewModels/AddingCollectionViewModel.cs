@@ -24,6 +24,8 @@ namespace CollectionStore.ViewModels
 
         public IFormFile File { get; set; }
 
+        public List<FieldType> Types { get; set; }
+
         public string ReturnUrl { get; set; }
 
         public AddingCollectionViewModel()

@@ -1,7 +1,10 @@
 ﻿document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
     const dropZoneElement = inputElement.closest(".drop-zone");
-    const promptMessage = dropZoneElement.getElementsByClassName("drop-zone__prompt")[0].innerHTML;
     const resetButtons = dropZoneElement.closest(".js-picture-field").getElementsByClassName("js-reset-button");
+    let promptMessage = dropZoneElement.getElementsByClassName("drop-zone__prompt")[0].innerHTML;
+    if (!promptMessage) {
+        promptMessage = "Drag image here or click to upload";
+    }
     
     for (let btn of resetButtons) {
         btn.addEventListener("click", e => {

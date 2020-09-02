@@ -36,6 +36,7 @@ namespace CollectionStore.Controllers
             return View(new AddingCollectionViewModel
             {
                 Themes = context.CollectionThemes.ToList(),
+                Types = context.FieldTypes.ToList(),
                 ReturnUrl = returnUrl
             });
         }
