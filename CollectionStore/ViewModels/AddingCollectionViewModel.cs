@@ -15,22 +15,23 @@ namespace CollectionStore.ViewModels
         [DataType(DataType.Text)]
         public string Name { get; set; }
 
-        [DataType(DataType.MultilineText)]
-        public string Description { get; set; }
-
         public List<CollectionTheme> Themes { get; set; }
 
-        public SelectListItem SelectedTheme { get; set; }
+        public int SelectedThemeId { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
 
         public IFormFile File { get; set; }
 
         public List<FieldType> Types { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public List<string> FieldNames { get; set; }
 
-        public AddingCollectionViewModel()
-        {
-            Themes = new List<CollectionTheme>();
-        }
+        public List<int> FieldTypesIds { get; set; }
+
+        public string UserId { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }

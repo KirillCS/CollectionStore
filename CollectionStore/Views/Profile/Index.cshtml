@@ -11,7 +11,7 @@
         <hr class="mb-4 mt-2" />
         @if (User.Identity.Name == Model.UserName || User.IsInRole("admin"))
         {
-            <a class="btn btn-outline-primary btn-block btn-lg" asp-controller="Collection" asp-action="Add"
+            <a class="btn btn-primary btn-block" asp-controller="Collection" asp-action="Add"
                     asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)" asp-route-userName="@Model.UserName">@Localizer["Add"]</a>
         }
         @if (Model.Collections.Count == 0)

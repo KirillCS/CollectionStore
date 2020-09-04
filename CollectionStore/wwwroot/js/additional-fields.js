@@ -1,8 +1,10 @@
 ﻿document.querySelectorAll(".js-additional-fields-add-button").forEach(button => {
     const block = button.closest(".js-additional-fields-block");
-    const buttonLabel = block.getElementsByClassName("js-additional-fields-button-label")[0].value;
     const nameField = block.getElementsByClassName("js-additional-fields-name")[0];
     const typeField = block.getElementsByClassName("js-additional-fields-type")[0];
+    let buttonLabel = getLabel(block, "js-additional-fields-button-label", "Remove");
+    let nameLabel = getLabel(block, "js-additional-fields-name-label", "Field name");
+    let typeLabel = getLabel(block, "js-additional-fields-type-label", "Field type");;
 
     button.addEventListener("click", e => {
         let table = block.getElementsByClassName("js-additional-fields-table")[0];
@@ -11,32 +13,40 @@
         }
         else {
             if (!table) {
-                table = createTable();
+                table = createTable(nameLabel, typeLabel);
                 block.appendChild(table);
             }
             let row = table.insertRow();
-            fillRow(row, nameField.value, typeField.options[typeField.selectedIndex].text, buttonLabel);
+            fillRow(row, nameField.value, typeField, buttonLabel);
             nameField.value = "";
             typeField.selectedIndex = 0;
         }
     });
 });
 
-function createTable() {
+function getLabel(block, className, defaultValue) {
+    return (block.getElementsByClassName(className)[0].value ?
+        block.getElementsByClassName(className)[0].value : 
+        defaultValue);
+}
+
+function createTable(nameLabel, typeLabel) {
     let table = document.createElement("table");
     table.classList.add("table", "table-sm", "table-bordered", "text-center", "text-wrap", "js-additional-fields-table");
     table.createTHead().classList.add("thead-light");
-    table.tHead.innerHTML = "<tr>\n<th scope=\"col\">Field name</th>\n<th scope=\"col\">Field type</th>\n<th scope=\"col\"></th>\n</tr>"
+    table.tHead.innerHTML = `<tr>\n<th scope=\"col\">${nameLabel}</th>\n<th scope=\"col\">${typeLabel}</th>\n<th scope=\"col\"></th>\n</tr>`
     table.style = "table-layout:fixed;";
     return table;
 }
 
-function fillRow(row, name, type, buttonLabel) {
+function fillRow(row, name, typeField, buttonLabel) {
     row.classList.add("js-additional-fields-table-row");
-    let nameRow = row.insertCell(0);
-    nameRow.innerHTML = name;
-    nameRow.style = "word-wrap: break-word;";
-    row.insertCell(1).innerHTML = type;
+    let nameCell = row.insertCell(0);
+    nameCell.innerHTML = `${name}<input type="hidden" name="FieldNames" value="${name}"/>`;
+    nameCell.style = "word-wrap: break-word;";
+    let typeCell = row.insertCell(1);
+    typeCell.innerHTML = `${typeField.options[typeField.selectedIndex].text}<input type="hidden" name="FieldTypesIds" value="${typeField.value}"/>`;
+    typeCell.style = "word-wrap: break-word;";
     row.insertCell(2).appendChild(createButton(buttonLabel));
 }
 

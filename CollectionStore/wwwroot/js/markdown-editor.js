@@ -1,6 +1,9 @@
 ﻿document.querySelectorAll(".js-markdown-input").forEach(input => {
     const preview = input.closest(".js-markdown-block").querySelector(".js-markdown-preview");
-    input.addEventListener("input", e => {
-        preview.innerHTML = marked(input.value);
+    preview.innerHTML = marked(input.value);
+    ["input", "change"].forEach(event => {
+        input.addEventListener(event, e => {
+            preview.innerHTML = marked(input.value);
+        });
     });
 });

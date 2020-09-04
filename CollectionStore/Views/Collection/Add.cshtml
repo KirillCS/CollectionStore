@@ -30,43 +30,85 @@
         <div class="col-lg-7">
             <div class="card shadow-sm">
                 <article class="card-body">
-                    <div class="form-group">
-                        <label class="col-form-label" for="nameField">@Localizer["Name"]</label>
-                        <input id="nameField" class="form-control" asp-for="Name" />
-                        <small><span class="text-danger" asp-validation-for="Name"></span></small>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-form-label" for="themeField">@Localizer["Theme"]</label>
-                        <select id="themeField" class="form-control" asp-items="@GetThemeSelectList()" asp-for="SelectedTheme"></select>
-                    </div>
-                    <div class="form-group mb-5 js-markdown-block">
-                        <label class="col-form-label" for="descriptionField">@Localizer["Description"]</label>
-                        <textarea id="descriptionField" rows="6" class="form-control js-markdown-input" style="max-height: 250px" asp-for="Description"></textarea>
-                        <label class="col-form-label">@Localizer["Preview"]</label>
-                        <div class="js-markdown-preview"></div>
-                    </div>
-                    <div class="form-group js-picture-field">
-                        <div class="drop-zone mt-0 mb-2">
-                            <span class="drop-zone__prompt">@Localizer["DragNDrop"]</span>
-                            <input class="drop-zone__input" type="file" accept="image/*" asp-for="File" />
+                    <form asp-controller="Collection" asp-action="Add" asp-route-returnUrl="@Model.ReturnUrl"
+                          asp-route-userId="@Model.UserId" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label class="col-form-label" for="name">@Localizer["Name"]</label>
+                            <input id="name" class="form-control js-creating-collection-name-field" asp-for="Name" />
+                            <small><span class="text-danger" asp-validation-for="Name"></span></small>
                         </div>
-                        <button class="btn btn-block btn-outline-danger btn-sm mb-0 js-reset-button">@Localizer["ResetImage"]</button>
-                    </div>
-                    <div class="form-group mt-4 js-additional-fields-block">
-                        <input class="js-additional-fields-button-label" type="hidden" value="@Localizer["Remove"]"/>
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label class="col-form-label">@Localizer["FieldName"]</label>
-                                <input class="form-control js-additional-fields-name" type="text" />
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label class="col-form-label">@Localizer["FieldType"]</label>
-                                <select id="typesField" class="form-control js-additional-fields-type" asp-items="@GetTypesSelectList()"></select>
-                            </div>
+                        <div class="form-group">
+                            <label class="col-form-label" for="theme">@Localizer["Theme"]</label>
+                            <select id="theme" class="form-control" asp-items="@GetThemeSelectList()" asp-for="SelectedThemeId"></select>
                         </div>
-                        <button class="btn btn-outline-primary btn-block btn-sm mb-2 js-additional-fields-add-button">@Localizer["Add"]</button>
-                    </div>
-                    <button class="btn btn-primary btn-block mt-5" type="submit">@Localizer["Create"]</button>
+                        <div class="form-group mb-5 js-markdown-block">
+                            <label class="col-form-label" for="description">@Localizer["Description"]</label>
+                            <textarea id="description" rows="6" class="form-control js-markdown-input" style="max-height: 250px" asp-for="Description"></textarea>
+                            <label class="col-form-label">@Localizer["Preview"]</label>
+                            <div class="js-markdown-preview"></div>
+                        </div>
+                        <div class="form-group js-picture-field">
+                            <div class="drop-zone mt-0 mb-2">
+                                <input class="js-picture-field-prompt-label" type="hidden" value="@Localizer["DragNDrop"]" />
+                                <input class="drop-zone__input" type="file" accept="image/*" asp-for="@Model.File" />
+                                <span class="drop-zone__prompt">@Localizer["DragNDrop"]</span>
+                            </div>
+                            <button class="btn btn-block btn-outline-danger btn-sm mb-0 js-reset-button" type="button">@Localizer["ResetImage"]</button>
+                        </div>
+                        <div class="form-group mt-4 js-additional-fields-block">
+                            <input class="js-additional-fields-button-label" type="hidden" value="@Localizer["Remove"]" />
+                            <input class="js-additional-fields-name-label" type="hidden" value="@Localizer["FieldName"]" />
+                            <input class="js-additional-fields-type-label" type="hidden" value="@Localizer["FieldType"]" />
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label" for="nameField">@Localizer["FieldName"]</label>
+                                    <input id="nameField" class="form-control js-additional-fields-name" type="text" />
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label class="col-form-label" for="typesField">@Localizer["FieldType"]</label>
+                                    <select id="typesField" class="form-control js-additional-fields-type" asp-items="@GetTypesSelectList()"></select>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-primary btn-block btn-sm mb-2 js-additional-fields-add-button" type="button">@Localizer["Add"]</button>
+                        </div>
+                        @if (!Model.FieldNames.IsNullOrEmpty() && !Model.FieldTypesIds.IsNullOrEmpty())
+                        {
+                            <table class="table table-sm table-bordered text-center text-wrap js-additional-fields-table" style="table-layout: fixed;">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">@Localizer["FieldName"]</th>
+                                        <th scope="col">@Localizer["FieldType"]</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.FieldNames.Count; i++)
+                                    {
+                                        if (Model.Types.SingleOrDefault(t => t.Id == Model.FieldTypesIds[i]) != null)
+                                        {
+                                            <tr class="js-additional-fields-table-row">
+                                                <td style="word-wrap: break-word;">
+                                                    @Model.FieldNames[i]
+                                                    <input type="hidden" name="FieldNames" value="@Model.FieldNames[i]" />
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    @Model.Types.SingleOrDefault(t => t.Id == Model.FieldTypesIds[i]).Name
+                                                    <input type="hidden" name="FieldTypesIds" value="@Model.FieldTypesIds[i]" />
+                                                </td>
+                                                <td style="word-wrap: break-word;">
+                                                    <button class="btn btn-outline-danger btn-sm js-additional-fields-remove-button"
+                                                            onclick="removeButtonClicked(this)">
+                                                        @Localizer["Remove"]
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        <button class="btn btn-primary btn-block mt-5" type="submit">@Localizer["Create"]</button>
+                    </form>
                 </article>
             </div>
         </div>

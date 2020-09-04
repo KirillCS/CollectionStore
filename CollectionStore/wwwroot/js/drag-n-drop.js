@@ -1,11 +1,11 @@
 ﻿document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
     const dropZoneElement = inputElement.closest(".drop-zone");
     const resetButtons = dropZoneElement.closest(".js-picture-field").getElementsByClassName("js-reset-button");
-    let promptMessage = dropZoneElement.getElementsByClassName("drop-zone__prompt")[0].innerHTML;
+    let promptMessage = dropZoneElement.querySelector(".js-picture-field-prompt-label").value;
     if (!promptMessage) {
         promptMessage = "Drag image here or click to upload";
     }
-    
+
     for (let btn of resetButtons) {
         btn.addEventListener("click", e => {
             if (inputElement.files.length) {
@@ -16,7 +16,12 @@
     }
     
     inputElement.addEventListener("change", (e) => {
-        setImage(inputElement.files[0], dropZoneElement);
+        if (e.target.files.length) {
+            setImage(e.target.files[0], dropZoneElement);
+        }
+        else {
+            resetImage(dropZoneElement, promptMessage);
+        }
     });
 
     dropZoneElement.addEventListener("click", (e) => {
