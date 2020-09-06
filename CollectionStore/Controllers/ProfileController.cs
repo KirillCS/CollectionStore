@@ -18,7 +18,8 @@ namespace CollectionStore.Controllers
         private readonly ApplicationDbContext context;
         private readonly IStringLocalizer<ProfileController> localizer;
 
-        public ProfileController(UserManager<User> userManager, ApplicationDbContext context, IStringLocalizer<ProfileController> localizer)
+        public ProfileController(UserManager<User> userManager, 
+            ApplicationDbContext context, IStringLocalizer<ProfileController> localizer)
         {
             this.userManager = userManager;
             this.context = context;
@@ -49,7 +50,7 @@ namespace CollectionStore.Controllers
         public IActionResult Collection(int? collectionId = null)
         {
             collectionId ??= -1;
-            var collection = context.Collections.Where(c => c.Id == collectionId.Value).Include(c => c.Theme).Include(c => c.Items).SingleOrDefault(c => c.Id == collectionId.Value);
+            var collection = context.Collections.Where(c => c.Id == collectionId.Value).Include(c => c.Theme).Include(c => c.User).SingleOrDefault(c => c.Id == collectionId.Value);
             if(collection == null)
             {
                 return View("Error", new ErrorViewModel

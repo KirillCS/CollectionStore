@@ -37,9 +37,12 @@ namespace CollectionStore
                 try
                 {
                     var initializer = new DataInitializer(services.GetRequiredService<UserManager<User>>(),
-                        services.GetRequiredService<RoleManager<IdentityRole>>(), services.GetRequiredService<IConfiguration>());
+                        services.GetRequiredService<RoleManager<IdentityRole>>(), services.GetRequiredService<IConfiguration>(),
+                        services.GetRequiredService<ApplicationDbContext>());
                     await initializer.InitializeRoleAsync();
                     await initializer.InitializeAdminAsync();
+                    await initializer.InitializeCollectionThemes();
+                    await initializer.InitializeFieldTypes();
                 }
                 catch (Exception ex)
                 {

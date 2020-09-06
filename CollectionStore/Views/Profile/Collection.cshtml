@@ -1,43 +1,43 @@
 ﻿@model CollectionViewModel
 @inject IViewLocalizer Localizer
-@{ 
+@{
     ViewData["Title"] = "Collection " + Model.Collection.Name;
 }
 
 <div class="container">
-    <div class="row mt-2">
-        <div class="col-lg-10 col-md-9 col-sm-8">
-            <h4 class="m-0 text-wrap">Collection "@Model.Collection.Name" (@Model.Collection.Theme.Name)</h4>
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-outline-secondary btn-sm btn-block">Редактировать</button>
-        </div>
-    </div>
+    <h4 class="mt-2 mx-2 text-wrap">Collection "@Model.Collection.Name" (@Model.Collection.Theme.Name)</h4>
     <hr class="mb-4 mt-2" />
     <div class="row">
-        <div class="col-md-5">
-            @if (!string.IsNullOrEmpty(Model.Collection.Description) || Model.Collection.ImagePath != null)
-            {
+        @if (!string.IsNullOrEmpty(Model.Collection.Description) || Model.Collection.ImagePath != null)
+        {
+            <div class="col-md-5">
                 <div class="card bg-light shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">@Model.Collection.Name</h5>
-                        <hr />
-                        <p class="card-text">@Model.Collection.Description</p>
-                    </div>
                     @if (!string.IsNullOrEmpty(Model.Collection.ImagePath))
                     {
-                        <img class="bd-placeholder-img card-img-bottom" src="@Model.Collection.ImagePath" focusable="false" role="img">
+                        <img class="bd-placeholder-img card-img-top" src="@Model.Collection.ImagePath" focusable="false" role="img">
                     }
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Collection.Name (@Model.Collection.Theme.Name)</h5>
+                        <hr />
+                        <div class="js-markdown-element">@Model.Collection.Description</div>
+                    </div>
                 </div>
-            }
-        </div>
+                @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
+                {
+                    <button class="btn btn-outline-secondary btn-block mt-3">Edit</button>
+                }
+            </div>
+        }
         <div class="col-md-7">
-            <div class="card">
-                <header class="card-header">Items</header>
+            <div class="card bg-light shadow-sm">
                 <div class="card-body">
-
+                    <h5 class="card-title">Items of collection</h5>
+                    <hr />
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="~/js/markdown.js"></script>
