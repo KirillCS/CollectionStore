@@ -24,7 +24,7 @@
                 </div>
                 @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
                 {
-                    <button class="btn btn-outline-secondary btn-block mt-3">Edit</button>
+                    <a class="btn btn-outline-secondary btn-block mt-3 mb-3">Edit</a>
                 }
             </div>
         }
@@ -33,6 +33,11 @@
                 <div class="card-body">
                     <h5 class="card-title">Items of collection</h5>
                     <hr />
+                    @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
+                    {
+                        <a onclick="history.go(-1)" class="btn btn-outline-primary btn-block" asp-controller="Item" asp-action="Add"
+                           asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">Add</a>
+                    }
                 </div>
             </div>
         </div>

@@ -1,0 +1,64 @@
+﻿@model AddingItemViewModel
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = $"Adding item to the collection {Model.CollectionName}";
+}
+
+<div class="container">
+    <h4 class="mt-2 mx-2">@Localizer["Title"]</h4>
+    <hr class="mb-4 mt-2" />
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <article class="card-body">
+                    <form asp-controller="Item" asp-action="Add" asp-route-returnUrl="@Model.ReturnUrl"
+                          asp-route-collectionId="@Model.CollectionId" method="post">
+                        <div class="form-group">
+                            <label class="col-form-label" for="name">Name</label>
+                            <input id="name" class="form-control" asp-for="Name" />
+                            <small><span class="text-danger" asp-validation-for="Name"></span></small>
+                        </div>
+                        @foreach (var field in Model.Fields)
+                        {
+                            <div class="form-group">
+                                <input type="hidden" asp-for="@Model.FieldIds" value="@field.Id"/>
+                                <label class="col-form-label" for="@field.Id">@field.Name</label>
+                                @switch (field.Type.Name)
+                                {
+                                    case "Numeric":
+                                    {
+                                        <input id="@field.Id" class="form-control" type="number" asp-for="@Model.Values" />
+                                        break;
+                                    }
+                                    case "String":
+                                    {
+                                        <input id="@field.Id" class="form-control" type="text" asp-for="@Model.Values" />
+                                        break;
+                                    }
+                                    case "Markdown":
+                                    {
+                                        break;
+                                    }
+                                    case "Date":
+                                    {
+                                        break;
+                                    }
+                                    case "Check box":
+                                    {
+                                        break;
+                                    }
+                                    default:
+                                        break;
+                                }
+                            </div>
+                        }
+                        <button class="btn btn-primary btn-block mt-5" type="submit">@Localizer["Create"]</button>
+                    </form>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="~/js/markdown-editor.js" asp-append-version="true"></script>
