@@ -1,11 +1,11 @@
 ﻿@model AddingItemViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = $"Adding item to the collection {Model.CollectionName}";
+    ViewData["Title"] = $"Adding item to the collection {Model.Collection.Name}";
 }
 
 <div class="container">
-    <h4 class="mt-2 mx-2">@Localizer["Title"]</h4>
+    <h4 class="mt-2 mx-2">Adding item to the collection "@Model.Collection.Name"</h4>
     <hr class="mb-4 mt-2" />
     <div class="row justify-content-center">
         <div class="col-lg-7">
@@ -18,42 +18,62 @@
                             <input id="name" class="form-control" asp-for="Name" />
                             <small><span class="text-danger" asp-validation-for="Name"></span></small>
                         </div>
-                        @foreach (var field in Model.Fields)
+                        @for (int i = 0; i < Model.Collection.Fields.Count; i++)
                         {
-                            <div class="form-group">
-                                <input type="hidden" asp-for="@Model.FieldIds" value="@field.Id"/>
-                                <label class="col-form-label" for="@field.Id">@field.Name</label>
-                                @switch (field.Type.Name)
+                            var field = Model.Collection.Fields[i];
+                            <input type="hidden" asp-for="@Model.FieldIds" value="@field.Id" />
+                            @switch (field.Type.Name)
+                            {
+                                case "Numeric":
                                 {
-                                    case "Numeric":
-                                    {
-                                        <input id="@field.Id" class="form-control" type="number" asp-for="@Model.Values" />
-                                        break;
-                                    }
-                                    case "String":
-                                    {
-                                        <input id="@field.Id" class="form-control" type="text" asp-for="@Model.Values" />
-                                        break;
-                                    }
-                                    case "Markdown":
-                                    {
-                                        break;
-                                    }
-                                    case "Date":
-                                    {
-                                        break;
-                                    }
-                                    case "Check box":
-                                    {
-                                        break;
-                                    }
-                                    default:
-                                        break;
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="@field.Id">@field.Name</label>
+                                        <input id="@field.Id" class="form-control" type="number" step="any" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? null : Model.Values[i])" />
+                                    </div>
+                                    break;
                                 }
-                            </div>
-                        }
-                        <button class="btn btn-primary btn-block mt-5" type="submit">@Localizer["Create"]</button>
-                    </form>
+                                case "String":
+                                {
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="@field.Id">@field.Name</label>
+                                        <input id="@field.Id" class="form-control" type="text" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? null : Model.Values[i])" />
+                                    </div>
+                                    break;
+                                }
+                                case "Markdown":
+                                {
+                                    <div class="form-group js-markdown-block">
+                                        <label class="col-form-label" for="@field.Id">@field.Name</label>
+                                        <textarea id="@field.Id" rows="6" class="form-control js-markdown-input"
+                                                  style="max-height: 250px" name="Values">@(i >= Model.Values.Count ? null : Model.Values[i])</textarea>
+                                        <label class="col-form-label">@Localizer["Preview"]</label>
+                                        <div class="js-markdown-preview"></div>
+                                    </div>
+                                    break;
+                                }
+                                case "Date":
+                                {
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="@field.Id">@field.Name</label>
+                                        <input id="@field.Id" class="form-control" type="date" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? null : Model.Values[i])" />
+                                    </div>
+                                     break;
+                                }
+                                case "Check box":
+                                {
+                                    <div class="form-group form-check js-check-box-block">
+                                        <input id="@field.Id" class="form-check-input js-check-box" type="checkbox" />
+                                        <label class="form-check-label" for="@field.Id">@field.Name</label>
+                                        <input class="js-check-box-value" type="hidden" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? "unchecked" : Model.Values[i])" />
+                                    </div>
+                                    break;
+                                }
+                                default:
+                                    break;
+                                }
+                            }
+                            <button class="btn btn-primary btn-block" type="submit">@Localizer["Create"]</button>
+                        </form>
                 </article>
             </div>
         </div>
@@ -62,3 +82,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="~/js/markdown-editor.js" asp-append-version="true"></script>
+<script>
+    document.querySelectorAll(".js-check-box").forEach(checkBox => {
+        const value = checkBox.closest(".js-check-box-block").querySelector(".js-check-box-value");
+        checkBox.addEventListener("change", e => {
+            value.value = e.target.checked ? "checked" : "unchecked";
+        });
+        checkBox.checked = value.value == "checked";
+    });
+</script>

@@ -12,16 +12,20 @@ namespace CollectionStore.ViewModels
         [Required(ErrorMessage = "Required")]
         public string Name { get; set; }
 
-        public List<int?> FieldIds { get; set; }
-
         public List<string> Values { get; set; }
 
-        public int? CollectionId { get; set; }
+        public List<int> FieldIds { get; set; }
 
-        public string CollectionName { get; set; }
+        public int CollectionId { get; set; }
 
-        public List<Field> Fields { get; set; }
+        public Collection Collection { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public AddingItemViewModel()
+        {
+            Values = new List<string>();
+            FieldIds = new List<int>();
+        }
     }
 }
