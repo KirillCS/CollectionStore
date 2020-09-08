@@ -1,11 +1,11 @@
 ﻿@model CollectionViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Collection " + Model.Collection.Name;
+    ViewData["Title"] = Localizer["Collection", Model.Collection.Name];
 }
 
 <div class="container">
-    <h4 class="mt-2 mx-2 text-wrap">Collection "@Model.Collection.Name" (@Model.Collection.Theme.Name)</h4>
+    <h4 class="mt-2 mx-2 text-wrap">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</h4>
     <hr class="mb-4 mt-2" />
     <div class="row">
         @if (!string.IsNullOrEmpty(Model.Collection.Description) || Model.Collection.ImagePath != null)
@@ -24,17 +24,17 @@
                 </div>
                 @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
                 {
-                    <a class="btn btn-outline-secondary btn-block mt-3 mb-3">Edit</a>
+                    <a class="btn btn-outline-secondary btn-block mt-3 mb-3">@Localizer["Edit"]</a>
                 }
             </div>
         }
         <div class="col-md-7">
-            <h5>Items of collection</h5>
+            <h5>@Localizer["ItemsOfCollection"]</h5>
             <hr />
             @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
             {
                 <a class="btn btn-outline-primary btn-block mb-3" asp-controller="Item" asp-action="Add"
-                    asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">Add</a>
+                    asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Add"]</a>
             }
             <div class="accordion" id="accordionItems">
                 @foreach (var item in Model.Collection.Items)
@@ -64,8 +64,8 @@
                                         <p class="card-text">@fieldValue.Field.Name: @(string.IsNullOrEmpty(fieldValue.Value) ? "-" : fieldValue.Value)</p>
                                     }
                                 }
-                                <a class="btn btn-outline-danger btn-sm">Remove</a>
-                                <a class="btn btn-outline-primary btn-sm">Edit</a>
+                                <a class="btn btn-outline-danger btn-sm mr-1">@Localizer["Remove"]</a>
+                                <a class="btn btn-outline-secondary btn-sm">@Localizer["Edit"]</a>
                             </div>
                         </div>
                     </div>

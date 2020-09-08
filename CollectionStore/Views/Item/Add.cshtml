@@ -1,11 +1,11 @@
 ﻿@model AddingItemViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = $"Adding item to the collection {Model.Collection.Name}";
+    ViewData["Title"] = Localizer["CreatingItem", Model.Collection.Name];
 }
 
 <div class="container">
-    <h4 class="mt-2 mx-2">Adding item to the collection "@Model.Collection.Name"</h4>
+    <h4 class="mt-2 mx-2">@Localizer["CreatingItem", Model.Collection.Name]</h4>
     <hr class="mb-4 mt-2" />
     <div class="row justify-content-center">
         <div class="col-lg-7">
@@ -14,7 +14,7 @@
                     <form asp-controller="Item" asp-action="Add" asp-route-returnUrl="@Model.ReturnUrl"
                           asp-route-collectionId="@Model.CollectionId" method="post">
                         <div class="form-group">
-                            <label class="col-form-label" for="name">Name</label>
+                            <label class="col-form-label" for="name">@Localizer["Name"]</label>
                             <input id="name" class="form-control" asp-for="Name" />
                             <small><span class="text-danger" asp-validation-for="Name"></span></small>
                         </div>
@@ -72,7 +72,7 @@
                                     break;
                                 }
                             }
-                            <button class="btn btn-primary btn-block" type="submit">@Localizer["Create"]</button>
+                            <button class="btn btn-primary btn-block" type="submit">@Localizer["Add"]</button>
                         </form>
                 </article>
             </div>
