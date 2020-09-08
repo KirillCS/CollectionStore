@@ -1,18 +1,19 @@
-﻿@model AddingItemViewModel
+﻿@model AddingEditingItemViewModel
 @inject IViewLocalizer Localizer
 @{
-    ViewData["Title"] = Localizer["CreatingItem", Model.Collection.Name];
+    ViewData["Title"] = Localizer[Model.IsEditing ? "EditingItem" : "CreatingItem", Model.Collection.Name];
 }
 
 <div class="container">
-    <h4 class="mt-2 mx-2">@Localizer["CreatingItem", Model.Collection.Name]</h4>
+    <h4 class="mt-2 mx-2">@Localizer[Model.IsEditing ? "EditingItem" : "CreatingItem", Model.Collection.Name]</h4>
     <hr class="mb-4 mt-2" />
     <div class="row justify-content-center">
         <div class="col-lg-7">
             <div class="card shadow-sm">
                 <article class="card-body">
-                    <form asp-controller="Item" asp-action="Add" asp-route-returnUrl="@Model.ReturnUrl"
-                          asp-route-collectionId="@Model.CollectionId" method="post">
+                    <form asp-controller="Item" asp-action="@(Model.IsEditing ? "Edit" : "Add")" asp-route-returnUrl="@Model.ReturnUrl"
+                          asp-route-collectionId="@Model.CollectionId" asp-route-itemId="@Model.ItemId"
+                          asp-route-isEditing="@Model.IsEditing" method="post">
                         <div class="form-group">
                             <label class="col-form-label" for="name">@Localizer["Name"]</label>
                             <input id="name" class="form-control" asp-for="Name" />
@@ -72,7 +73,7 @@
                                     break;
                                 }
                             }
-                            <button class="btn btn-primary btn-block" type="submit">@Localizer["Add"]</button>
+                            <button class="btn btn-primary btn-block" type="submit">@Localizer[Model.IsEditing ? "Save" : "Add"]</button>
                         </form>
                 </article>
             </div>

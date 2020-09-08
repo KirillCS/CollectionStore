@@ -132,10 +132,16 @@
   <data name="ItemsOfCollection" xml:space="preserve">
     <value>Элементы коллекции</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
   <data name="Remove" xml:space="preserve">
     <value>Удалить</value>
   </data>
   <data name="RemoveItem" xml:space="preserve">
     <value>Удалить элемент "{0}" из коллекции "{1}"?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
   </data>
 </root>

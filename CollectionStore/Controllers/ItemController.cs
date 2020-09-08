@@ -20,10 +20,10 @@ namespace CollectionStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add(int? collectionId = null, string returnUrl = null)
+        public IActionResult Add(int collectionId, string returnUrl = null)
         {
-            collectionId ??= -1;
-            var collection = GetCollection(collectionId.Value);
+            returnUrl ??= "~/";
+            var collection = GetCollection(collectionId);
             if(collection == null)
             {
                 return View("Error", new ErrorViewModel
@@ -32,16 +32,15 @@ namespace CollectionStore.Controllers
                     ErrorMessage = "Collection is not found!"
                 });
             }
-            return View(new AddingItemViewModel
+            return View("AddEdit", new AddingEditingItemViewModel
             {
-                CollectionId = collectionId.Value,
+                CollectionId = collectionId,
                 Collection = collection,
                 ReturnUrl = returnUrl
             });
         }
-
         [HttpPost]
-        public async Task<IActionResult> Add(AddingItemViewModel model)
+        public async Task<IActionResult> Add(AddingEditingItemViewModel model)
         {
             model.Collection = GetCollection(model.CollectionId);
             if (model.Collection == null)
@@ -65,7 +64,7 @@ namespace CollectionStore.Controllers
                 await AddItem(model);
                 return Redirect(model.ReturnUrl);
             }
-            return View(model);
+            return View("AddEdit", model);
         }
 
         [HttpGet]
@@ -80,12 +79,80 @@ namespace CollectionStore.Controllers
             return Redirect(returnUrl);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int itemId, string returnUrl = null)
+        {
+            returnUrl ??= "~/";
+            var item = await context.Items
+                .Where(i => i.Id == itemId)
+                .Include(i => i.FieldValues)
+                .Include(i => i.Collection)
+                .ThenInclude(c => c.Fields)
+                .ThenInclude(f => f.Type)
+                .SingleOrDefaultAsync(i => i.Id == itemId);
+            if(item == null)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorTitle = "Item isn't found",
+                    ErrorMessage = "Item is not found"
+                });
+            }
+
+            return View("AddEdit", new AddingEditingItemViewModel 
+            {
+                ItemId = itemId,
+                Name = item.Name,
+                Values = item.FieldValues.Select(fv => fv.Value).ToList(),
+                CollectionId = item.Collection.Id,
+                Collection = item.Collection,
+                ReturnUrl = returnUrl,
+                IsEditing = true
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(AddingEditingItemViewModel model)
+        {
+            model.Collection = GetCollection(model.CollectionId);
+            if(model.Collection == null)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorTitle = "Collection isn't found!",
+                    ErrorMessage = "Collection is not found!"
+                });
+            }
+            var item = context.Items.Where(i => i.Id == model.ItemId).Include(i => i.FieldValues).SingleOrDefault(i => i.Id == model.ItemId);
+            if(item == null)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorTitle = "Item isn't found!",
+                    ErrorMessage = "Item is not found!"
+                });
+            }
+            if (!ValidateFields(model))
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorTitle = "Something went wrong :(",
+                    ErrorMessage = "Someone remove one or more fields."
+                });
+            }
+            if (ModelState.IsValid)
+            {
+                await EditItem(item, model);
+                return Redirect(model.ReturnUrl);
+            }
+            return View("AddEdit", model);
+        }
+
         private Collection GetCollection(int id) => context.Collections
                 .Where(c => c.Id == id)
                 .Include(c => c.Fields)
                 .ThenInclude(f => f.Type)
                 .SingleOrDefault(c => c.Id == id);
-        private bool ValidateFields(AddingItemViewModel model)
+        private bool ValidateFields(AddingEditingItemViewModel model)
         {
             foreach (int id in model.FieldIds)
             {
@@ -96,7 +163,7 @@ namespace CollectionStore.Controllers
             }
             return true;
         }
-        private async Task AddItem(AddingItemViewModel model)
+        private async Task AddItem(AddingEditingItemViewModel model)
         {
             context.Items.Add(new Item
             {
@@ -106,7 +173,7 @@ namespace CollectionStore.Controllers
             });
             await context.SaveChangesAsync();
         }
-        private List<FieldValue> GetFieldValues(AddingItemViewModel model)
+        private List<FieldValue> GetFieldValues(AddingEditingItemViewModel model)
         {
             var fieldValues = new List<FieldValue>();
             for (int i = 0; i < model.FieldIds.Count; i++)
@@ -123,6 +190,19 @@ namespace CollectionStore.Controllers
         {
             context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.ItemId == item.Id));
             context.Items.Remove(item);
+            await context.SaveChangesAsync();
+        }
+        private async Task EditItem(Item item, AddingEditingItemViewModel model)
+        {
+            item.Name = model.Name;
+            for (int i = 0; i < model.FieldIds.Count; i++)
+            {
+                var fieldValue = item.FieldValues.SingleOrDefault(fv => fv.FieldId == model.FieldIds[i]);
+                if(fieldValue != null)
+                {
+                    fieldValue.Value = model.Values[i];
+                }
+            }
             await context.SaveChangesAsync();
         }
     }

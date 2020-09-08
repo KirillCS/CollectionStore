@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace CollectionStore.ViewModels
 {
-    public class AddingItemViewModel
+    public class AddingEditingItemViewModel
     {
+        public int ItemId { get; set; }
+
         [Required(ErrorMessage = "Required")]
         public string Name { get; set; }
 
@@ -22,7 +24,9 @@ namespace CollectionStore.ViewModels
 
         public string ReturnUrl { get; set; }
 
-        public AddingItemViewModel()
+        public bool IsEditing { get; set; }
+
+        public AddingEditingItemViewModel()
         {
             Values = new List<string>();
             FieldIds = new List<int>();

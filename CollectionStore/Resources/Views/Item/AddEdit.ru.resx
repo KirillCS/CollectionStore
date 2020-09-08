@@ -123,7 +123,13 @@
   <data name="CreatingItem" xml:space="preserve">
     <value>Создание элемента коллекции "{0}"</value>
   </data>
+  <data name="EditingItem" xml:space="preserve">
+    <value>Изменение элемента коллекции "{0}"</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Название</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить изменения</value>
   </data>
 </root>
