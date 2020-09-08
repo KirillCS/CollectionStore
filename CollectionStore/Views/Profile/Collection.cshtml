@@ -7,28 +7,26 @@
 <div class="container">
     <h4 class="mt-2 mx-2 text-wrap">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</h4>
     <hr class="mb-4 mt-2" />
-    <div class="row">
-        @if (!string.IsNullOrEmpty(Model.Collection.Description) || Model.Collection.ImagePath != null)
-        {
-            <div class="col-md-5">
-                <div class="card bg-light shadow-sm">
+    <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card bg-light shadow-sm mb-3">
                     @if (!string.IsNullOrEmpty(Model.Collection.ImagePath))
                     {
                         <img class="bd-placeholder-img card-img-top" src="@Model.Collection.ImagePath" focusable="false" role="img">
                     }
                     <div class="card-body">
                         <h5 class="card-title">@Model.Collection.Name (@Model.Collection.Theme.Name)</h5>
-                        <hr />
-                        <div class="js-markdown-element">@Model.Collection.Description</div>
+                        @if (!string.IsNullOrEmpty(Model.Collection.Description))
+                        {
+                            <hr />
+                            <div class="js-markdown-element">@Model.Collection.Description</div>
+                        }
+                        @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
+                        {
+                            <a class="btn btn-outline-secondary btn-block">@Localizer["Edit"]</a>
+                        }
                     </div>
                 </div>
-                @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
-                {
-                    <a class="btn btn-outline-secondary btn-block mt-3 mb-3">@Localizer["Edit"]</a>
-                }
-            </div>
-        }
-        <div class="col-md-7">
             <h5>@Localizer["ItemsOfCollection"]</h5>
             <hr />
             @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
@@ -48,24 +46,50 @@
                         </div>
                         <div id="@($"collapse{item.Id}")" class="collapse" aria-labelledby="@($"heading{item.Id}")" data-parent="#accordionItems">
                             <div class="card-body">
-                                @foreach (var fieldValue in item.FieldValues)
+
+                                <div class="mb-3">
+                                    @foreach (var fieldValue in item.FieldValues)
+                                    {
+                                        if (fieldValue.Field.Type.Name == "Check box")
+                                        {
+                                            <div class="card-text m-1">@fieldValue.Field.Name: @(fieldValue.Value == "checked" ? "yes" : "no")</div>
+                                        }
+                                        else if (fieldValue.Field.Type.Name == "Markdown")
+                                        {
+                                            <div class="m-1">
+                                                <div class="card-text">@fieldValue.Field.Name</div>
+                                                <div class="js-markdown-element js-markdown-element-border">@fieldValue.Value</div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="card-text m-1">@fieldValue.Field.Name: @(string.IsNullOrEmpty(fieldValue.Value) ? "-" : fieldValue.Value)</div>
+                                        }
+                                    }
+                                </div>
+                                @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
                                 {
-                                    if (fieldValue.Field.Type.Name == "Check box")
-                                    {
-                                        <p class="card-text">@fieldValue.Field.Name: @(fieldValue.Value == "checked" ? "yes" : "no")</p>
-                                    }
-                                    else if (fieldValue.Field.Type.Name == "Markdown")
-                                    {
-                                        <p class="card-text ml-2 mb-0">@fieldValue.Field.Name</p>
-                                        <div class="js-markdown-element js-markdown-element-border">@fieldValue.Value</div>
-                                    }
-                                    else
-                                    {
-                                        <p class="card-text">@fieldValue.Field.Name: @(string.IsNullOrEmpty(fieldValue.Value) ? "-" : fieldValue.Value)</p>
-                                    }
+                                    <button class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#@($"modal{item.Id}")">@Localizer["Remove"]</button>
+                                    <div class="modal fade" id="@($"modal{item.Id}")" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">@Localizer["Remove"]...</h5>
+                                                    <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">@Localizer["RemoveItem", item.Name, Model.Collection.Name]</div>
+                                                <div class="modal-footer">
+                                                    <a type="button" class="btn btn-danger" asp-controller="Item" asp-action="Remove"
+                                                        asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Remove"]</a>
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-outline-secondary btn-sm">@Localizer["Edit"]</a>
                                 }
-                                <a class="btn btn-outline-danger btn-sm mr-1">@Localizer["Remove"]</a>
-                                <a class="btn btn-outline-secondary btn-sm">@Localizer["Edit"]</a>
                             </div>
                         </div>
                     </div>

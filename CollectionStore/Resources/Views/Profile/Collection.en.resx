@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="Collection" xml:space="preserve">
     <value>Collection "{0}"</value>
   </data>
@@ -127,9 +130,12 @@
     <value>Edit</value>
   </data>
   <data name="ItemsOfCollection" xml:space="preserve">
-    <value>Items of collection</value>
+    <value>Collection items</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
+  </data>
+  <data name="RemoveItem" xml:space="preserve">
+    <value>Remove item "{0}" from collection "{1}"?</value>
   </data>
 </root>

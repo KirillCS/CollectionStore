@@ -68,6 +68,18 @@ namespace CollectionStore.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Remove(int itemId, string returnUrl = null)
+        {
+            returnUrl ??= "~/";
+            var item = await context.Items.SingleOrDefaultAsync(i => i.Id == itemId);
+            if(item != null)
+            {
+                await RemoveItem(item);
+            }
+            return Redirect(returnUrl);
+        }
+
         private Collection GetCollection(int id) => context.Collections
                 .Where(c => c.Id == id)
                 .Include(c => c.Fields)
@@ -106,6 +118,12 @@ namespace CollectionStore.Controllers
                 });
             }
             return fieldValues;
+        }
+        private async Task RemoveItem(Item item)
+        {
+            context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.ItemId == item.Id));
+            context.Items.Remove(item);
+            await context.SaveChangesAsync();
         }
     }
 }
