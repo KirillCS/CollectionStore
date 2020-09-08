@@ -29,16 +29,47 @@
             </div>
         }
         <div class="col-md-7">
-            <div class="card bg-light shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Items of collection</h5>
-                    <hr />
-                    @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
-                    {
-                        <a onclick="history.go(-1)" class="btn btn-outline-primary btn-block" asp-controller="Item" asp-action="Add"
-                           asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">Add</a>
-                    }
-                </div>
+            <h5>Items of collection</h5>
+            <hr />
+            @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
+            {
+                <a class="btn btn-outline-primary btn-block mb-3" asp-controller="Item" asp-action="Add"
+                    asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">Add</a>
+            }
+            <div class="accordion" id="accordionItems">
+                @foreach (var item in Model.Collection.Items)
+                {
+                    <div class="card bg-light">
+                        <div id="@($"heading{item.Id}")" class="card-header">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left" type="button" data-toggle="collapse"
+                                        data-target="#@($"collapse{item.Id}")" aria-expanded="false" aria-controls="@($"collapse{item.Id}")">@item.Name</button>
+                            </h2>
+                        </div>
+                        <div id="@($"collapse{item.Id}")" class="collapse" aria-labelledby="@($"heading{item.Id}")" data-parent="#accordionItems">
+                            <div class="card-body">
+                                @foreach (var fieldValue in item.FieldValues)
+                                {
+                                    if (fieldValue.Field.Type.Name == "Check box")
+                                    {
+                                        <p class="card-text">@fieldValue.Field.Name: @(fieldValue.Value == "checked" ? "yes" : "no")</p>
+                                    }
+                                    else if (fieldValue.Field.Type.Name == "Markdown")
+                                    {
+                                        <p class="card-text ml-2 mb-0">@fieldValue.Field.Name</p>
+                                        <div class="js-markdown-element js-markdown-element-border">@fieldValue.Value</div>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">@fieldValue.Field.Name: @(string.IsNullOrEmpty(fieldValue.Value) ? "-" : fieldValue.Value)</p>
+                                    }
+                                }
+                                <a class="btn btn-outline-danger btn-sm">Remove</a>
+                                <a class="btn btn-outline-primary btn-sm">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>

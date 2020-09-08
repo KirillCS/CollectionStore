@@ -50,7 +50,15 @@ namespace CollectionStore.Controllers
         public IActionResult Collection(int? collectionId = null)
         {
             collectionId ??= -1;
-            var collection = context.Collections.Where(c => c.Id == collectionId.Value).Include(c => c.Theme).Include(c => c.User).SingleOrDefault(c => c.Id == collectionId.Value);
+            var collection = context.Collections
+                .Where(c => c.Id == collectionId.Value)
+                .Include(c => c.Items)
+                .ThenInclude(i => i.FieldValues)
+                .ThenInclude(fv => fv.Field)
+                .ThenInclude(fv => fv.Type)
+                .Include(c => c.Theme)
+                .Include(c => c.User)
+                .SingleOrDefault(c => c.Id == collectionId.Value);
             if(collection == null)
             {
                 return View("Error", new ErrorViewModel
