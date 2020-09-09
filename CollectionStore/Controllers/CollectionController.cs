@@ -9,6 +9,7 @@ using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace CollectionStore.Controllers
 {
@@ -16,13 +17,14 @@ namespace CollectionStore.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly ApplicationDbContext context;
-        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IStringLocalizer<CollectionController> localizer;
 
-        public CollectionController(UserManager<User> userManager, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public CollectionController(UserManager<User> userManager, 
+            ApplicationDbContext context, IStringLocalizer<CollectionController> localizer)
         {
             this.userManager = userManager;
             this.context = context;
-            this.webHostEnvironment = webHostEnvironment;
+            this.localizer = localizer;
         }
 
         [HttpGet]
@@ -34,8 +36,8 @@ namespace CollectionStore.Controllers
             {
                 return View("Error", new ErrorViewModel
                 {
-                    ErrorTitle = "User isn't found",
-                    ErrorMessage = "User isn't found"
+                    ErrorTitle = localizer["UserNotFoundTitle"],
+                    ErrorMessage = localizer["UserNotFoundMessage"]
                 });
             }
             return View(new AddingCollectionViewModel

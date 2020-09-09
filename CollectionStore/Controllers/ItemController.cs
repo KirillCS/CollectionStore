@@ -7,16 +7,19 @@ using CollectionStore.Models;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace CollectionStore.Controllers
 {
     public class ItemController : Controller
     {
         private readonly ApplicationDbContext context;
+        private readonly IStringLocalizer<ItemController> localizer;
 
-        public ItemController(ApplicationDbContext context)
+        public ItemController(ApplicationDbContext context, IStringLocalizer<ItemController> localizer)
         {
             this.context = context;
+            this.localizer = localizer;
         }
 
         [HttpGet]
@@ -28,8 +31,8 @@ namespace CollectionStore.Controllers
             {
                 return View("Error", new ErrorViewModel
                 {
-                    ErrorTitle = "Collection isn't found!",
-                    ErrorMessage = "Collection is not found!"
+                    ErrorTitle = localizer["CollectionNotFoundTitle"],
+                    ErrorMessage = localizer["CollectionNotFoundMessage"]
                 });
             }
             return View("AddEdit", new AddingEditingItemViewModel
@@ -47,16 +50,18 @@ namespace CollectionStore.Controllers
             {
                 return View("Error", new ErrorViewModel
                 {
-                    ErrorTitle = "Collection isn't found!",
-                    ErrorMessage = "Collection is not found!"
+                    ErrorTitle = localizer["CollectionNotFoundTitle"],
+                    ErrorMessage = localizer["CollectionNotFoundMessage"]
                 });
             }
             if(!ValidateFields(model))
             {
                 return View("Error", new ErrorViewModel
                 {
-                    ErrorTitle = "Something went wrong :(",
-                    ErrorMessage = "Someone remove one or more fields."
+                    ErrorTitle = localizer["ValidationErrorMessage"],
+                    ErrorMessage = localizer["ValidationErrorTitle", model.Collection.Name],
+                    ButtonLabel = localizer["ToCollectionPage"],
+                    Url = model.ReturnUrl
                 });
             }
             if (ModelState.IsValid)
@@ -94,8 +99,10 @@ namespace CollectionStore.Controllers
             {
                 return View("Error", new ErrorViewModel
                 {
-                    ErrorTitle = "Item isn't found",
-                    ErrorMessage = "Item is not found"
+                    ErrorTitle = localizer["ItemNotFoundTitle"],
+                    ErrorMessage = localizer["ItemNotFoundMessage"],
+                    ButtonLabel = localizer["ToCollectionPage"],
+                    Url = returnUrl
                 });
             }
 
@@ -118,8 +125,8 @@ namespace CollectionStore.Controllers
             {
                 return View("Error", new ErrorViewModel
                 {
-                    ErrorTitle = "Collection isn't found!",
-                    ErrorMessage = "Collection is not found!"
+                    ErrorTitle = localizer["CollectionNotFoundTitle"],
+                    ErrorMessage = localizer["CollectionNotFoundMessage"]
                 });
             }
             var item = context.Items.Where(i => i.Id == model.ItemId).Include(i => i.FieldValues).SingleOrDefault(i => i.Id == model.ItemId);
@@ -127,16 +134,20 @@ namespace CollectionStore.Controllers
             {
                 return View("Error", new ErrorViewModel
                 {
-                    ErrorTitle = "Item isn't found!",
-                    ErrorMessage = "Item is not found!"
+                    ErrorTitle = localizer["ItemNotFoundTitle"],
+                    ErrorMessage = localizer["ItemNotFoundMessage"],
+                    ButtonLabel = localizer["ToCollectionPage"],
+                    Url = model.ReturnUrl
                 });
             }
             if (!ValidateFields(model))
             {
                 return View("Error", new ErrorViewModel
                 {
-                    ErrorTitle = "Something went wrong :(",
-                    ErrorMessage = "Someone remove one or more fields."
+                    ErrorTitle = localizer["ValidationErrorMessage"],
+                    ErrorMessage = localizer["ValidationErrorTitle", model.Collection.Name],
+                    ButtonLabel = localizer["ToCollectionPage"],
+                    Url = model.ReturnUrl
                 });
             }
             if (ModelState.IsValid)

@@ -117,16 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultMessage" xml:space="preserve">
-    <value>Если у вас возникли проблемы при выполнении какой-либо операции, вы можете написать об этом на почту по адресу &lt;strong&gt;{0}&lt;/strong&gt;.</value>
+  <data name="CollectionNotFoundMessage" xml:space="preserve">
+    <value>Владелец или администратор удалил коллекцию или что-то пошло не так.</value>
   </data>
-  <data name="DefaultTitle" xml:space="preserve">
-    <value>Что-то пошло не так... :(</value>
+  <data name="CollectionNotFoundTitle" xml:space="preserve">
+    <value>Коллекция не найдена</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Ошибка</value>
+  <data name="ItemNotFoundMessage" xml:space="preserve">
+    <value>Владелец или администратор удалил элемент из коллекции или что-то пошло не так.</value>
   </data>
-  <data name="ToHome" xml:space="preserve">
-    <value>На главную</value>
+  <data name="ItemNotFoundTitle" xml:space="preserve">
+    <value>Элемент не найден</value>
+  </data>
+  <data name="ToCollectionPage" xml:space="preserve">
+    <value>На страницу коллекции</value>
+  </data>
+  <data name="ValidationErrorMessage" xml:space="preserve">
+    <value>Владелец или администратор изменил структуру полей коллекции "{0}" или что-то пошло не так.</value>
+  </data>
+  <data name="ValidationErrorTitle" xml:space="preserve">
+    <value>Ошибка валидации полей</value>
   </data>
 </root>

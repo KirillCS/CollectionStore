@@ -117,16 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultMessage" xml:space="preserve">
-    <value>Если у вас возникли проблемы при выполнении какой-либо операции, вы можете написать об этом на почту по адресу &lt;strong&gt;{0}&lt;/strong&gt;.</value>
+  <data name="CollectionNotFoundMessage" xml:space="preserve">
+    <value>Owner or administrator deleted this collection or something went wrong.</value>
   </data>
-  <data name="DefaultTitle" xml:space="preserve">
-    <value>Что-то пошло не так... :(</value>
+  <data name="CollectionNotFoundTitle" xml:space="preserve">
+    <value>Collection isn't found</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Ошибка</value>
+  <data name="ItemNotFoundMessage" xml:space="preserve">
+    <value>Owner or administrator removed this item from collection or something went wrong.</value>
   </data>
-  <data name="ToHome" xml:space="preserve">
-    <value>На главную</value>
+  <data name="ItemNotFoundTitle" xml:space="preserve">
+    <value>Item isn't found</value>
+  </data>
+  <data name="ToCollectionPage" xml:space="preserve">
+    <value>To collection page</value>
+  </data>
+  <data name="ValidationErrorMessage" xml:space="preserve">
+    <value>Owner or administrator change the structure of fields of the collection "{0}" or something went wrong.</value>
+  </data>
+  <data name="ValidationErrorTitle" xml:space="preserve">
+    <value>Field validation error</value>
   </data>
 </root>

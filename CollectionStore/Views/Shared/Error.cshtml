@@ -3,24 +3,38 @@
 @{
     ViewData["Title"] = Localizer["Error"];
 }
+@{ 
+    if (string.IsNullOrEmpty(Model.Url))
+    {
+        Model.Url = "/Home/Index";
+        Model.ButtonLabel = Localizer["ToHome"].Value;
+    }
+}
+
 <div class="container">
-    <div class="alert alert-danger" role="alert">
-        @if (string.IsNullOrEmpty(Model.ErrorTitle))
-        {
-            <h4 class="alert-heading">@Localizer["DefaultTitle"]</h4>
-        }
-        else
-        {
-            <h4 class="alert-heading">@Model.ErrorTitle</h4>
-        }
-        <hr />
-        @if(string.IsNullOrEmpty(Model.ErrorMessage))
-        {
-            <p>@Localizer["DefaultMessage", "someaddress@problem.com"]</p>
-        }
-        else
-        {
-            <p>@Model.ErrorMessage</p>
-        }
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-9">
+            <div class="alert alert-info" role="alert">
+                @if (string.IsNullOrEmpty(Model.ErrorTitle))
+                {
+                    <h4 class="alert-heading">@Localizer["DefaultTitle"]</h4>
+                }
+                else
+                {
+                    <h4 class="alert-heading">@Model.ErrorTitle</h4>
+                }
+                <hr />
+                @if (string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <p>@Localizer["DefaultMessage", "someaddress@problem.com"]</p>
+                }
+                else
+                {
+                    <p>@Model.ErrorMessage</p>
+                }
+            </div>
+            
+            <a class="btn btn-primary btn-block mt-2" href="@Model.Url">@Model.ButtonLabel</a>
+        </div>
     </div>
 </div>
