@@ -120,8 +120,14 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="DeleteCollection" xml:space="preserve">
+    <value>Delete collection "{0}" with all items?</value>
   </data>
   <data name="MyCollections" xml:space="preserve">
     <value>My collections</value>

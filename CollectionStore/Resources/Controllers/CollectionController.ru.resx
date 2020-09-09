@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CollectionNotFoundButtonLabel" xml:space="preserve">
+    <value>На страницу пользователя</value>
+  </data>
+  <data name="CollectionNotFoundMessage" xml:space="preserve">
+    <value>Коллекция уже удалена владельцем или администратором. Или что-то пошло не так.</value>
+  </data>
+  <data name="CollectionNotFoundTitle" xml:space="preserve">
+    <value>Коллекция не найдена</value>
+  </data>
   <data name="UserNotFoundMessage" xml:space="preserve">
     <value>Пользователь был удален администратором или просто что-то пошло не так.</value>
   </data>

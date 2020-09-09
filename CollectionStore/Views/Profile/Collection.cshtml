@@ -8,31 +8,50 @@
     <h4 class="mt-2 mx-2 text-wrap">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</h4>
     <hr class="mb-4 mt-2" />
     <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card bg-light shadow-sm mb-3">
-                    @if (!string.IsNullOrEmpty(Model.Collection.ImagePath))
-                    {
-                        <img class="bd-placeholder-img card-img-top" src="@Model.Collection.ImagePath" focusable="false" role="img">
-                    }
-                    <div class="card-body">
-                        <h5 class="card-title">@Model.Collection.Name (@Model.Collection.Theme.Name)</h5>
-                        @if (!string.IsNullOrEmpty(Model.Collection.Description))
-                        {
-                            <hr />
-                            <div class="js-markdown-element">@Model.Collection.Description</div>
-                        }
-                        @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
-                        {
-                            <a class="btn btn-outline-secondary btn-block">@Localizer["Edit"]</a>
-                        }
+        <div class="col-lg-8">
+            <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#modalCollection">@Localizer["Remove"]</button>
+            <div class="modal fade" id="modalCollection" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">@Localizer["Remove"]...</h5>
+                            <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">@Localizer["RemoveCollection", Model.Collection.Name]</div>
+                        <div class="modal-footer">
+                            <a type="button" class="btn btn-danger" asp-controller="Collection" asp-action="Remove"
+                               asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["Remove"]</a>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="card bg-light shadow-sm mb-3">
+                @if (!string.IsNullOrEmpty(Model.Collection.ImagePath))
+                {
+                    <img class="bd-placeholder-img card-img-top" src="@Model.Collection.ImagePath" focusable="false" role="img">
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Collection.Name (@Model.Collection.Theme.Name)</h5>
+                    @if (!string.IsNullOrEmpty(Model.Collection.Description))
+                    {
+                        <hr />
+                        <div class="js-markdown-element">@Model.Collection.Description</div>
+                    }
+                    @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
+                    {
+                        <a class="btn btn-outline-secondary btn-block">@Localizer["Edit"]</a>
+                    }
+                </div>
+            </div>
             <h5>@Localizer["ItemsOfCollection"]</h5>
             <hr />
             @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
             {
                 <a class="btn btn-outline-primary btn-block mb-3" asp-controller="Item" asp-action="Add"
-                    asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Add"]</a>
+                   asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Add"]</a>
             }
             <div class="accordion" id="accordionItems">
                 @foreach (var item in Model.Collection.Items)
@@ -41,7 +60,9 @@
                         <div id="@($"heading{item.Id}")" class="card-header">
                             <h2 class="mb-0">
                                 <button class="btn btn-block text-left" type="button" data-toggle="collapse"
-                                        data-target="#@($"collapse{item.Id}")" aria-expanded="false" aria-controls="@($"collapse{item.Id}")">@item.Name</button>
+                                        data-target="#@($"collapse{item.Id}")" aria-expanded="false" aria-controls="@($"collapse{item.Id}")">
+                                    @item.Name
+                                </button>
                             </h2>
                         </div>
                         <div id="@($"collapse{item.Id}")" class="collapse" aria-labelledby="@($"heading{item.Id}")" data-parent="#accordionItems">
@@ -82,7 +103,7 @@
                                                 <div class="modal-body">@Localizer["RemoveItem", item.Name, Model.Collection.Name]</div>
                                                 <div class="modal-footer">
                                                     <a type="button" class="btn btn-danger" asp-controller="Item" asp-action="Remove"
-                                                        asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Remove"]</a>
+                                                       asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Remove"]</a>
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Cancel"]</button>
                                                 </div>
                                             </div>

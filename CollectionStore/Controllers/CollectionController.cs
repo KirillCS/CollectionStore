@@ -48,7 +48,6 @@ namespace CollectionStore.Controllers
                 ReturnUrl = returnUrl
             });
         }
-
         [HttpPost]
         public IActionResult Add(AddingCollectionViewModel model)
         {
@@ -72,6 +71,25 @@ namespace CollectionStore.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Remove(int collectionId, string returnUrl = null)
+        {
+            returnUrl ??= "~/";
+            var collection = context.Collections.SingleOrDefault(c => c.Id == collectionId);
+            if(collection == null)
+            {
+                return View("Error", new ErrorViewModel 
+                { 
+                    ErrorTitle = localizer["CollectionNotFoundTitle"],
+                    ErrorMessage = localizer["CollectionNotFoundMessage"],
+                    ButtonLabel = localizer["CollectionNotFoundButtonLabel"],
+                    Url = returnUrl
+                });
+            }
+            await RemoveCollection(collection);
+            return Redirect(returnUrl);
+        }
+
         private List<Field> GetFields(AddingCollectionViewModel model)
         {
             var fields = new List<Field>();
@@ -87,6 +105,25 @@ namespace CollectionStore.Controllers
                 }
             }
             return fields;
+        }
+        private async Task RemoveCollection(Collection collection)
+        {
+            RemoveItems(collection);
+            RemoveFields(collection);
+            context.Collections.Remove(collection);
+            await context.SaveChangesAsync();
+        }
+        private void RemoveItems(Collection collection)
+        {
+            foreach (var item in collection.Items)
+            {
+                context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.ItemId == item.Id));
+            }
+            context.Items.RemoveRange(context.Items.Where(i => i.CollectionId == collection.Id));
+        }
+        private void RemoveFields(Collection collection)
+        {
+            context.Fields.RemoveRange(context.Fields.Where(f => f.CollectionId == collection.Id));
         }
     }
 }

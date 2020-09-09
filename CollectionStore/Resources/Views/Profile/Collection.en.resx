@@ -138,6 +138,9 @@
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
   </data>
+  <data name="RemoveCollection" xml:space="preserve">
+    <value>Remove collection "{0}" with all items?</value>
+  </data>
   <data name="RemoveItem" xml:space="preserve">
     <value>Remove item "{0}" from collection "{1}"?</value>
   </data>

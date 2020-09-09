@@ -9,5 +9,7 @@ namespace CollectionStore.ViewModels
     public class CollectionViewModel
     {
         public Collection Collection { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }

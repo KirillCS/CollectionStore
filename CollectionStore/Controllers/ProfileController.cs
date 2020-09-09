@@ -47,8 +47,9 @@ namespace CollectionStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Collection(int? collectionId = null)
+        public IActionResult Collection(int? collectionId = null, string returnUrl = null)
         {
+            returnUrl ??= "~/";
             collectionId ??= -1;
             var collection = context.Collections
                 .Where(c => c.Id == collectionId.Value)
@@ -69,7 +70,8 @@ namespace CollectionStore.Controllers
             }
             return View(new CollectionViewModel
             {
-                Collection = collection
+                Collection = collection,
+                ReturnUrl = returnUrl
             });
         }
     }
