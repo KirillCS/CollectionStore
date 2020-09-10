@@ -31,7 +31,7 @@ namespace CollectionStore.Controllers
                            .Include(i => i.FieldValues)
                            .ThenInclude(fv => fv.Field)
                            .ThenInclude(f => f.Type)
-                           .Distinct()
+                           .OrderByDescending(i => i.Id)
                            .ToList()
         });
     }

@@ -120,23 +120,14 @@
   <data name="Collection" xml:space="preserve">
     <value>Collection</value>
   </data>
-  <data name="Collections" xml:space="preserve">
-    <value>Collections</value>
+  <data name="Description" xml:space="preserve">
+    <value>Item description</value>
   </data>
-  <data name="HomePage" xml:space="preserve">
-    <value>Home page</value>
-  </data>
-  <data name="Items" xml:space="preserve">
-    <value>Items</value>
+  <data name="Item" xml:space="preserve">
+    <value>Item "{0}"</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
-  </data>
-  <data name="NoCollectionMessage" xml:space="preserve">
-    <value>Collection list is empty. Create personal collection first!</value>
-  </data>
-  <data name="NoItemMessage" xml:space="preserve">
-    <value>Item list is empty. Add an item to personal collection first!</value>
   </data>
   <data name="Owner" xml:space="preserve">
     <value>Owner</value>

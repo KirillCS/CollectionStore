@@ -22,6 +22,29 @@ namespace CollectionStore.Controllers
             this.localizer = localizer;
         }
 
+        [HttpGet] 
+        public IActionResult Index(int itemId, string returnUrl = null)
+        {
+            var item = context.Items.Where(i => i.Id == itemId)
+                .Include(i => i.Collection)
+                .ThenInclude(c => c.User)
+                .Include(i => i.FieldValues)
+                .ThenInclude(fv => fv.Field)
+                .ThenInclude(f => f.Type)
+                .SingleOrDefault(i => i.Id == itemId);
+            if(item == null)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorTitle = localizer["ItemNotFoundTitle"],
+                    ErrorMessage = localizer["ItemNotFoundMessage"],
+                    ButtonLabel = localizer["Back"],
+                    Url = returnUrl
+                });
+            }
+            return View(new ItemViewModel { Item = item });
+        }
+
         [HttpGet]
         public IActionResult Add(int collectionId, string returnUrl = null)
         {

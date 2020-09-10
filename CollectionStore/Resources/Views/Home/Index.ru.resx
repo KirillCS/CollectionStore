@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Collection" xml:space="preserve">
+    <value>Коллекция</value>
+  </data>
   <data name="Collections" xml:space="preserve">
     <value>Коллекции</value>
   </data>
@@ -126,10 +129,19 @@
   <data name="Items" xml:space="preserve">
     <value>Элементы</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
   <data name="NoCollectionMessage" xml:space="preserve">
     <value>Список коллекций пуст. Создайте личную коллекцию первым!</value>
   </data>
   <data name="NoItemMessage" xml:space="preserve">
     <value>Список элементов пуст. Добавьте элемент в личную коллекцию первым!</value>
+  </data>
+  <data name="Owner" xml:space="preserve">
+    <value>Владелец</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
   </data>
 </root>

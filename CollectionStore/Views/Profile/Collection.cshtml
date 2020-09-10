@@ -4,8 +4,6 @@
     ViewData["Title"] = Localizer["Collection", Model.Collection.Name];
 }
 
-
-<link rel="stylesheet" href="~/css/card-columns.css" />
 <div class="container">
     <h4 class="mt-2 mx-2 text-wrap"><a class="text-dark card-link" asp-controller="Profile" asp-action="Index" asp-route-userName="@Model.Collection.User.UserName">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</a></h4>
     <hr class="mb-4 mt-2" />

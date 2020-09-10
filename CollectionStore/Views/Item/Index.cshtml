@@ -1,0 +1,44 @@
+﻿@model ItemViewModel
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Item", Model.Item.Name];
+}
+
+<div class="container">
+    <h4 class="mt-2 mx-2 text-wrap">@Localizer["Item", Model.Item.Name]</h4>
+    <hr class="mb-4 mt-2" />
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card bg-light shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">@Localizer["Description"]</h5>
+                    <hr />
+                    <div class="card-text m-1">@Localizer["Owner"]: <a href="#" class="card-link text-dark">@Model.Item.Collection.User.UserName</a></div>
+                    <div class="card-text m-1">@Localizer["Collection"]: <a href="#" class="card-link text-dark">@Model.Item.Collection.Name</a></div>
+                    <hr />
+                    @foreach (var fieldValue in Model.Item.FieldValues)
+                    {
+                        if (fieldValue.Field.Type.Name == "Check box")
+                        {
+                            <div class="card-text m-1">@fieldValue.Field.Name: @(fieldValue.Value == "checked" ? Localizer["Yes"] : Localizer["No"])</div>
+                        }
+                        else if (fieldValue.Field.Type.Name == "Markdown")
+                        {
+                            <div class="m-1">
+                                <div class="card-text">@fieldValue.Field.Name</div>
+                                <div class="js-markdown-element js-markdown-element-border">@fieldValue.Value</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="card-text m-1">@fieldValue.Field.Name: @(string.IsNullOrEmpty(fieldValue.Value) ? "-" : fieldValue.Value)</div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="~/js/markdown.js"></script>

@@ -68,6 +68,7 @@ namespace CollectionStore.Controllers
                     ErrorMessage = localizer["CollectionNotFountMessage", "someaddress@problem.com"]
                 });
             }
+            collection.Items = collection.Items.OrderByDescending(i => i.Id).ToList();
             return View(new CollectionViewModel
             {
                 Collection = collection,

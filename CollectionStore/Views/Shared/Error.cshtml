@@ -3,12 +3,10 @@
 @{
     ViewData["Title"] = Localizer["Error"];
 }
-@{ 
-    if (string.IsNullOrEmpty(Model.Url))
-    {
-        Model.Url = "/Home/Index";
-        Model.ButtonLabel = Localizer["ToHome"].Value;
-    }
+@if (string.IsNullOrEmpty(Model.Url))
+{
+    Model.Url = "/Home/Index";
+    Model.ButtonLabel = Localizer["ToHome"].Value;
 }
 
 <div class="container">

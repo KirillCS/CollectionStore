@@ -70,8 +70,8 @@
                                 <div class="card-body">
 
                                     <div>
-                                        <div class="card-text m-1">Owner: <a class="card-link text-dark" asp-controller="Profile" asp-action="Index" asp-route-userName="@item.Collection.User.UserName">@item.Collection.User.UserName</a></div>
-                                        <div class="card-text m-1">Collection: <a class="card-link text-dark" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@item.CollectionId" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@item.Collection.Name</a></div>
+                                        <div class="card-text m-1">@Localizer["Owner"]: <a class="card-link text-dark" asp-controller="Profile" asp-action="Index" asp-route-userName="@item.Collection.User.UserName">@item.Collection.User.UserName</a></div>
+                                        <div class="card-text m-1">@Localizer["Collection"]: <a class="card-link text-dark" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@item.CollectionId" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@item.Collection.Name</a></div>
                                         @if (item.FieldValues.Count != 0)
                                         {
                                             <hr />
