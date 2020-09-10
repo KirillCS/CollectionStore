@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CollectionStore</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/dark-mode.css">
     <link rel="stylesheet" href="~/css/drag-n-drop.css">
@@ -55,16 +55,16 @@
                                 <a class="nav-link m-1" asp-controller="Profile" asp-action="Index" asp-route-userName="@User.Identity.Name">@User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-outline-secondary m-1" asp-controller="Account" asp-action="LogOut">@Localizer["LogOut"]</a>
+                                <a class="btn btn-outline-secondary m-1" asp-controller="Account" asp-action="LogOut" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["LogOut"]</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="btn btn-outline-primary m-1" asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
+                                <a class="btn btn-outline-primary m-1" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Login"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-outline-secondary m-1" asp-controller="Account" asp-action="SignUp">@Localizer["SignUp"]</a>
+                                <a class="btn btn-outline-secondary m-1" asp-controller="Account" asp-action="SignUp" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["SignUp"]</a>
                             </li>
                         }
                     </ul>

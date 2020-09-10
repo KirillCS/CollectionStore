@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollectionStore.Controllers
 {
+    [Authorize(Roles = Role.Admin)]
     public class AdminController : Controller
     {
         private readonly UserManager<User> userManager;

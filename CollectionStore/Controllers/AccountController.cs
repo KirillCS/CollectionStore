@@ -28,7 +28,6 @@ namespace CollectionStore.Controllers
 
         [HttpGet]
         public IActionResult SignUp() => View();
-
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpViewModel model)
         {
@@ -56,40 +55,29 @@ namespace CollectionStore.Controllers
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            var model = new LoginViewModel
+            return View(new LoginViewModel
             {
-                ReturnUrl = returnUrl,
-                ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
-            };
-            return View(model);
+                ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
+                ReturnUrl = returnUrl
+            });
         }
-
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            model.ReturnUrl ??= "~/";
             if(ModelState.IsValid)
             {
                 var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    if(!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
-                    {
-                        return Redirect(model.ReturnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return Redirect(model.ReturnUrl);
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, localizer["LoginError"]);
                 }
             }
-            if(model.ExternalLogins == null)
-            {
-                model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            }
+            model.ExternalLogins ??= (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             return View(model);
         }
 
@@ -100,7 +88,6 @@ namespace CollectionStore.Controllers
             var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }
-
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -123,7 +110,7 @@ namespace CollectionStore.Controllers
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
             if(result.Succeeded)
             {
-                return LocalRedirect(returnUrl);
+                return Redirect(returnUrl);
             }
             else
             {
@@ -143,7 +130,7 @@ namespace CollectionStore.Controllers
                     }
                     await userManager.AddLoginAsync(user, info);
                     await signInManager.SignInAsync(user, false);
-                    return LocalRedirect(returnUrl);
+                    return Redirect(returnUrl);
                 }
             }
             ModelState.AddModelError(string.Empty, localizer["ExternalLoginError"]);
@@ -151,10 +138,11 @@ namespace CollectionStore.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LogOut()
+        public async Task<IActionResult> LogOut(string returnUrl = null)
         {
+            returnUrl ??= "~/";
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return Redirect(returnUrl);
         }
     }
 }

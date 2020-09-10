@@ -4,12 +4,17 @@
     ViewData["Title"] = Localizer["Collection", Model.Collection.Name];
 }
 
+
+<link rel="stylesheet" href="~/css/card-columns.css" />
 <div class="container">
-    <h4 class="mt-2 mx-2 text-wrap">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</h4>
+    <h4 class="mt-2 mx-2 text-wrap"><a class="text-dark card-link" asp-controller="Profile" asp-action="Index" asp-route-userName="@Model.Collection.User.UserName">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</a></h4>
     <hr class="mb-4 mt-2" />
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#modalCollection">@Localizer["Remove"]</button>
+            @if (Model.Collection.User.UserName == User.Identity.Name || User.IsInRole(Role.Admin))
+            {
+                <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#modalCollection">@Localizer["Remove"]</button>
+            }
             <div class="modal fade" id="modalCollection" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">

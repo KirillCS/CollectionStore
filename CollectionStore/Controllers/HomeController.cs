@@ -3,21 +3,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CollectionStore.Models;
 using Microsoft.AspNetCore.Http;
+using CollectionStore.ViewModels;
+using CollectionStore.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CollectionStore.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context)
         {
-            _logger = logger;
+            this.context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index() => View(new HomeViewModel
         {
-            return View();
-        }
+            Collections = context.Collections
+                                 .Include(c => c.Theme)
+                                 .Include(c => c.User)
+                                 .ToList(),
+            Items = context.Items
+                           .Include(i => i.Collection)
+                           .ThenInclude(c => c.User)
+                           .Include(i => i.FieldValues)
+                           .ThenInclude(fv => fv.Field)
+                           .ThenInclude(f => f.Type)
+                           .Distinct()
+                           .ToList()
+        });
     }
 }
