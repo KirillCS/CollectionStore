@@ -40,7 +40,7 @@
                         <hr />
                         <div class="js-markdown-element">@Model.Collection.Description</div>
                     }
-                    @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
+                    @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole(Role.Admin))
                     {
                         <a class="btn btn-outline-secondary btn-block">@Localizer["Edit"]</a>
                     }
@@ -48,7 +48,7 @@
             </div>
             <h5>@Localizer["ItemsOfCollection"]</h5>
             <hr />
-            @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
+            @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole(Role.Admin))
             {
                 <a class="btn btn-outline-primary btn-block mb-3" asp-controller="Item" asp-action="Add"
                    asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Add"]</a>
@@ -88,7 +88,7 @@
                                         }
                                     }
                                 </div>
-                                @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole("admin"))
+                                @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole(Role.Admin))
                                 {
                                     <button class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#@($"modal{item.Id}")">@Localizer["Remove"]</button>
                                     <div class="modal fade" id="@($"modal{item.Id}")" tabindex="-1" role="dialog" aria-hidden="true">

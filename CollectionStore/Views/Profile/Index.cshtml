@@ -9,14 +9,14 @@
         @(User.Identity.Name == Model.UserName ? Localizer["MyCollections"] : Localizer["UserCollections", Model.UserName])
     </h4>
     <hr class="mb-4 mt-2" />
-    @if (User.Identity.Name == Model.UserName || User.IsInRole("admin"))
+    @if (User.Identity.Name == Model.UserName || User.IsInRole(Role.Admin))
     {
         <a class="btn btn-primary btn-block" asp-controller="Collection" asp-action="Add"
            asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)" asp-route-userName="@Model.UserName">@Localizer["Add"]</a>
     }
     @if (Model.Collections.Count == 0)
     {
-        <div class="alert alert-info text-center my-3">@(User.Identity.Name == Model.UserName ? Localizer["NoCollectionsOwner"] : Localizer["NoCollectionsUsers"]) @(User.Identity.Name == Model.UserName || User.IsInRole("admin") ? Localizer["YouCanAdd"].Value : string.Empty)</div>
+        <div class="alert alert-info text-center my-3">@(User.Identity.Name == Model.UserName ? Localizer["NoCollectionsOwner"] : Localizer["NoCollectionsUsers"]) @(User.Identity.Name == Model.UserName || User.IsInRole(Role.Admin) ? Localizer["YouCanAdd"].Value : string.Empty)</div>
     }
     else
     {
@@ -35,7 +35,7 @@
                                               asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@collection.Name (@collection.Theme.Name)</a></h5>
                     <hr />
                     <div class="js-markdown-element">@collection.Description</div>
-                    @if (User.Identity.Name == Model.UserName || User.IsInRole("admin"))
+                    @if (User.Identity.Name == Model.UserName || User.IsInRole(Role.Admin))
                     {
                         <button class="btn btn-outline-danger btn-block btn-sm" data-toggle="modal" data-target="@($"#modal{collection.Id}")">@Localizer["Delete"]</button>
                         <div class="modal fade" id="@($"modal{collection.Id}")" tabindex="-1" role="dialog" aria-hidden="true">

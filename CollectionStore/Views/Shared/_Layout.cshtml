@@ -24,7 +24,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarMenu">
                     <ul class="navbar-nav">
-                        @if (User.IsInRole("admin"))
+                        @if (User.IsInRole(Role.Admin))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Admin" asp-action="AdminPanel">@Localizer["AdminPanel"]</a>

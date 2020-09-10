@@ -12,8 +12,6 @@ namespace CollectionStore.Data
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration configuration;
         private readonly ApplicationDbContext context;
-        private const string AdminRoleName = "admin";
-        private const string UserRoleName = "user";
         private readonly string[] CollectionThemes =
         {
             "Others",
@@ -47,17 +45,17 @@ namespace CollectionStore.Data
 
         public async Task InitializeRoleAsync()
         {
-            await AddRoleIfNull(AdminRoleName, UserRoleName);
+            await AddRoleIfNull(Role.Admin, Role.User);
         }
         public async Task InitializeAdminAsync()
         {
-            if((await userManager.FindByNameAsync(AdminRoleName)) == null)
+            if((await userManager.FindByNameAsync(Role.Admin)) == null)
             {
                 var admin = new User { UserName = adminName };
                 var result = await userManager.CreateAsync(admin, adminPassword);
                 if(result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(admin, AdminRoleName);
+                    await userManager.AddToRoleAsync(admin, Role.Admin);
                 }
             }
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CollectionStore.Data;
 using CollectionStore.Models;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -44,7 +45,7 @@ namespace CollectionStore.Controllers
                         Id = users[i].Id,
                         UserName = users[i].UserName,
                         IsBlocked = users[i].IsBlocked,
-                        IsAdmin = await userManager.IsInRoleAsync(users[i], "admin")
+                        IsAdmin = await userManager.IsInRoleAsync(users[i], Role.Admin)
                     });
                 }
             }
@@ -68,8 +69,8 @@ namespace CollectionStore.Controllers
             {
                 return async user =>
                 {
-                    string oldRole = actionName == "toUser" ? "admin" : "user";
-                    string newRole = actionName == "toAdmin" ? "admin" : "user";
+                    string oldRole = actionName == "toUser" ? Role.Admin : Role.User;
+                    string newRole = actionName == "toAdmin" ? Role.Admin : Role.User;
                     if(!(await userManager.IsInRoleAsync(user, newRole)))
                     {
                         await userManager.RemoveFromRoleAsync(user, oldRole);

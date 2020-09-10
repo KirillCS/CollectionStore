@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CollectionStore.Data;
 using CollectionStore.Models;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -37,7 +38,7 @@ namespace CollectionStore.Controllers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if(result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "user");
+                    await userManager.AddToRoleAsync(user, Role.User);
                     await signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -138,7 +139,7 @@ namespace CollectionStore.Controllers
                             Email = info.Principal.FindFirstValue(ClaimTypes.Email)
                         };
                         await userManager.CreateAsync(user);
-                        await userManager.AddToRoleAsync(user, "user");
+                        await userManager.AddToRoleAsync(user, Role.User);
                     }
                     await userManager.AddLoginAsync(user, info);
                     await signInManager.SignInAsync(user, false);
