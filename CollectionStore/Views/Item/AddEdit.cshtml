@@ -26,55 +26,55 @@
                             @switch (field.Type.Name)
                             {
                                 case "Numeric":
-                                {
-                                    <div class="form-group">
-                                        <label class="col-form-label" for="@field.Id">@field.Name</label>
-                                        <input id="@field.Id" class="form-control" type="number" step="any" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? null : Model.Values[i])" />
-                                    </div>
-                                    break;
-                                }
+                                    {
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="@field.Id">@field.Name</label>
+                                            <input id="@field.Id" class="form-control" type="number" step="any" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? null : Model.Values[i])" />
+                                        </div>
+                                        break;
+                                    }
                                 case "String":
-                                {
-                                    <div class="form-group">
-                                        <label class="col-form-label" for="@field.Id">@field.Name</label>
-                                        <input id="@field.Id" class="form-control" type="text" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? null : Model.Values[i])" />
-                                    </div>
-                                    break;
-                                }
+                                    {
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="@field.Id">@field.Name</label>
+                                            <input id="@field.Id" class="form-control" type="text" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? null : Model.Values[i])" />
+                                        </div>
+                                        break;
+                                    }
                                 case "Markdown":
-                                {
-                                    <div class="form-group js-markdown-block">
-                                        <label class="col-form-label" for="@field.Id">@field.Name</label>
-                                        <textarea id="@field.Id" rows="6" class="form-control js-markdown-input"
-                                                  style="max-height: 250px" name="Values">@(i >= Model.Values.Count ? null : Model.Values[i])</textarea>
-                                        <label class="col-form-label">@Localizer["Preview"]</label>
-                                        <div class="js-markdown-preview"></div>
-                                    </div>
-                                    break;
-                                }
+                                    {
+                                        <div class="form-group js-markdown-block">
+                                            <label class="col-form-label" for="@field.Id">@field.Name</label>
+                                            <textarea id="@field.Id" rows="6" class="form-control js-markdown-input"
+                                                      style="max-height: 250px" name="Values">@(i >= Model.Values.Count ? null : Model.Values[i])</textarea>
+                                            <label class="col-form-label">@Localizer["Preview"]</label>
+                                            <div class="js-markdown-preview"></div>
+                                        </div>
+                                        break;
+                                    }
                                 case "Date":
-                                {
-                                    <div class="form-group">
-                                        <label class="col-form-label" for="@field.Id">@field.Name</label>
-                                        <input id="@field.Id" class="form-control" type="date" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? null : Model.Values[i])" />
-                                    </div>
-                                     break;
-                                }
+                                    {
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="@field.Id">@field.Name</label>
+                                            <input id="@field.Id" class="form-control" type="date" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? null : Model.Values[i])" />
+                                        </div>
+                                        break;
+                                    }
                                 case "Check box":
-                                {
-                                    <div class="form-group form-check js-check-box-block">
-                                        <input id="@field.Id" class="form-check-input js-check-box" type="checkbox" />
-                                        <label class="form-check-label" for="@field.Id">@field.Name</label>
-                                        <input class="js-check-box-value" type="hidden" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? "unchecked" : Model.Values[i])" />
-                                    </div>
-                                    break;
-                                }
+                                    {
+                                        <div class="form-group form-check js-check-box-block">
+                                            <input id="@field.Id" class="form-check-input js-check-box" type="checkbox" />
+                                            <label class="form-check-label" for="@field.Id">@field.Name</label>
+                                            <input class="js-check-box-value" type="hidden" asp-for="@Model.Values" value="@(i >= Model.Values.Count ? "unchecked" : Model.Values[i])" />
+                                        </div>
+                                        break;
+                                    }
                                 default:
                                     break;
-                                }
                             }
-                            <button class="btn btn-primary btn-block" type="submit">@Localizer[Model.IsEditing ? "Save" : "Add"]</button>
-                        </form>
+                        }
+                        <button class="btn btn-primary btn-block" type="submit">@Localizer[Model.IsEditing ? "Save" : "Add"]</button>
+                    </form>
                 </article>
             </div>
         </div>
