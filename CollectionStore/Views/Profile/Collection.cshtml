@@ -5,7 +5,7 @@
 }
 
 <div class="container">
-    <h4 class="mt-2 mx-2 text-wrap"><a class="text-dark card-link" asp-controller="Profile" asp-action="Index" asp-route-userName="@Model.Collection.User.UserName">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</a></h4>
+    <h4 class="mt-2 mx-2 text-wrap">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</h4>
     <hr class="mb-4 mt-2" />
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -43,9 +43,15 @@
                         <hr />
                         <div class="js-markdown-element">@Model.Collection.Description</div>
                     }
+                    <hr />
+                    <div class="card-text m-1">
+                        @Localizer["Owner"]: <a class="card-link" asp-controller="Profile"
+                                                asp-action="Index" asp-route-userName="@Model.Collection.User.UserName"
+                                                title="@Localizer["GoToProfile", Model.Collection.User.UserName]">@Model.Collection.User.UserName</a>
+                    </div>
                     @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole(Role.Admin))
                     {
-                        <a class="btn btn-outline-secondary btn-block">@Localizer["Edit"]</a>
+                        <a class="btn btn-outline-secondary btn-block mt-3">@Localizer["Edit"]</a>
                     }
                 </div>
             </div>
@@ -56,68 +62,11 @@
                 <a class="btn btn-outline-primary btn-block mb-3" asp-controller="Item" asp-action="Add"
                    asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Add"]</a>
             }
-            <div class="accordion" id="accordionItems">
+            <div class="list-group bg-light">
                 @foreach (var item in Model.Collection.Items)
                 {
-                    <div class="card bg-light">
-                        <div id="@($"heading{item.Id}")" class="card-header">
-                            <h2 class="mb-0">
-                                <button class="btn btn-block text-left" type="button" data-toggle="collapse"
-                                        data-target="#@($"collapse{item.Id}")" aria-expanded="false" aria-controls="@($"collapse{item.Id}")">
-                                    @item.Name
-                                </button>
-                            </h2>
-                        </div>
-                        <div id="@($"collapse{item.Id}")" class="collapse" aria-labelledby="@($"heading{item.Id}")" data-parent="#accordionItems">
-                            <div class="card-body">
-
-                                <div class="mb-3">
-                                    @foreach (var fieldValue in item.FieldValues)
-                                    {
-                                        if (fieldValue.Field.Type.Name == "Check box")
-                                        {
-                                            <div class="card-text m-1">@fieldValue.Field.Name: @(fieldValue.Value == "checked" ? Localizer["Yes"] : Localizer["No"])</div>
-                                        }
-                                        else if (fieldValue.Field.Type.Name == "Markdown")
-                                        {
-                                            <div class="m-1">
-                                                <div class="card-text">@fieldValue.Field.Name</div>
-                                                <div class="js-markdown-element js-markdown-element-border">@fieldValue.Value</div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="card-text m-1">@fieldValue.Field.Name: @(string.IsNullOrEmpty(fieldValue.Value) ? "-" : fieldValue.Value)</div>
-                                        }
-                                    }
-                                </div>
-                                @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole(Role.Admin))
-                                {
-                                    <button class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#@($"modal{item.Id}")">@Localizer["Remove"]</button>
-                                    <div class="modal fade" id="@($"modal{item.Id}")" tabindex="-1" role="dialog" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">@Localizer["Remove"]...</h5>
-                                                    <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">@Localizer["RemoveItem", item.Name, Model.Collection.Name]</div>
-                                                <div class="modal-footer">
-                                                    <a type="button" class="btn btn-danger" asp-controller="Item" asp-action="Remove"
-                                                       asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Remove"]</a>
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Cancel"]</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a class="btn btn-outline-secondary btn-sm" asp-controller="Item" asp-action="Edit"
-                                       asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Edit"]</a>
-                                }
-                            </div>
-                        </div>
-                    </div>
+                    <a class="list-group-item list-group-item-action p-3 px-4" asp-controller="Item" asp-action="Index" 
+                       asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@item.Name</a>
                 }
             </div>
         </div>

@@ -17,17 +17,31 @@
             <div asp-validation-summary="ModelOnly" class="text-danger m-1"></div>
             <div class="my-1">
                 <div class="row">
-                    <div class="col-6">
-                        <div class="btn-group btn-group-sm m-1">
-                            <button type="submit" name="actionName" value="block" class="btn btn-primary">@Localizer["Block"]</button>
-                            <button type="submit" name="actionName" value="unblock" class="btn btn-primary">@Localizer["Unblock"]</button>
+                    <div class="col-5">
+                        <div class="btn-group btn-group m-1">
+                            <button type="submit" name="actionName" value="block" class="btn btn-primary" title="@Localizer["Block"]">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z" />
+                                    <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z" />
+                                </svg>
+                            </button>
+                            <button type="submit" name="actionName" value="unblock" class="btn btn-primary" title="@Localizer["Unblock"]">
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-unlock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z" />
+                                    <path fill-rule="evenodd" d="M8.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z" />
+                                </svg>
+                            </button>
                         </div>
-                        <button type="submit" name="actionName" value="delete" class="btn btn-primary btn-sm m-1">@Localizer["Delete"]</button>
+                        <button type="submit" name="actionName" value="delete" class="btn btn-primary m-1" title="@Localizer["Delete"]">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
+                            </svg>
+                        </button>
                     </div>
-                    <div class="col-6">
+                    <div class="col-7">
                         <div class="float-right">
                             <label class="text-secondary m-1">@Localizer["SetRights"]</label>
-                            <div class="btn-group btn-group-sm m-1">
+                            <div class="btn-group btn-group m-1">
                                 <button type="submit" name="actionName" value="toUser" class="btn btn-primary">@Localizer["User"]</button>
                                 <button type="submit" name="actionName" value="toAdmin" class="btn btn-primary">@Localizer["Admin"]</button>
                             </div>
@@ -49,7 +63,7 @@
                     {
                         <tr>
                             <th style="width: 50px"><input type="checkbox" class="js-check-box" name="selectedIds" value="@user.Id" onclick="singleCheckBoxClicked(this)" /></th>
-                            <td><a class="card-link text-dark" title="@Localizer["GoToPage", user.UserName]" 
+                            <td><a class="card-link" title="@Localizer["GoToPage", user.UserName]" 
                                    asp-controller="Profile" asp-action="Index" asp-route-userName="@user.UserName">@user.UserName</a></td>
                             <td class="@(user.IsBlocked ? "text-danger" : "text-success")"><strong>@(user.IsBlocked ? Localizer["Blocked"] : Localizer["Active"])</strong></td>
                             <td class="@(user.IsAdmin ? "text-primary" : "text-secondary")">@(user.IsAdmin ? Localizer["Admin"] : Localizer["User"])</td>

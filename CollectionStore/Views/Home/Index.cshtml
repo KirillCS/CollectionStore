@@ -70,30 +70,20 @@
                                 <div class="card-body">
 
                                     <div>
-                                        <div class="card-text m-1">@Localizer["Owner"]: <a class="card-link text-dark" asp-controller="Profile" asp-action="Index" asp-route-userName="@item.Collection.User.UserName">@item.Collection.User.UserName</a></div>
-                                        <div class="card-text m-1">@Localizer["Collection"]: <a class="card-link text-dark" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@item.CollectionId" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@item.Collection.Name</a></div>
-                                        @if (item.FieldValues.Count != 0)
-                                        {
-                                            <hr />
-                                        }
-                                        @foreach (var fieldValue in item.FieldValues)
-                                        {
-                                            if (fieldValue.Field.Type.Name == "Check box")
-                                            {
-                                                <div class="card-text m-1">@fieldValue.Field.Name: @(fieldValue.Value == "checked" ? Localizer["Yes"] : Localizer["No"])</div>
-                                            }
-                                            else if (fieldValue.Field.Type.Name == "Markdown")
-                                            {
-                                                <div class="m-1">
-                                                    <div class="card-text">@fieldValue.Field.Name</div>
-                                                    <div class="js-markdown-element js-markdown-element-border">@fieldValue.Value</div>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="card-text m-1">@fieldValue.Field.Name: @(string.IsNullOrEmpty(fieldValue.Value) ? "-" : fieldValue.Value)</div>
-                                            }
-                                        }
+                                        <div class="card-text m-1">
+                                            @Localizer["Owner"]: <a class="card-link" asp-controller="Profile"
+                                                                    asp-action="Index" asp-route-userName="@item.Collection.User.UserName"
+                                                                    title="@Localizer["GoToProfile", item.Collection.User.UserName]">@item.Collection.User.UserName</a>
+                                        </div>
+                                        <div class="card-text m-1">
+                                            @Localizer["Collection"]: <a class="card-link" asp-controller="Profile"
+                                                                            asp-action="Collection" asp-route-collectionId="@item.CollectionId"
+                                                                            asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)"
+                                                                            title="@Localizer["GoToCollection", item.Collection.Name]">@item.Collection.Name</a>
+                                        </div>
+                                        <hr />
+                                        <a class="card-text card-link m-1" asp-controller="Item" asp-action="Index"
+                                            asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Detail"]...</a>
                                     </div>
                                 </div>
                             </div>

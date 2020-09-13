@@ -60,7 +60,7 @@
                                 <a class="nav-link m-1" asp-controller="Profile" asp-action="Index" asp-route-userName="@User.Identity.Name">@User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-outline-secondary m-1" asp-controller="Account" asp-action="LogOut" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["LogOut"]</a>
+                                <a class="btn btn-outline-secondary m-1" asp-controller="Account" asp-action="LogOut">@Localizer["LogOut"]</a>
                             </li>
                         }
                         else

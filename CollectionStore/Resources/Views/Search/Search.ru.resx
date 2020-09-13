@@ -117,40 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
   <data name="Collection" xml:space="preserve">
-    <value>Collection "{0}"</value>
+    <value>Коллекция</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="Detail" xml:space="preserve">
+    <value>Подробнее</value>
+  </data>
+  <data name="GoToCollection" xml:space="preserve">
+    <value>Перейти к коллекции {0}</value>
   </data>
   <data name="GoToProfile" xml:space="preserve">
-    <value>Go to profile {0}</value>
+    <value>Перейти к профилю {0}</value>
   </data>
-  <data name="ItemsOfCollection" xml:space="preserve">
-    <value>Collection items</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
+  <data name="NoResult" xml:space="preserve">
+    <value>Нет подходящих элементов</value>
   </data>
   <data name="Owner" xml:space="preserve">
-    <value>Owner</value>
+    <value>Владелец</value>
   </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Remove</value>
+  <data name="Search" xml:space="preserve">
+    <value>Поиск</value>
   </data>
-  <data name="RemoveCollection" xml:space="preserve">
-    <value>Remove collection "{0}" with all items?</value>
-  </data>
-  <data name="RemoveItem" xml:space="preserve">
-    <value>Remove item "{0}" from collection "{1}"?</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+  <data name="SearchResult" xml:space="preserve">
+    <value>Результаты поиска по запросу "{0}"</value>
   </data>
 </root>

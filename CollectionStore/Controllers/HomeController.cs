@@ -7,9 +7,11 @@ using CollectionStore.ViewModels;
 using CollectionStore.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CollectionStore.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext context;

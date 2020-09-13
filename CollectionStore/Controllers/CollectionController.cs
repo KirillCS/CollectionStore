@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CollectionStore.Data;
 using CollectionStore.Models;
 using CollectionStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Localization;
 
 namespace CollectionStore.Controllers
 {
+    [Authorize]
     public class CollectionController : Controller
     {
         private readonly UserManager<User> userManager;

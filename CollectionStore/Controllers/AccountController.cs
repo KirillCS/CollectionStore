@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 using CollectionStore.Data;
 using CollectionStore.Models;
 using CollectionStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
 namespace CollectionStore.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
-        private UserManager<User> userManager;
-        private SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
         private readonly IStringLocalizer<AccountController> localizer;
 
         public AccountController(UserManager<User> userManager, 
@@ -138,11 +140,10 @@ namespace CollectionStore.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LogOut(string returnUrl = null)
+        public async Task<IActionResult> LogOut()
         {
-            returnUrl ??= "~/";
             await signInManager.SignOutAsync();
-            return Redirect(returnUrl);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -54,9 +54,6 @@ namespace CollectionStore.Controllers
             var collection = context.Collections
                 .Where(c => c.Id == collectionId.Value)
                 .Include(c => c.Items)
-                .ThenInclude(i => i.FieldValues)
-                .ThenInclude(fv => fv.Field)
-                .ThenInclude(fv => fv.Type)
                 .Include(c => c.Theme)
                 .Include(c => c.User)
                 .SingleOrDefault(c => c.Id == collectionId.Value);

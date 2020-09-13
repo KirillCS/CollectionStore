@@ -123,6 +123,12 @@
   <data name="Collections" xml:space="preserve">
     <value>Коллекции</value>
   </data>
+  <data name="GoToCollection" xml:space="preserve">
+    <value>Перейти к коллекции {0}</value>
+  </data>
+  <data name="GoToProfile" xml:space="preserve">
+    <value>Перейти к профилю {0}</value>
+  </data>
   <data name="HomePage" xml:space="preserve">
     <value>Главная страница</value>
   </data>

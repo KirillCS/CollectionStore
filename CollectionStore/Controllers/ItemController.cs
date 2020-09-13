@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using CollectionStore.Data;
 using CollectionStore.Models;
 using CollectionStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
 namespace CollectionStore.Controllers
 {
+    [Authorize]
     public class ItemController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -22,7 +24,8 @@ namespace CollectionStore.Controllers
             this.localizer = localizer;
         }
 
-        [HttpGet] 
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index(int itemId, string returnUrl = null)
         {
             var item = context.Items.Where(i => i.Id == itemId)
@@ -42,13 +45,16 @@ namespace CollectionStore.Controllers
                     Url = returnUrl
                 });
             }
-            return View(new ItemViewModel { Item = item });
+            return View(new ItemViewModel 
+            {
+                Item = item,
+                ReturnUrl = returnUrl
+            });
         }
 
         [HttpGet]
         public IActionResult Add(int collectionId, string returnUrl = null)
         {
-            returnUrl ??= "~/";
             var collection = GetCollection(collectionId);
             if(collection == null)
             {
@@ -68,6 +74,7 @@ namespace CollectionStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddingEditingItemViewModel model)
         {
+            model.ReturnUrl ??= "~/";
             model.Collection = GetCollection(model.CollectionId);
             if (model.Collection == null)
             {
@@ -110,7 +117,6 @@ namespace CollectionStore.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int itemId, string returnUrl = null)
         {
-            returnUrl ??= "~/";
             var item = await context.Items
                 .Where(i => i.Id == itemId)
                 .Include(i => i.FieldValues)
@@ -143,6 +149,7 @@ namespace CollectionStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(AddingEditingItemViewModel model)
         {
+            model.ReturnUrl ??= "~/";
             model.Collection = GetCollection(model.CollectionId);
             if(model.Collection == null)
             {

@@ -11,10 +11,14 @@
         <div class="col-lg-8">
             <div class="card bg-light shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">@Localizer["Description"]</h5>
+                    <h5>@Localizer["Description"]</h5>
                     <hr />
-                    <div class="card-text m-1">@Localizer["Owner"]: <a href="#" class="card-link text-dark">@Model.Item.Collection.User.UserName</a></div>
-                    <div class="card-text m-1">@Localizer["Collection"]: <a href="#" class="card-link text-dark">@Model.Item.Collection.Name</a></div>
+                    <div class="card-text m-1">@Localizer["Owner"]: <a class="card-link" asp-controller="Profile"
+                                                                       asp-action="Index" asp-route-userName="@Model.Item.Collection.User.UserName"
+                                                                       title="@Localizer["GoToProfile", Model.Item.Collection.User.UserName]">@Model.Item.Collection.User.UserName</a></div>
+                    <div class="card-text m-1">@Localizer["Collection"]: <a class="card-link" asp-controller="Profile"
+                                                                            asp-action="Collection" asp-route-collectionId="@Model.Item.CollectionId"
+                                                                            title="@Localizer["GoToCollection", Model.Item.Collection.Name]">@Model.Item.Collection.Name</a></div>
                     <hr />
                     @foreach (var fieldValue in Model.Item.FieldValues)
                     {
@@ -34,6 +38,32 @@
                             <div class="card-text m-1">@fieldValue.Field.Name: @(string.IsNullOrEmpty(fieldValue.Value) ? "-" : fieldValue.Value)</div>
                         }
                     }
+                    <div class="m-1 mt-3">
+                        @if (Model.Item.Collection.User.UserName == User.Identity.Name || User.IsInRole(Role.Admin))
+                        {
+                            <button class="btn btn-outline-danger btn-sm mr-1" data-toggle="modal" data-target="#@($"modal{Model.Item.Id}")">@Localizer["Remove"]</button>
+                            <div class="modal fade" id="@($"modal{Model.Item.Id}")" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">@Localizer["Remove"]...</h5>
+                                            <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">@Localizer["RemoveItem", Model.Item.Name, Model.Item.Collection.Name]</div>
+                                        <div class="modal-footer">
+                                            <a type="button" class="btn btn-danger" asp-controller="Item" asp-action="Remove"
+                                               asp-route-itemId="@Model.Item.Id" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["Remove"]</a>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="btn btn-outline-secondary btn-sm" asp-controller="Item" asp-action="Edit"
+                               asp-route-itemId="@Model.Item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Edit"]</a>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

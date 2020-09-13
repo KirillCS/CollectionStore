@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="Collection" xml:space="preserve">
     <value>Collection</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Item description</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="GoToCollection" xml:space="preserve">
+    <value>Go to collection {0}</value>
+  </data>
+  <data name="GoToProfile" xml:space="preserve">
+    <value>Go to profile {0}</value>
   </data>
   <data name="Item" xml:space="preserve">
     <value>Item "{0}"</value>
@@ -131,6 +143,12 @@
   </data>
   <data name="Owner" xml:space="preserve">
     <value>Owner</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="RemoveItem" xml:space="preserve">
+    <value>Remove item "{0}" from collection "{1}"?</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
