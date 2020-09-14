@@ -129,6 +129,12 @@
   <data name="ItemNotFoundTitle" xml:space="preserve">
     <value>Элемент не найден</value>
   </data>
+  <data name="NotRightsMessage" xml:space="preserve">
+    <value>Вы не можете взаимодействовать с коллекциями пользователя {0}.</value>
+  </data>
+  <data name="NotRightsTitle" xml:space="preserve">
+    <value>Не достаточно прав</value>
+  </data>
   <data name="ToCollectionPage" xml:space="preserve">
     <value>На страницу коллекции</value>
   </data>

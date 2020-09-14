@@ -126,6 +126,12 @@
   <data name="CollectionNotFoundTitle" xml:space="preserve">
     <value>Collection isn't found</value>
   </data>
+  <data name="NotRightsMessage" xml:space="preserve">
+    <value>You can not manipulate with collections of user {0}.</value>
+  </data>
+  <data name="NotRightsTitle" xml:space="preserve">
+    <value>Not enough rights</value>
+  </data>
   <data name="UserNotFoundMessage" xml:space="preserve">
     <value>The user may have been deleted by the administrator or something just went wrong.</value>
   </data>

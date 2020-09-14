@@ -126,6 +126,12 @@
   <data name="CollectionNotFoundTitle" xml:space="preserve">
     <value>Коллекция не найдена</value>
   </data>
+  <data name="NotRightsMessage" xml:space="preserve">
+    <value>Вы не можете взаимодействовать с коллекциями пользователя {0}.</value>
+  </data>
+  <data name="NotRightsTitle" xml:space="preserve">
+    <value>Не достаточно прав</value>
+  </data>
   <data name="UserNotFoundMessage" xml:space="preserve">
     <value>Пользователь был удален администратором или просто что-то пошло не так.</value>
   </data>

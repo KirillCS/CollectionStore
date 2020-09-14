@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
 namespace CollectionStore.Controllers
@@ -33,6 +34,14 @@ namespace CollectionStore.Controllers
         public async Task<IActionResult> Add(string userName = null, string returnUrl = null)
         {
             userName ??= string.Empty;
+            if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorTitle = localizer["NotRightsTitle"],
+                    ErrorMessage = localizer["NotRightsMessage", userName]
+                });
+            }
             var user = await userManager.FindByNameAsync(userName);
             if(user == null)
             {
@@ -77,18 +86,20 @@ namespace CollectionStore.Controllers
         public async Task<IActionResult> Remove(int collectionId, string returnUrl = null)
         {
             returnUrl ??= "~/";
-            var collection = context.Collections.SingleOrDefault(c => c.Id == collectionId);
-            if(collection == null)
+            var collection = context.Collections.Where(c => c.Id == collectionId).Include(c => c.User).SingleOrDefault(c => c.Id == collectionId);
+            if(collection != null)
             {
-                return View("Error", new ErrorViewModel 
-                { 
-                    ErrorTitle = localizer["CollectionNotFoundTitle"],
-                    ErrorMessage = localizer["CollectionNotFoundMessage"],
-                    ButtonLabel = localizer["CollectionNotFoundButtonLabel"],
-                    Url = returnUrl
-                });
+                var userName = collection.User.UserName;
+                if (User.Identity.Name != userName || !User.IsInRole(Role.Admin))
+                {
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorTitle = localizer["NotRightsTitle"],
+                        ErrorMessage = localizer["NotRightsMessage", userName]
+                    });
+                }
+                await RemoveCollection(collection);
             }
-            await RemoveCollection(collection);
             return Redirect(returnUrl);
         }
 

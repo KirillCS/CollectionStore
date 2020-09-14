@@ -64,6 +64,15 @@ namespace CollectionStore.Controllers
                     ErrorMessage = localizer["CollectionNotFoundMessage"]
                 });
             }
+            var userName = collection.User.UserName;
+            if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorTitle = localizer["NotRightsTitle"],
+                    ErrorMessage = localizer["NotRightsMessage", userName]
+                });
+            }
             return View("AddEdit", new AddingEditingItemViewModel
             {
                 CollectionId = collectionId,
@@ -106,9 +115,21 @@ namespace CollectionStore.Controllers
         public async Task<IActionResult> Remove(int itemId, string returnUrl = null)
         {
             returnUrl ??= "~/";
-            var item = await context.Items.SingleOrDefaultAsync(i => i.Id == itemId);
+            var item = await context.Items.Where(i => i.Id == itemId)
+                                          .Include(i => i.Collection)
+                                          .ThenInclude(c => c.User)
+                                          .SingleOrDefaultAsync(i => i.Id == itemId);
             if(item != null)
             {
+                var userName = item.Collection.User.UserName;
+                if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
+                {
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorTitle = localizer["NotRightsTitle"],
+                        ErrorMessage = localizer["NotRightsMessage", userName ?? string.Empty]
+                    });
+                }
                 await RemoveItem(item);
             }
             return Redirect(returnUrl);
@@ -120,6 +141,8 @@ namespace CollectionStore.Controllers
             var item = await context.Items
                 .Where(i => i.Id == itemId)
                 .Include(i => i.FieldValues)
+                .Include(i => i.Collection)
+                .ThenInclude(c => c.User)
                 .Include(i => i.Collection)
                 .ThenInclude(c => c.Fields)
                 .ThenInclude(f => f.Type)
@@ -134,7 +157,15 @@ namespace CollectionStore.Controllers
                     Url = returnUrl
                 });
             }
-
+            var userName = item.Collection.User.UserName;
+            if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    ErrorTitle = localizer["NotRightsTitle"],
+                    ErrorMessage = localizer["NotRightsMessage", userName ?? string.Empty]
+                });
+            }
             return View("AddEdit", new AddingEditingItemViewModel 
             {
                 ItemId = itemId,
@@ -190,6 +221,7 @@ namespace CollectionStore.Controllers
 
         private Collection GetCollection(int id) => context.Collections
                 .Where(c => c.Id == id)
+                .Include(c => c.User)
                 .Include(c => c.Fields)
                 .ThenInclude(f => f.Type)
                 .SingleOrDefault(c => c.Id == id);
