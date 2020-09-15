@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddingItemErrorMessage" xml:space="preserve">
+    <value>Что-то пошло не так при добавлении в базу данных.</value>
+  </data>
+  <data name="AddingItemErrorTitle" xml:space="preserve">
+    <value>Элемент не добавлен</value>
+  </data>
   <data name="CollectionNotFoundMessage" xml:space="preserve">
     <value>Владелец или администратор удалил коллекцию или что-то пошло не так.</value>
   </data>
@@ -134,6 +140,12 @@
   </data>
   <data name="NotRightsTitle" xml:space="preserve">
     <value>Не достаточно прав</value>
+  </data>
+  <data name="RemovingItemErrorMessage" xml:space="preserve">
+    <value>Что-то пошло не так при удалении элемента из базы данных.</value>
+  </data>
+  <data name="RemovingItemErrorTitle" xml:space="preserve">
+    <value>Элемент не был удален</value>
   </data>
   <data name="ToCollectionPage" xml:space="preserve">
     <value>На страницу коллекции</value>

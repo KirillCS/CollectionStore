@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CollectionStore.Data;
 using CollectionStore.Models;
+using CollectionStore.Services;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -20,13 +21,16 @@ namespace CollectionStore.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly ApplicationDbContext context;
+        private readonly CollectionService collectionService;
         private readonly IStringLocalizer<CollectionController> localizer;
 
         public CollectionController(UserManager<User> userManager, 
-            ApplicationDbContext context, IStringLocalizer<CollectionController> localizer)
+            ApplicationDbContext context, CollectionService collectionService, 
+            IStringLocalizer<CollectionController> localizer)
         {
             this.userManager = userManager;
             this.context = context;
+            this.collectionService = collectionService;
             this.localizer = localizer;
         }
 
@@ -60,7 +64,7 @@ namespace CollectionStore.Controllers
             });
         }
         [HttpPost]
-        public IActionResult Add(AddingCollectionViewModel model)
+        public async Task<IActionResult> Add(AddingCollectionViewModel model)
         {
             model.ReturnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
@@ -73,8 +77,16 @@ namespace CollectionStore.Controllers
                     UserId = model.UserId,
                     Fields = GetFields(model)
                 };
-                context.Collections.Add(collection);
-                context.SaveChanges();
+                if(await collectionService.AddAsync(collection) == OperationResult.Failed)
+                {
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorTitle = localizer["AddingCollectionErrorTitle"],
+                        ErrorMessage = localizer["AddingCollectionErrorMessage"],
+                        ButtonLabel = localizer["ToProfile"],
+                        Url = model.ReturnUrl
+                    });
+                }
                 return Redirect(model.ReturnUrl);
             }
             model.Themes = context.CollectionThemes.ToList();
@@ -98,7 +110,16 @@ namespace CollectionStore.Controllers
                         ErrorMessage = localizer["NotRightsMessage", userName]
                     });
                 }
-                await RemoveCollection(collection);
+                if(await collectionService.RemoveAsync(collection) == OperationResult.Failed)
+                {
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorTitle = localizer["RemovingCollectionErrorTitle"],
+                        ErrorMessage = localizer["RemovingCollectionErrorMessage"],
+                        ButtonLabel = localizer["Back"],
+                        Url = returnUrl
+                    });
+                }
             }
             return Redirect(returnUrl);
         }
@@ -118,25 +139,6 @@ namespace CollectionStore.Controllers
                 }
             }
             return fields;
-        }
-        private async Task RemoveCollection(Collection collection)
-        {
-            RemoveItems(collection);
-            RemoveFields(collection);
-            context.Collections.Remove(collection);
-            await context.SaveChangesAsync();
-        }
-        private void RemoveItems(Collection collection)
-        {
-            foreach (var item in collection.Items)
-            {
-                context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.ItemId == item.Id));
-            }
-            context.Items.RemoveRange(context.Items.Where(i => i.CollectionId == collection.Id));
-        }
-        private void RemoveFields(Collection collection)
-        {
-            context.Fields.RemoveRange(context.Fields.Where(f => f.CollectionId == collection.Id));
         }
     }
 }

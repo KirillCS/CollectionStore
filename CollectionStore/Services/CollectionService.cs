@@ -62,16 +62,16 @@ namespace CollectionStore.Services
             }
             return OperationResult.Successed;
         }
-        public async Task<OperationResult> UpdateAsync(Collection entity)
+        public async Task<OperationResult> UpdateAsync(int id, Collection entity)
         {
-            var collection = context.Collections.FirstOrDefault(c => c.Id == entity.Id);
+            var collection = context.Collections.FirstOrDefault(c => c.Id == id);
             if (entity == null || collection == null)
             {
                 return OperationResult.Failed;
             }
-            SetCollection(collection, entity);
             try
             {
+                SetCollection(collection, entity);
                 await context.SaveChangesAsync();
             }
             catch (Exception)

@@ -17,6 +17,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using CollectionStore.Data;
+using CollectionStore.Services;
 
 namespace CollectionStore
 {
@@ -31,11 +32,10 @@ namespace CollectionStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                });
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -64,6 +64,8 @@ namespace CollectionStore
                     options.AppId = Configuration["FacebookLogin:Id"];
                     options.AppSecret = Configuration["FacebookLogin:Secret"];
                 });
+            services.AddTransient<ItemService>();
+            services.AddTransient<CollectionService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

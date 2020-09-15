@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CollectionStore.Data;
 using CollectionStore.Models;
+using CollectionStore.Services;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,14 @@ namespace CollectionStore.Controllers
     public class ItemController : Controller
     {
         private readonly ApplicationDbContext context;
+        private readonly ItemService itemService;
         private readonly IStringLocalizer<ItemController> localizer;
 
-        public ItemController(ApplicationDbContext context, IStringLocalizer<ItemController> localizer)
+        public ItemController(ApplicationDbContext context, 
+            ItemService itemService, IStringLocalizer<ItemController> localizer)
         {
             this.context = context;
+            this.itemService = itemService;
             this.localizer = localizer;
         }
 
@@ -105,7 +109,22 @@ namespace CollectionStore.Controllers
             }
             if (ModelState.IsValid)
             {
-                await AddItem(model);
+                var item = new Item
+                {
+                    Name = model.Name,
+                    CollectionId = model.CollectionId,
+                    FieldValues = GetFieldValues(model)
+                };
+                if(await itemService.AddAsync(item) == OperationResult.Failed)
+                {
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorTitle = localizer["AddingItemErrorTitle"],
+                        ErrorMessage = localizer["AddingItemErrorMessage"],
+                        ButtonLabel = localizer["ToCollectionPage"],
+                        Url = model.ReturnUrl
+                    });
+                }
                 return Redirect(model.ReturnUrl);
             }
             return View("AddEdit", model);
@@ -130,7 +149,16 @@ namespace CollectionStore.Controllers
                         ErrorMessage = localizer["NotRightsMessage", userName ?? string.Empty]
                     });
                 }
-                await RemoveItem(item);
+                if(await itemService.RemoveAsync(item) == OperationResult.Failed)
+                {
+                    return View("Error", new ErrorViewModel
+                    {
+                        ErrorTitle = localizer["RemovingItemErrorTitle"],
+                        ErrorMessage = localizer["RemovingItemErrorMessage"],
+                        ButtonLabel = localizer["ToCollectionPage"],
+                        Url = returnUrl
+                    });
+                }
             }
             return Redirect(returnUrl);
         }
@@ -147,7 +175,7 @@ namespace CollectionStore.Controllers
                 .ThenInclude(c => c.Fields)
                 .ThenInclude(f => f.Type)
                 .SingleOrDefaultAsync(i => i.Id == itemId);
-            if(item == null)
+            if (item == null)
             {
                 return View("Error", new ErrorViewModel
                 {
@@ -236,16 +264,6 @@ namespace CollectionStore.Controllers
             }
             return true;
         }
-        private async Task AddItem(AddingEditingItemViewModel model)
-        {
-            context.Items.Add(new Item
-            {
-                Name = model.Name,
-                CollectionId = model.CollectionId,
-                FieldValues = GetFieldValues(model)
-            });
-            await context.SaveChangesAsync();
-        }
         private List<FieldValue> GetFieldValues(AddingEditingItemViewModel model)
         {
             var fieldValues = new List<FieldValue>();
@@ -258,12 +276,6 @@ namespace CollectionStore.Controllers
                 });
             }
             return fieldValues;
-        }
-        private async Task RemoveItem(Item item)
-        {
-            context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.ItemId == item.Id));
-            context.Items.Remove(item);
-            await context.SaveChangesAsync();
         }
         private async Task EditItem(Item item, AddingEditingItemViewModel model)
         {

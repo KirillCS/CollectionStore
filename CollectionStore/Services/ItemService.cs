@@ -62,16 +62,16 @@ namespace CollectionStore.Services
             }
             return OperationResult.Successed;
         }
-        public async Task<OperationResult> UpdateAsync(Item entity)
+        public async Task<OperationResult> UpdateAsync(int id, Item entity)
         {
-            var item = context.Items.FirstOrDefault(i => i.Id == entity.Id);
+            var item = context.Items.FirstOrDefault(i => i.Id == id);
             if (entity == null || item == null)
             {
                 return OperationResult.Failed;
             }
-            SetItem(item, entity);
             try
             {
+                SetItem(item, entity);
                 await context.SaveChangesAsync();
             }
             catch (Exception)
@@ -85,6 +85,7 @@ namespace CollectionStore.Services
         private void RemoveItem(Item item)
         {
             context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.ItemId == item.Id));
+            context.ItemTags.RemoveRange(context.ItemTags.Where(it => it.ItemId == item.Id));
             context.Items.Remove(item);
         }
         private void SetItem(Item item, Item sourceItem)

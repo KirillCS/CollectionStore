@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CollectionStore.Data;
 using CollectionStore.Models;
+using CollectionStore.Services;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,11 +18,14 @@ namespace CollectionStore.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly CollectionService collectionService;
 
-        public AdminController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AdminController(UserManager<User> userManager, 
+            SignInManager<User> signInManager, CollectionService collectionService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.collectionService = collectionService;
         }
 
         [HttpGet]
@@ -64,7 +68,7 @@ namespace CollectionStore.Controllers
             }
             else if(actionName == "delete")
             {
-                return async user => await userManager.DeleteAsync(user);
+                return async user => await DeleteUser(user);
             }
             else if(actionName == "toUser" || actionName == "toAdmin")
             {
@@ -94,6 +98,13 @@ namespace CollectionStore.Controllers
                 }
             }
         }
-
+        private async Task<IdentityResult> DeleteUser(User user)
+        {
+            foreach (var collection in user.Collections)
+            {
+                await collectionService.RemoveAsync(collection);
+            }
+            return await userManager.DeleteAsync(user);
+        }
     }
 }

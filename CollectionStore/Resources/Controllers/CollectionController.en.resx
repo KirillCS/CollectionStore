@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddingCollectionErrorMessage" xml:space="preserve">
+    <value>Something went wrong while adding collection to the database.</value>
+  </data>
+  <data name="AddingCollectionErrorTitle" xml:space="preserve">
+    <value>Collection wasn't added</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
   <data name="CollectionNotFoundButtonLabel" xml:space="preserve">
     <value>To user profile</value>
   </data>
@@ -131,6 +140,15 @@
   </data>
   <data name="NotRightsTitle" xml:space="preserve">
     <value>Not enough rights</value>
+  </data>
+  <data name="RemovingCollectionErrorMessage" xml:space="preserve">
+    <value>Something went wrong while removing collection from the database.</value>
+  </data>
+  <data name="RemovingCollectionErrorTitle" xml:space="preserve">
+    <value>Collection wasn't removed</value>
+  </data>
+  <data name="ToProfile" xml:space="preserve">
+    <value>To profile page</value>
   </data>
   <data name="UserNotFoundMessage" xml:space="preserve">
     <value>The user may have been deleted by the administrator or something just went wrong.</value>

@@ -17,6 +17,6 @@ namespace CollectionStore.Services
         Task<OperationResult> AddAsync(TEntity entity);
         Task<OperationResult> RemoveAsync(TId id);
         Task<OperationResult> RemoveAsync(TEntity entity);
-        Task<OperationResult> UpdateAsync(TEntity entity);
+        Task<OperationResult> UpdateAsync(TId id, TEntity entity);
     }
 }
