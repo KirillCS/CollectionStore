@@ -132,8 +132,14 @@
   <data name="Blocked" xml:space="preserve">
     <value>Blocked</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="DeleteUsers" xml:space="preserve">
+    <value>Delete selected users and all their collections?</value>
   </data>
   <data name="GoToPage" xml:space="preserve">
     <value>Go to {0} page</value>

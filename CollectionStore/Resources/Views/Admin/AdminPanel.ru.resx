@@ -132,8 +132,14 @@
   <data name="Blocked" xml:space="preserve">
     <value>Заблокирован</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
+  </data>
+  <data name="DeleteUsers" xml:space="preserve">
+    <value>Удалить выделенных пользователей и их коллекции?</value>
   </data>
   <data name="GoToPage" xml:space="preserve">
     <value>Перейти на страницу {0}</value>
