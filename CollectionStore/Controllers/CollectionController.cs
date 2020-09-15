@@ -21,11 +21,11 @@ namespace CollectionStore.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly ApplicationDbContext context;
-        private readonly CollectionService collectionService;
+        private readonly CollectionManager collectionService;
         private readonly IStringLocalizer<CollectionController> localizer;
 
         public CollectionController(UserManager<User> userManager, 
-            ApplicationDbContext context, CollectionService collectionService, 
+            ApplicationDbContext context, CollectionManager collectionService, 
             IStringLocalizer<CollectionController> localizer)
         {
             this.userManager = userManager;
@@ -102,7 +102,7 @@ namespace CollectionStore.Controllers
             if(collection != null)
             {
                 var userName = collection.User.UserName;
-                if (User.Identity.Name != userName || !User.IsInRole(Role.Admin))
+                if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
                 {
                     return View("Error", new ErrorViewModel
                     {
@@ -110,7 +110,7 @@ namespace CollectionStore.Controllers
                         ErrorMessage = localizer["NotRightsMessage", userName]
                     });
                 }
-                if(await collectionService.RemoveAsync(collection) == OperationResult.Failed)
+                if(await collectionService.RemoveAsync(collection.Id) == OperationResult.Failed)
                 {
                     return View("Error", new ErrorViewModel
                     {

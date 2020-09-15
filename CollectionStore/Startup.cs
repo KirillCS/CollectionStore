@@ -64,8 +64,8 @@ namespace CollectionStore
                     options.AppId = Configuration["FacebookLogin:Id"];
                     options.AppSecret = Configuration["FacebookLogin:Secret"];
                 });
-            services.AddTransient<ItemService>();
-            services.AddTransient<CollectionService>();
+            services.AddTransient<ItemManager>();
+            services.AddTransient<CollectionManager>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

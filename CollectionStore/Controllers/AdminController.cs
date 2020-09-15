@@ -18,13 +18,16 @@ namespace CollectionStore.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
-        private readonly CollectionService collectionService;
+        private readonly ApplicationDbContext context;
+        private readonly CollectionManager collectionService;
 
         public AdminController(UserManager<User> userManager, 
-            SignInManager<User> signInManager, CollectionService collectionService)
+            SignInManager<User> signInManager, ApplicationDbContext context,
+            CollectionManager collectionService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.context = context;
             this.collectionService = collectionService;
         }
 
@@ -100,11 +103,16 @@ namespace CollectionStore.Controllers
         }
         private async Task<IdentityResult> DeleteUser(User user)
         {
-            foreach (var collection in user.Collections)
-            {
-                await collectionService.RemoveAsync(collection);
-            }
+            await RemoveCollections(user);
             return await userManager.DeleteAsync(user);
+        }
+        private async Task RemoveCollections(User user)
+        {
+            var collectionsIds = context.Collections.Where(c => c.UserId == user.Id).Select(c => c.Id).ToList();
+            foreach (var id in collectionsIds)
+            {
+                await collectionService.RemoveAsync(id);
+            }
         }
     }
 }

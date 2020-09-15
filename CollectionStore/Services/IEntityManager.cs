@@ -11,12 +11,11 @@ namespace CollectionStore.Services
         Successed
     }
 
-    interface IEntityService<TEntity, TId>
+    interface IEntityManager<TEntity, TId>
     {
-        TEntity GetById(TId id);
+        TEntity GetById(TId id, bool coherentlyLoad);
         Task<OperationResult> AddAsync(TEntity entity);
         Task<OperationResult> RemoveAsync(TId id);
-        Task<OperationResult> RemoveAsync(TEntity entity);
-        Task<OperationResult> UpdateAsync(TId id, TEntity entity);
+        Task<OperationResult> UpdateAsync(TId id, TEntity sourceEntity);
     }
 }

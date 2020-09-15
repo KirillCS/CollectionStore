@@ -17,11 +17,11 @@ namespace CollectionStore.Controllers
     public class ItemController : Controller
     {
         private readonly ApplicationDbContext context;
-        private readonly ItemService itemService;
+        private readonly ItemManager itemService;
         private readonly IStringLocalizer<ItemController> localizer;
 
         public ItemController(ApplicationDbContext context, 
-            ItemService itemService, IStringLocalizer<ItemController> localizer)
+            ItemManager itemService, IStringLocalizer<ItemController> localizer)
         {
             this.context = context;
             this.itemService = itemService;
@@ -149,7 +149,7 @@ namespace CollectionStore.Controllers
                         ErrorMessage = localizer["NotRightsMessage", userName ?? string.Empty]
                     });
                 }
-                if(await itemService.RemoveAsync(item) == OperationResult.Failed)
+                if(await itemService.RemoveAsync(item.Id) == OperationResult.Failed)
                 {
                     return View("Error", new ErrorViewModel
                     {
