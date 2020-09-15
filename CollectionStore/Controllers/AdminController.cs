@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CollectionStore.Data;
 using CollectionStore.Models;
+using CollectionStore.Services;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,11 +18,17 @@ namespace CollectionStore.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly ApplicationDbContext context;
+        private readonly CollectionManager collectionService;
 
-        public AdminController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AdminController(UserManager<User> userManager, 
+            SignInManager<User> signInManager, ApplicationDbContext context,
+            CollectionManager collectionService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.context = context;
+            this.collectionService = collectionService;
         }
 
         [HttpGet]
@@ -64,7 +71,7 @@ namespace CollectionStore.Controllers
             }
             else if(actionName == "delete")
             {
-                return async user => await userManager.DeleteAsync(user);
+                return async user => await DeleteUser(user);
             }
             else if(actionName == "toUser" || actionName == "toAdmin")
             {
@@ -94,6 +101,18 @@ namespace CollectionStore.Controllers
                 }
             }
         }
-
+        private async Task<IdentityResult> DeleteUser(User user)
+        {
+            await RemoveCollections(user);
+            return await userManager.DeleteAsync(user);
+        }
+        private async Task RemoveCollections(User user)
+        {
+            var collectionsIds = context.Collections.Where(c => c.UserId == user.Id).Select(c => c.Id).ToList();
+            foreach (var id in collectionsIds)
+            {
+                await collectionService.RemoveAsync(id);
+            }
+        }
     }
 }

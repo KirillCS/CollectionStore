@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddingItemErrorMessage" xml:space="preserve">
+    <value>Something went wrong while adding item to the database.</value>
+  </data>
+  <data name="AddingItemErrorTitle" xml:space="preserve">
+    <value>Item wasn't added</value>
+  </data>
   <data name="CollectionNotFoundMessage" xml:space="preserve">
     <value>Owner or administrator deleted this collection or something went wrong.</value>
   </data>
@@ -134,6 +140,12 @@
   </data>
   <data name="NotRightsTitle" xml:space="preserve">
     <value>Not enough rights</value>
+  </data>
+  <data name="RemovingItemErrorMessage" xml:space="preserve">
+    <value>Something went wrong while removing item from the database.</value>
+  </data>
+  <data name="RemovingItemErrorTitle" xml:space="preserve">
+    <value>Item wasn't removed</value>
   </data>
   <data name="ToCollectionPage" xml:space="preserve">
     <value>To collection page</value>
