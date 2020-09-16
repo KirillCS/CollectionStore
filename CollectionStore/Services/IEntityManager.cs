@@ -13,7 +13,7 @@ namespace CollectionStore.Services
 
     interface IEntityManager<TEntity, TId>
     {
-        TEntity GetById(TId id, bool coherentlyLoad);
+        TEntity GetById(TId id, bool coherentlyLoad = false);
         Task<OperationResult> AddAsync(TEntity entity);
         Task<OperationResult> RemoveAsync(TId id);
         Task<OperationResult> UpdateAsync(TId id, TEntity sourceEntity);

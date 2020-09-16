@@ -15,7 +15,7 @@ namespace CollectionStore.Services
             this.context = context;
         }
 
-        public TEntity GetById(TId id, bool coherentlyLoad)
+        public TEntity GetById(TId id, bool coherentlyLoad = false)
         {
             return coherentlyLoad ? GetByIdCoherentlyLoad(id) : GetById(id);
         }

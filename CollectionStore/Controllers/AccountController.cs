@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using CollectionStore.Data;
 using CollectionStore.Models;
+using CollectionStore.Services;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,13 +20,16 @@ namespace CollectionStore.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IStringLocalizer<AccountController> localizer;
+        private readonly UserChecker userChecker;
 
         public AccountController(UserManager<User> userManager, 
-            SignInManager<User> signInManager, IStringLocalizer<AccountController> localizer)
+            SignInManager<User> signInManager, IStringLocalizer<AccountController> localizer,
+            UserChecker userChecker)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.localizer = localizer;
+            this.userChecker = userChecker;
         }
 
         [HttpGet]
@@ -69,14 +73,21 @@ namespace CollectionStore.Controllers
             model.ReturnUrl ??= "~/";
             if(ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
+                if (await userChecker.IsUserBlocked(model.UserName))
                 {
-                    return Redirect(model.ReturnUrl);
+                    ModelState.AddModelError(string.Empty, localizer["UserBlocked"]);
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, localizer["LoginError"]);
+                    var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, localizer["LoginError"]);
+                    }
                 }
             }
             model.ExternalLogins ??= (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();

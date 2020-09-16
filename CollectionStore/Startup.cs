@@ -66,6 +66,7 @@ namespace CollectionStore
                 });
             services.AddTransient<ItemManager>();
             services.AddTransient<CollectionManager>();
+            services.AddTransient<UserChecker>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

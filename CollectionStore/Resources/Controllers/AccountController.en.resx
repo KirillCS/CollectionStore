@@ -123,4 +123,7 @@
   <data name="LoginError" xml:space="preserve">
     <value>Invalid login or password</value>
   </data>
+  <data name="UserBlocked" xml:space="preserve">
+    <value>Account is blocked</value>
+  </data>
 </root>

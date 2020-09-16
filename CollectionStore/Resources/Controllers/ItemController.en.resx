@@ -135,12 +135,6 @@
   <data name="ItemNotFoundTitle" xml:space="preserve">
     <value>Item isn't found</value>
   </data>
-  <data name="NotRightsMessage" xml:space="preserve">
-    <value>You can not manipulate with collections of user {0}.</value>
-  </data>
-  <data name="NotRightsTitle" xml:space="preserve">
-    <value>Not enough rights</value>
-  </data>
   <data name="RemovingItemErrorMessage" xml:space="preserve">
     <value>Something went wrong while removing item from the database.</value>
   </data>

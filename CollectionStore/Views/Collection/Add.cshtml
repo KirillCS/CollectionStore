@@ -31,7 +31,7 @@
             <div class="card shadow-sm">
                 <article class="card-body">
                     <form asp-controller="Collection" asp-action="Add" asp-route-returnUrl="@Model.ReturnUrl"
-                          asp-route-userId="@Model.UserId" method="post" enctype="multipart/form-data">
+                          asp-route-userName="@Model.UserName" asp-route-userId="@Model.UserId" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label class="col-form-label" for="name">@Localizer["Name"]</label>
                             <input id="name" class="form-control" asp-for="Name" />

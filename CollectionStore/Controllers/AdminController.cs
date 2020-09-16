@@ -17,29 +17,31 @@ namespace CollectionStore.Controllers
     public class AdminController : Controller
     {
         private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
         private readonly ApplicationDbContext context;
+        private readonly UserChecker userChecker;
         private readonly CollectionManager collectionService;
 
-        public AdminController(UserManager<User> userManager, 
-            SignInManager<User> signInManager, ApplicationDbContext context,
+        public AdminController(UserManager<User> userManager,
+            ApplicationDbContext context, UserChecker userChecker, 
             CollectionManager collectionService)
         {
             this.userManager = userManager;
-            this.signInManager = signInManager;
             this.context = context;
+            this.userChecker = userChecker;
             this.collectionService = collectionService;
         }
 
         [HttpGet]
         public async Task<IActionResult> AdminPanel() => View(await GetViewModel());
-
         [HttpPost]
         public async Task<IActionResult> Manage(string actionName, List<string> selectedIds)
         {
+            var view = await CheckUser();
+            if (view != null) return view;
             await DoAction(SetAction(actionName), selectedIds);
             return RedirectToAction("AdminPanel");
         }
+
         private async Task<List<AdminPanelViewModel>> GetViewModel()
         {
             var model = new List<AdminPanelViewModel>();
@@ -58,6 +60,14 @@ namespace CollectionStore.Controllers
                 }
             }
             return model;
+        }
+        private async Task<IActionResult> CheckUser()
+        {
+            var error = await userChecker.CheckUserExistence();
+            if (error != null) return View("Error", error);
+            error = await userChecker.CheckUserBlockStatus();
+            if (error != null) return View("Error", error);
+            return null;
         }
         private Func<User, Task<IdentityResult>> SetAction(string actionName)
         {

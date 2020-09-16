@@ -17,14 +17,19 @@ namespace CollectionStore.Controllers
     public class ItemController : Controller
     {
         private readonly ApplicationDbContext context;
-        private readonly ItemManager itemService;
+        private readonly ItemManager itemManager;
+        private readonly CollectionManager collectionManager;
+        private readonly UserChecker userChecker;
         private readonly IStringLocalizer<ItemController> localizer;
 
         public ItemController(ApplicationDbContext context, 
-            ItemManager itemService, IStringLocalizer<ItemController> localizer)
+            ItemManager itemManager, CollectionManager collectionManager,
+            UserChecker userChecker, IStringLocalizer<ItemController> localizer)
         {
             this.context = context;
-            this.itemService = itemService;
+            this.itemManager = itemManager;
+            this.collectionManager = collectionManager;
+            this.userChecker = userChecker;
             this.localizer = localizer;
         }
 
@@ -57,9 +62,9 @@ namespace CollectionStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add(int collectionId, string returnUrl = null)
+        public async Task<IActionResult> Add(int collectionId, string returnUrl = null)
         {
-            var collection = GetCollection(collectionId);
+            var collection = collectionManager.GetById(collectionId, true);
             if(collection == null)
             {
                 return View("Error", new ErrorViewModel
@@ -68,15 +73,10 @@ namespace CollectionStore.Controllers
                     ErrorMessage = localizer["CollectionNotFoundMessage"]
                 });
             }
-            var userName = collection.User.UserName;
-            if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
-            {
-                return View("Error", new ErrorViewModel
-                {
-                    ErrorTitle = localizer["NotRightsTitle"],
-                    ErrorMessage = localizer["NotRightsMessage", userName]
-                });
-            }
+
+            var view = await CheckUser(collection.User.UserName);
+            if (view != null) return view;
+
             return View("AddEdit", new AddingEditingItemViewModel
             {
                 CollectionId = collectionId,
@@ -88,7 +88,7 @@ namespace CollectionStore.Controllers
         public async Task<IActionResult> Add(AddingEditingItemViewModel model)
         {
             model.ReturnUrl ??= "~/";
-            model.Collection = GetCollection(model.CollectionId);
+            model.Collection = collectionManager.GetById(model.CollectionId, true);
             if (model.Collection == null)
             {
                 return View("Error", new ErrorViewModel
@@ -97,6 +97,10 @@ namespace CollectionStore.Controllers
                     ErrorMessage = localizer["CollectionNotFoundMessage"]
                 });
             }
+
+            var view = await CheckUser(model.Collection.User.UserName);
+            if (view != null) return view;
+
             if(!ValidateFields(model))
             {
                 return View("Error", new ErrorViewModel
@@ -115,7 +119,7 @@ namespace CollectionStore.Controllers
                     CollectionId = model.CollectionId,
                     FieldValues = GetFieldValues(model)
                 };
-                if(await itemService.AddAsync(item) == OperationResult.Failed)
+                if(await itemManager.AddAsync(item) == OperationResult.Failed)
                 {
                     return View("Error", new ErrorViewModel
                     {
@@ -140,16 +144,9 @@ namespace CollectionStore.Controllers
                                           .SingleOrDefaultAsync(i => i.Id == itemId);
             if(item != null)
             {
-                var userName = item.Collection.User.UserName;
-                if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
-                {
-                    return View("Error", new ErrorViewModel
-                    {
-                        ErrorTitle = localizer["NotRightsTitle"],
-                        ErrorMessage = localizer["NotRightsMessage", userName ?? string.Empty]
-                    });
-                }
-                if(await itemService.RemoveAsync(item.Id) == OperationResult.Failed)
+                var view = await CheckUser(item.Collection.User.UserName);
+                if (view != null) return view;
+                if(await itemManager.RemoveAsync(item.Id) == OperationResult.Failed)
                 {
                     return View("Error", new ErrorViewModel
                     {
@@ -185,15 +182,10 @@ namespace CollectionStore.Controllers
                     Url = returnUrl
                 });
             }
-            var userName = item.Collection.User.UserName;
-            if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
-            {
-                return View("Error", new ErrorViewModel
-                {
-                    ErrorTitle = localizer["NotRightsTitle"],
-                    ErrorMessage = localizer["NotRightsMessage", userName ?? string.Empty]
-                });
-            }
+
+            var view = await CheckUser(item.Collection.User.UserName);
+            if (view != null) return view;
+
             return View("AddEdit", new AddingEditingItemViewModel 
             {
                 ItemId = itemId,
@@ -209,7 +201,7 @@ namespace CollectionStore.Controllers
         public async Task<IActionResult> Edit(AddingEditingItemViewModel model)
         {
             model.ReturnUrl ??= "~/";
-            model.Collection = GetCollection(model.CollectionId);
+            model.Collection = collectionManager.GetById(model.CollectionId, true);
             if(model.Collection == null)
             {
                 return View("Error", new ErrorViewModel
@@ -218,6 +210,10 @@ namespace CollectionStore.Controllers
                     ErrorMessage = localizer["CollectionNotFoundMessage"]
                 });
             }
+
+            var view = await CheckUser(model.Collection.User.UserName);
+            if (view != null) return view;
+
             var item = context.Items.Where(i => i.Id == model.ItemId).Include(i => i.FieldValues).SingleOrDefault(i => i.Id == model.ItemId);
             if(item == null)
             {
@@ -247,12 +243,16 @@ namespace CollectionStore.Controllers
             return View("AddEdit", model);
         }
 
-        private Collection GetCollection(int id) => context.Collections
-                .Where(c => c.Id == id)
-                .Include(c => c.User)
-                .Include(c => c.Fields)
-                .ThenInclude(f => f.Type)
-                .SingleOrDefault(c => c.Id == id);
+        private async Task<IActionResult> CheckUser(string ownerUserName)
+        {
+            var error = await userChecker.CheckUserExistence();
+            if (error != null) return View("Error", error);
+            error = await userChecker.CheckUserBlockStatus();
+            if (error != null) return View("Error", error);
+            error = userChecker.CheckUserAccess(ownerUserName);
+            if (error != null) return View("Error", error);
+            return null;
+        }
         private bool ValidateFields(AddingEditingItemViewModel model)
         {
             foreach (int id in model.FieldIds)

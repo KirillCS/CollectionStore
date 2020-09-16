@@ -123,4 +123,7 @@
   <data name="LoginError" xml:space="preserve">
     <value>Неверный логин или пароль</value>
   </data>
+  <data name="UserBlocked" xml:space="preserve">
+    <value>Учетная запись заблокирована</value>
+  </data>
 </root>

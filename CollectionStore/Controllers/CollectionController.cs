@@ -21,15 +21,17 @@ namespace CollectionStore.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly ApplicationDbContext context;
+        private readonly UserChecker userChecker;
         private readonly CollectionManager collectionService;
         private readonly IStringLocalizer<CollectionController> localizer;
 
         public CollectionController(UserManager<User> userManager, 
-            ApplicationDbContext context, CollectionManager collectionService, 
-            IStringLocalizer<CollectionController> localizer)
+            ApplicationDbContext context, UserChecker userChecker,
+            CollectionManager collectionService, IStringLocalizer<CollectionController> localizer)
         {
             this.userManager = userManager;
             this.context = context;
+            this.userChecker = userChecker;
             this.collectionService = collectionService;
             this.localizer = localizer;
         }
@@ -37,15 +39,9 @@ namespace CollectionStore.Controllers
         [HttpGet]
         public async Task<IActionResult> Add(string userName = null, string returnUrl = null)
         {
-            userName ??= string.Empty;
-            if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
-            {
-                return View("Error", new ErrorViewModel
-                {
-                    ErrorTitle = localizer["NotRightsTitle"],
-                    ErrorMessage = localizer["NotRightsMessage", userName]
-                });
-            }
+            var view = await CheckUser(userName);
+            if (view != null) return view;
+
             var user = await userManager.FindByNameAsync(userName);
             if(user == null)
             {
@@ -60,23 +56,20 @@ namespace CollectionStore.Controllers
                 Themes = context.CollectionThemes.ToList(),
                 Types = context.FieldTypes.ToList(),
                 UserId = user.Id,
+                UserName = user.UserName,
                 ReturnUrl = returnUrl
             });
         }
         [HttpPost]
         public async Task<IActionResult> Add(AddingCollectionViewModel model)
         {
+            var view = await CheckUser(model.UserName);
+            if (view != null) return view;
+
             model.ReturnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var collection = new Collection
-                {
-                    Name = model.Name,
-                    Description = model.Description,
-                    ThemeId = model.SelectedThemeId,
-                    UserId = model.UserId,
-                    Fields = GetFields(model)
-                };
+                var collection = CreateCollection(model);
                 if(await collectionService.AddAsync(collection) == OperationResult.Failed)
                 {
                     return View("Error", new ErrorViewModel
@@ -101,16 +94,9 @@ namespace CollectionStore.Controllers
             var collection = context.Collections.Where(c => c.Id == collectionId).Include(c => c.User).SingleOrDefault(c => c.Id == collectionId);
             if(collection != null)
             {
-                var userName = collection.User.UserName;
-                if (User.Identity.Name != userName && !User.IsInRole(Role.Admin))
-                {
-                    return View("Error", new ErrorViewModel
-                    {
-                        ErrorTitle = localizer["NotRightsTitle"],
-                        ErrorMessage = localizer["NotRightsMessage", userName]
-                    });
-                }
-                if(await collectionService.RemoveAsync(collection.Id) == OperationResult.Failed)
+                var view = await CheckUser(collection.User.UserName);
+                if (view != null) return view;
+                if (await collectionService.RemoveAsync(collection.Id) == OperationResult.Failed)
                 {
                     return View("Error", new ErrorViewModel
                     {
@@ -123,7 +109,17 @@ namespace CollectionStore.Controllers
             }
             return Redirect(returnUrl);
         }
-
+        private Collection CreateCollection (AddingCollectionViewModel model)
+        {
+            return new Collection
+            {
+                Name = model.Name,
+                Description = model.Description,
+                ThemeId = model.SelectedThemeId,
+                UserId = model.UserId,
+                Fields = GetFields(model)
+            };
+        }
         private List<Field> GetFields(AddingCollectionViewModel model)
         {
             var fields = new List<Field>();
@@ -139,6 +135,16 @@ namespace CollectionStore.Controllers
                 }
             }
             return fields;
+        }
+        private async Task<IActionResult> CheckUser(string ownerUserName)
+        {
+            var error = await userChecker.CheckUserExistence();
+            if (error != null) return View("Error", error);
+            error = await userChecker.CheckUserBlockStatus();
+            if (error != null) return View("Error", error);
+            error = userChecker.CheckUserAccess(ownerUserName);
+            if (error != null) return View("Error", error);
+            return null;
         }
     }
 }

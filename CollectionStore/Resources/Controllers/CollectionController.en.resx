@@ -126,21 +126,6 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
-  <data name="CollectionNotFoundButtonLabel" xml:space="preserve">
-    <value>To user profile</value>
-  </data>
-  <data name="CollectionNotFoundMessage" xml:space="preserve">
-    <value>The collection has already been deleted by owner or administrator. Or something went wrong...</value>
-  </data>
-  <data name="CollectionNotFoundTitle" xml:space="preserve">
-    <value>Collection isn't found</value>
-  </data>
-  <data name="NotRightsMessage" xml:space="preserve">
-    <value>You can not manipulate with collections of user {0}.</value>
-  </data>
-  <data name="NotRightsTitle" xml:space="preserve">
-    <value>Not enough rights</value>
-  </data>
   <data name="RemovingCollectionErrorMessage" xml:space="preserve">
     <value>Something went wrong while removing collection from the database.</value>
   </data>

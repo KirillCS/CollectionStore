@@ -83,7 +83,7 @@
                             <td><a class="card-link" title="@Localizer["GoToPage", user.UserName]" 
                                    asp-controller="Profile" asp-action="Index" asp-route-userName="@user.UserName">@user.UserName</a></td>
                             <td class="@(user.IsBlocked ? "text-danger" : "text-success")"><strong>@(user.IsBlocked ? Localizer["Blocked"] : Localizer["Active"])</strong></td>
-                            <td class="@(user.IsAdmin ? "text-primary" : "text-secondary")">@(user.IsAdmin ? Localizer["Admin"] : Localizer["User"])</td>
+                            <td class="@(user.IsAdmin ? "text-info font-weight-bold" : "text-muted")">@(user.IsAdmin ? Localizer["Admin"] : Localizer["User"])</td>
                         </tr>
                     }
                 </tbody>
