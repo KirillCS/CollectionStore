@@ -14,6 +14,8 @@ namespace CollectionStore.ViewModels
         [Required(ErrorMessage = "Required")]
         public string Name { get; set; }
 
+        public List<string> TagNames { get; set; }
+
         public List<string> Values { get; set; }
 
         public List<int> FieldIds { get; set; }
@@ -30,6 +32,7 @@ namespace CollectionStore.ViewModels
         {
             Values = new List<string>();
             FieldIds = new List<int>();
+            TagNames = new List<string>();
         }
     }
 }

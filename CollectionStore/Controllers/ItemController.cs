@@ -19,16 +19,19 @@ namespace CollectionStore.Controllers
         private readonly ApplicationDbContext context;
         private readonly ItemManager itemManager;
         private readonly CollectionManager collectionManager;
+        private readonly TagManager tagManager;
         private readonly UserChecker userChecker;
         private readonly IStringLocalizer<ItemController> localizer;
 
         public ItemController(ApplicationDbContext context, 
             ItemManager itemManager, CollectionManager collectionManager,
-            UserChecker userChecker, IStringLocalizer<ItemController> localizer)
+            TagManager tagManager, UserChecker userChecker, 
+            IStringLocalizer<ItemController> localizer)
         {
             this.context = context;
             this.itemManager = itemManager;
             this.collectionManager = collectionManager;
+            this.tagManager = tagManager;
             this.userChecker = userChecker;
             this.localizer = localizer;
         }
@@ -129,6 +132,7 @@ namespace CollectionStore.Controllers
                         Url = model.ReturnUrl
                     });
                 }
+                await AddTagsAsync(item.Id, model);
                 return Redirect(model.ReturnUrl);
             }
             return View("AddEdit", model);
@@ -171,6 +175,8 @@ namespace CollectionStore.Controllers
                 .Include(i => i.Collection)
                 .ThenInclude(c => c.Fields)
                 .ThenInclude(f => f.Type)
+                .Include(i => i.ItemTags)
+                .ThenInclude(it => it.Tag)
                 .SingleOrDefaultAsync(i => i.Id == itemId);
             if (item == null)
             {
@@ -190,6 +196,7 @@ namespace CollectionStore.Controllers
             {
                 ItemId = itemId,
                 Name = item.Name,
+                TagNames = item.ItemTags.Select(it => it.Tag.Content).ToList(),
                 Values = item.FieldValues.Select(fv => fv.Value).ToList(),
                 CollectionId = item.Collection.Id,
                 Collection = item.Collection,
@@ -277,6 +284,14 @@ namespace CollectionStore.Controllers
             }
             return fieldValues;
         }
+        private async Task AddTagsAsync(int itemId, AddingEditingItemViewModel model)
+        {
+            foreach (string content in model.TagNames)
+            {
+                await itemManager.AddTagAsync(content, itemId, false);
+            }
+            await context.SaveChangesAsync();
+        }
         private async Task EditItem(Item item, AddingEditingItemViewModel model)
         {
             item.Name = model.Name;
@@ -288,6 +303,8 @@ namespace CollectionStore.Controllers
                     fieldValue.Value = model.Values[i];
                 }
             }
+            context.ItemTags.RemoveRange(context.ItemTags.Where(it => it.ItemId == item.Id));
+            await AddTagsAsync(item.Id, model);
             await context.SaveChangesAsync();
         }
     }

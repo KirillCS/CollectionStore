@@ -9,7 +9,23 @@ namespace CollectionStore.Services
 {
     public class ItemManager : BaseEntityManager<Item, int>
     {
-        public ItemManager(ApplicationDbContext context) : base(context) { }
+        private readonly TagManager tagManager;
+
+        public ItemManager(ApplicationDbContext context, TagManager tagManager) : base(context) 
+        {
+            this.tagManager = tagManager;
+        }
+
+        public async Task AddTagAsync(string tagContent, int itemId, bool saveChanges = true)
+        {
+            if (context.Tags.FirstOrDefault(t => t.Content == tagContent) == null)
+            {
+                await tagManager.AddAsync(new Tag { Content = tagContent });
+            }
+            var tag = context.Tags.FirstOrDefault(t => t.Content == tagContent);
+            await context.ItemTags.AddAsync(new ItemTag { ItemId = itemId, TagId = tag.Id });
+            if (saveChanges) await context.SaveChangesAsync();
+        }
 
         protected override Item GetById(int id) => context.Items.FirstOrDefault(i => i.Id == id);
         protected override Item GetByIdCoherentlyLoad(int id)

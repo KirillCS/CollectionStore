@@ -19,7 +19,7 @@ namespace CollectionStore.Services
         {
             return coherentlyLoad ? GetByIdCoherentlyLoad(id) : GetById(id);
         }
-        public async Task<OperationResult> AddAsync(TEntity entity)
+        public async Task<OperationResult> AddAsync(TEntity entity, bool saveChanges = true)
         {
             if (entity == null)
             {
@@ -28,7 +28,7 @@ namespace CollectionStore.Services
             try
             {
                 await AddEntity(entity);
-                await context.SaveChangesAsync();
+                if (saveChanges) await context.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -36,7 +36,7 @@ namespace CollectionStore.Services
             }
             return OperationResult.Successed;
         }
-        public async Task<OperationResult> RemoveAsync(TId id)
+        public async Task<OperationResult> RemoveAsync(TId id, bool saveChanges = true)
         {
             var entity = GetByIdCoherentlyLoad(id);
             if (entity != null)
@@ -44,7 +44,7 @@ namespace CollectionStore.Services
                 try
                 {
                     RemoveEntity(entity);
-                    await context.SaveChangesAsync();
+                    if (saveChanges) await context.SaveChangesAsync();
                 }
                 catch (Exception)
                 {
@@ -54,7 +54,7 @@ namespace CollectionStore.Services
             }
             return OperationResult.Failed;
         }
-        public async Task<OperationResult> UpdateAsync(TId id, TEntity sourceEntity)
+        public async Task<OperationResult> UpdateAsync(TId id, TEntity sourceEntity, bool saveChanges = true)
         {
             var entity = GetByIdCoherentlyLoad(id);
             if (sourceEntity == null || entity == null)
@@ -64,7 +64,7 @@ namespace CollectionStore.Services
             try
             {
                 UpdateEntity(entity, sourceEntity);
-                await context.SaveChangesAsync();
+                if (saveChanges) await context.SaveChangesAsync();
             }
             catch (Exception)
             {

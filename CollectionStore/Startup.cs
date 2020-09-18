@@ -64,6 +64,7 @@ namespace CollectionStore
                     options.AppId = Configuration["FacebookLogin:Id"];
                     options.AppSecret = Configuration["FacebookLogin:Secret"];
                 });
+            services.AddTransient<TagManager>();
             services.AddTransient<ItemManager>();
             services.AddTransient<CollectionManager>();
             services.AddTransient<UserChecker>();
