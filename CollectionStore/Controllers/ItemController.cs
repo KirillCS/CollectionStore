@@ -46,6 +46,8 @@ namespace CollectionStore.Controllers
                 .Include(i => i.FieldValues)
                 .ThenInclude(fv => fv.Field)
                 .ThenInclude(f => f.Type)
+                .Include(i => i.ItemTags)
+                .ThenInclude(it => it.Tag)
                 .SingleOrDefault(i => i.Id == itemId);
             if(item == null)
             {

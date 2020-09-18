@@ -19,6 +19,20 @@
                     <div class="card-text m-1">@Localizer["Collection"]: <a class="card-link" asp-controller="Profile"
                                                                             asp-action="Collection" asp-route-collectionId="@Model.Item.CollectionId"
                                                                             title="@Localizer["GoToCollection", Model.Item.Collection.Name]">@Model.Item.Collection.Name</a></div>
+                    @if (!Model.Item.ItemTags.IsNullOrEmpty())
+                    {
+                        <ul class="list-inline m-1">
+                            <li class="list-inline-item m-0">
+                                <div class="card-text">@Localizer["Tags"]:</div>
+                            </li>
+                            @foreach (var itemTag in Model.Item.ItemTags)
+                            {
+                                <li class="list-inline-item m-0">
+                                    <div class="badge badge-secondary p-1">@itemTag.Tag.Content</div>
+                                </li>
+                            }
+                        </ul>
+                    }
                     <hr />
                     @foreach (var fieldValue in Model.Item.FieldValues)
                     {
