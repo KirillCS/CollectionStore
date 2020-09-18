@@ -8,11 +8,11 @@ namespace CollectionStore.ViewModels
 {
     public class SearchViewModel
     {
-        public string SearchString { get; set; }
+        public string SearchParameter { get; set; }
 
         public List<Item> Items { get; set; }
 
-        public string ReturnUrl { get; set; }
+        public bool ByTag { get; set; }
 
         public SearchViewModel()
         {

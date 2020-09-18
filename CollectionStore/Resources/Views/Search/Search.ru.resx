@@ -129,6 +129,9 @@
   <data name="GoToProfile" xml:space="preserve">
     <value>Перейти к профилю {0}</value>
   </data>
+  <data name="ItemsWithTag" xml:space="preserve">
+    <value>Элементы c тегом "{0}"</value>
+  </data>
   <data name="NoResult" xml:space="preserve">
     <value>Нет подходящих элементов</value>
   </data>

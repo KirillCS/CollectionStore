@@ -19,7 +19,11 @@
                     <div class="card-text m-1">@Localizer["Collection"]: <a class="card-link" asp-controller="Profile"
                                                                             asp-action="Collection" asp-route-collectionId="@Model.Item.CollectionId"
                                                                             title="@Localizer["GoToCollection", Model.Item.Collection.Name]">@Model.Item.Collection.Name</a></div>
-                    @if (!Model.Item.ItemTags.IsNullOrEmpty())
+                    @if (Model.Item.ItemTags.IsNullOrEmpty())
+                    {
+                        <div class="card-text">@Localizer["Tags"]: -</div>
+                    }
+                    else
                     {
                         <ul class="list-inline m-1">
                             <li class="list-inline-item m-0">
@@ -28,7 +32,9 @@
                             @foreach (var itemTag in Model.Item.ItemTags)
                             {
                                 <li class="list-inline-item m-0">
-                                    <div class="badge badge-secondary p-1">@itemTag.Tag.Content</div>
+                                    <a class="badge badge-secondary p-1" asp-controller="Search" asp-action="SearchByTag" asp-route-tagContent="@itemTag.Tag.Content">
+                                        @itemTag.Tag.Content
+                                    </a>
                                 </li>
                             }
                         </ul>

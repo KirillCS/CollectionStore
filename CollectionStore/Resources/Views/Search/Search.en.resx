@@ -129,6 +129,9 @@
   <data name="GoToProfile" xml:space="preserve">
     <value>Go to profile {0}</value>
   </data>
+  <data name="ItemsWithTag" xml:space="preserve">
+    <value>Item with tag "{0}"</value>
+  </data>
   <data name="NoResult" xml:space="preserve">
     <value>No matching items</value>
   </data>

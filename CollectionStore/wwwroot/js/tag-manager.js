@@ -2,6 +2,9 @@
     const container = input.closest(".js-tag-manager-container");
     
     input.addEventListener("keypress", event => {
+        if (String.fromCharCode(event.which).search("[A-Za-zА-Яа-я0-9_]") == -1) {
+            event.preventDefault();
+        }
         if (event.keyCode == 13) {
             event.preventDefault();
             if (input.value) {

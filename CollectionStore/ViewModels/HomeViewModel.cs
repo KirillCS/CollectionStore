@@ -8,6 +8,8 @@ namespace CollectionStore.ViewModels
 {
     public class HomeViewModel
     {
+        public List<Tag> Tags { get; set; }
+
         public List<Collection> Collections { get; set; }
 
         public List<Item> Items { get; set; }

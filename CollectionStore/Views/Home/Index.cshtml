@@ -2,95 +2,142 @@
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["HomePage"];
+    double Avarage = 0;
+    if (!Model.Tags.IsNullOrEmpty())
+    {
+        Avarage = Model.Tags.Average(t => t.ItemTags.Count);
+    }
 }
 
-<div class="container">
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#collections" role="tab" aria-controls="collections" aria-selected="true">@Localizer["Collections"]</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#items" role="tab" aria-controls="items" aria-selected="false">@Localizer["Items"]</a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane fade show active" id="collections" role="tabpanel" aria-labelledby="home-tab">
-            @if (Model.Collections.Count == 0)
-            {
-                <div class="alert alert-info text-center my-3">@Localizer["NoCollectionMessage"]</div>
-            }
-            else
-            {
-                <div class="card-columns py-3">
-                    @foreach (var collection in Model.Collections)
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="mx-2 text-wrap">Tags</h5>
+                    <hr class="mt-2" />
+                    @if (Model.Tags.IsNullOrEmpty())
                     {
-                        <div class="card bg-light shadow-sm">
-                            @if (!string.IsNullOrEmpty(collection.ImagePath))
-                            {
-                                <a asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">
-                                    <img class="bd-placeholder-img card-img-top" src="@collection.ImagePath" focusable="false" role="img">
-                                </a>
-                            }
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <a class="card-link text-dark" asp-controller="Profile" asp-action="Collection"
-                                       asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@collection.Name (@collection.Theme.Name)</a>
-                                </h5>
-                                @if (collection.Description != null)
-                                {
-                                    <hr />
-                                    <div class="js-markdown-element">@collection.Description</div>
-                                }
-                            </div>
+                        <div class=" alert alert-info">
+                            <div class="alert alert-info text-center my-3">@Localizer["NoTags"]</div>
                         </div>
                     }
-                </div>
-            }
-        </div>
-        <div class="tab-pane fade pt-3" id="items" role="tabpanel" aria-labelledby="profile-tab">
-            @if (Model.Items.Count == 0)
-            {
-                <div class="alert alert-info text-center my-3">@Localizer["NoItemMessage"]</div>
-            }
-            else
-            {
-                <div class="accordion" id="accordionItems">
-                    @foreach (var item in Model.Items)
+                    else
                     {
-                        <div class="card bg-light">
-                            <div id="@($"heading{item.Id}")" class="card-header">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-block text-left" type="button" data-toggle="collapse"
-                                            data-target="#@($"collapse{item.Id}")" aria-expanded="false" aria-controls="@($"collapse{item.Id}")">
-                                        @item.Name
-                                    </button>
-                                </h2>
-                            </div>
-                            <div id="@($"collapse{item.Id}")" class="collapse" aria-labelledby="@($"heading{item.Id}")" data-parent="#accordionItems">
-                                <div class="card-body">
-
-                                    <div>
-                                        <div class="card-text m-1">
-                                            @Localizer["Owner"]: <a class="card-link" asp-controller="Profile"
-                                                                    asp-action="Index" asp-route-userName="@item.Collection.User.UserName"
-                                                                    title="@Localizer["GoToProfile", item.Collection.User.UserName]">@item.Collection.User.UserName</a>
-                                        </div>
-                                        <div class="card-text m-1">
-                                            @Localizer["Collection"]: <a class="card-link" asp-controller="Profile"
-                                                                            asp-action="Collection" asp-route-collectionId="@item.CollectionId"
-                                                                            asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)"
-                                                                            title="@Localizer["GoToCollection", item.Collection.Name]">@item.Collection.Name</a>
-                                        </div>
-                                        <hr />
-                                        <a class="card-text card-link m-1" asp-controller="Item" asp-action="Index"
-                                            asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Detail"]...</a>
+                        <ul class="list-inline m-0">
+                            @foreach (var tag in Model.Tags)
+                            {
+                                <li class="list-inline-item m-0">
+                                    <a class="badge @(tag.ItemTags.Count >= Avarage ? "badge-primary" : "badge-secondary") p-1" 
+                                       asp-controller="Search" asp-action="SearchByTag" asp-route-tagContent="@tag.Content">
+                                        @tag.Content <span class="badge badge-light">@tag.ItemTags.Count</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#collections" role="tab" aria-controls="collections" aria-selected="true">@Localizer["Collections"]</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#items" role="tab" aria-controls="items" aria-selected="false">@Localizer["Items"]</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="collections" role="tabpanel" aria-labelledby="home-tab">
+                    @if (Model.Collections.Count == 0)
+                    {
+                        <div class="alert alert-info text-center my-3">@Localizer["NoCollectionMessage"]</div>
+                    }
+                    else
+                    {
+                        <div class="card-columns py-3">
+                            @foreach (var collection in Model.Collections)
+                            {
+                                bool HasAccess = false;
+                                if (User.Identity != null)
+                                {
+                                    HasAccess = User.Identity.Name == collection.User.UserName || User.IsInRole(Role.Admin);
+                                }
+                                <div class="card bg-light @(HasAccess ? "border-info" : "") shadow-sm">
+                                    @if (!string.IsNullOrEmpty(collection.ImagePath))
+                                    {
+                                        <a asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">
+                                            <img class="bd-placeholder-img card-img-top" src="@collection.ImagePath" focusable="false" role="img">
+                                        </a>
+                                    }
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a class="card-link text-dark" asp-controller="Profile" asp-action="Collection"
+                                               asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@collection.Name (@collection.Theme.Name)</a>
+                                        </h5>
+                                        @if (collection.Description != null)
+                                        {
+                                            <hr />
+                                            <div class="js-markdown-element">@collection.Description</div>
+                                        }
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     }
                 </div>
-            }
+                <div class="tab-pane fade pt-3" id="items" role="tabpanel" aria-labelledby="profile-tab">
+                    @if (Model.Items.Count == 0)
+                    {
+                        <div class="alert alert-info text-center my-3">@Localizer["NoItemMessage"]</div>
+                    }
+                    else
+                    {
+                        <div class="accordion" id="accordionItems">
+                            @foreach (var item in Model.Items)
+                            {
+                                bool HasAccess = false;
+                                if (User.Identity != null)
+                                {
+                                    HasAccess = User.Identity.Name == item.Collection.User.UserName || User.IsInRole(Role.Admin);
+                                }
+                                <div class="card bg-light">
+                                    <div id="@($"heading{item.Id}")" class="card-header">
+                                        <h2 class="mb-0">
+                                            <button class="btn btn-block @(HasAccess ? "text-info" : "") text-left" type="button" data-toggle="collapse"
+                                                    data-target="#@($"collapse{item.Id}")" aria-expanded="false" aria-controls="@($"collapse{item.Id}")">
+                                                @item.Name
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="@($"collapse{item.Id}")" class="collapse" aria-labelledby="@($"heading{item.Id}")" data-parent="#accordionItems">
+                                        <div class="card-body">
+
+                                            <div>
+                                                <div class="card-text m-1">
+                                                    @Localizer["Owner"]: <a class="card-link" asp-controller="Profile"
+                                                                            asp-action="Index" asp-route-userName="@item.Collection.User.UserName"
+                                                                            title="@Localizer["GoToProfile", item.Collection.User.UserName]">@item.Collection.User.UserName</a>
+                                                </div>
+                                                <div class="card-text m-1">
+                                                    @Localizer["Collection"]: <a class="card-link" asp-controller="Profile"
+                                                                                    asp-action="Collection" asp-route-collectionId="@item.CollectionId"
+                                                                                    asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)"
+                                                                                    title="@Localizer["GoToCollection", item.Collection.Name]">@item.Collection.Name</a>
+                                                </div>
+                                                <hr />
+                                                <a class="card-text card-link m-1" asp-controller="Item" asp-action="Index"
+                                                    asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Detail"]...</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </div>

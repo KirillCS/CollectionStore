@@ -5,7 +5,7 @@
 }
 
 <div class="container">
-    <h4 class="mt-2 mx-2">@Localizer["SearchResult", Model.SearchString]</h4>
+    <h4 class="mt-2 mx-2">@(Model.ByTag ? Localizer["ItemsWithTag", Model.SearchParameter] : Localizer["SearchResult", Model.SearchParameter])</h4>
     <hr class="mb-4 mt-2" />
     @if (Model.Items.Count == 0)
     {
