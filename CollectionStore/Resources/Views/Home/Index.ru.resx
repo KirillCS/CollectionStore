@@ -144,6 +144,9 @@
   <data name="NoItemMessage" xml:space="preserve">
     <value>Список элементов пуст. Добавьте элемент в личную коллекцию первым!</value>
   </data>
+  <data name="NoTags" xml:space="preserve">
+    <value>Список тегов пуст</value>
+  </data>
   <data name="Owner" xml:space="preserve">
     <value>Владелец</value>
   </data>

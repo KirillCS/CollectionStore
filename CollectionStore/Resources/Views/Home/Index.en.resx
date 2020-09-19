@@ -144,6 +144,9 @@
   <data name="NoItemMessage" xml:space="preserve">
     <value>Item list is empty. Add an item to personal collection first!</value>
   </data>
+  <data name="NoTags" xml:space="preserve">
+    <value>Tag list is empty</value>
+  </data>
   <data name="Owner" xml:space="preserve">
     <value>Owner</value>
   </data>
