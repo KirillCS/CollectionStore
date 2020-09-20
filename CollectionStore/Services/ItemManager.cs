@@ -1,7 +1,5 @@
 ﻿using CollectionStore.Data;
 using CollectionStore.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,6 +32,7 @@ namespace CollectionStore.Services
             context.Entry(item).Reference(i => i.Collection).Load();
             context.Entry(item).Collection(i => i.FieldValues).Load();
             context.Entry(item).Collection(i => i.ItemTags).Load();
+            context.Entry(item).Collection(i => i.Comments).Load();
             return item;
         }
         protected async override Task AddEntity(Item entity)
@@ -43,6 +42,7 @@ namespace CollectionStore.Services
         protected override void RemoveEntity(Item entity)
         {
             RemoveFieldValues(entity);
+            RemoveComments(entity);
             RemoveItemTags(entity);
             context.Items.Remove(entity);
         }
@@ -57,6 +57,10 @@ namespace CollectionStore.Services
         private void RemoveFieldValues(Item entity)
         {
             context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.ItemId == entity.Id));
+        }
+        private void RemoveComments(Item entity)
+        {
+            context.Comments.RemoveRange(context.Comments.Where(c => c.ItemId == entity.Id));
         }
         private void RemoveItemTags(Item entity)
         {

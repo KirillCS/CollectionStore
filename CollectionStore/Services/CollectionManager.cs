@@ -1,7 +1,6 @@
 ﻿using CollectionStore.Data;
 using CollectionStore.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,7 +21,9 @@ namespace CollectionStore.Services
                 .Include(c => c.Items)
                 .ThenInclude(i => i.FieldValues)
                 .Include(c => c.Items)
-                .ThenInclude(c => c.ItemTags)
+                .ThenInclude(i => i.ItemTags)
+                .Include(c => c.Items)
+                .ThenInclude(i => i.Comments)
                 .FirstOrDefault(c => c.Id == id);
         }
         protected async override Task AddEntity(Collection entity)
@@ -52,6 +53,7 @@ namespace CollectionStore.Services
             {
                 context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.ItemId == item.Id));
                 context.ItemTags.RemoveRange(context.ItemTags.Where(it => it.ItemId == item.Id));
+                context.Comments.RemoveRange(context.Comments.Where(c => c.ItemId == item.Id));
             }
             context.Items.RemoveRange(context.Items.Where(i => i.CollectionId == entity.Id));
         }
@@ -59,15 +61,5 @@ namespace CollectionStore.Services
         {
             context.Fields.RemoveRange(context.Fields.Where(f => f.CollectionId == entity.Id));
         }
-        //private void SetCollection(Collection collection, Collection entity)
-        //{
-        //    collection.Name = entity.Name;
-        //    collection.Description = entity.Description;
-        //    collection.ImagePath = entity.ImagePath;
-        //    collection.ThemeId = entity.ThemeId;
-        //    collection.UserId = entity.UserId;
-        //    collection.Fields = entity.Fields;
-        //    collection.Items = entity.Items;
-        //}
     }
 }
