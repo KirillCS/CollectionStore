@@ -11,10 +11,12 @@ namespace CollectionStore.Models
         public bool IsBlocked { get; set; }
 
         public List<Collection> Collections { get; set; }
+        public List<Comment> Comments { get; set; }
 
         public User()
         {
             Collections = new List<Collection>();
+            Comments = new List<Comment>();
         }
     }
 }

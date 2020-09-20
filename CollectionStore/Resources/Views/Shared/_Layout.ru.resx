@@ -126,6 +126,9 @@
   <data name="LogOut" xml:space="preserve">
     <value>Выйти</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
   <data name="SignUp" xml:space="preserve">
     <value>Зарегистрироваться</value>
   </data>

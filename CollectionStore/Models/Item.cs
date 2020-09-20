@@ -15,11 +15,13 @@ namespace CollectionStore.Models
 
         public List<FieldValue> FieldValues { get; set; }
         public List<ItemTag> ItemTags { get; set; }
+        public List<Comment> Comments { get; set; }
 
         public Item()
         {
             FieldValues = new List<FieldValue>();
             ItemTags = new List<ItemTag>();
+            Comments = new List<Comment>();
         }
     }
 }

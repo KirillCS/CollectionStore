@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectionStore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200831101832_DbInit")]
+    [Migration("20200920084433_DbInit")]
     partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,34 @@ namespace CollectionStore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CollectionThemes");
+                });
+
+            modelBuilder.Entity("CollectionStore.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("CollectionStore.Models.Field", b =>
@@ -389,6 +417,19 @@ namespace CollectionStore.Migrations
 
                     b.HasOne("CollectionStore.Models.User", "User")
                         .WithMany("Collections")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("CollectionStore.Models.Comment", b =>
+                {
+                    b.HasOne("CollectionStore.Models.Item", "Item")
+                        .WithMany("Comments")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollectionStore.Models.User", "User")
+                        .WithMany("Comments")
                         .HasForeignKey("UserId");
                 });
 
