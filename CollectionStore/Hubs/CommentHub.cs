@@ -39,7 +39,7 @@ namespace CollectionStore.Hubs
             {
                 await AddComment(message, item.Id);
             }
-            await Clients.Group(itemId).SendAsync("Send", Context.User.Identity.Name, message, DateTime.Now.ToString("HH:mm dd.MM.yyyy"));
+            await Clients.Group(itemId).SendAsync("SendComment", Context.User.Identity.Name, message, DateTime.Now.ToString("HH:mm dd.MM.yyyy"));
         }
         private async Task AddComment(string message, int itemId)
         {

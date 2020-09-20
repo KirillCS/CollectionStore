@@ -16,6 +16,7 @@ document.querySelectorAll(".js-comment-send-button").forEach(btn => {
         if (input) {
             let itemId = document.getElementById("itemId").value;
             hubConnection.invoke("SendComment", input.value, itemId);
+            input.value = "";
         }
     });
 });
