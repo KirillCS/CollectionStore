@@ -123,6 +123,9 @@
   <data name="Collection" xml:space="preserve">
     <value>Коллекция</value>
   </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Комментарии</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Описание элемента</value>
   </data>
@@ -138,6 +141,9 @@
   <data name="Item" xml:space="preserve">
     <value>Элемент "{0}"</value>
   </data>
+  <data name="LoginToWrite" xml:space="preserve">
+    <value>Авторизируйтесь, чтобы написать комментарий</value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>Нет</value>
   </data>
@@ -149,6 +155,12 @@
   </data>
   <data name="RemoveItem" xml:space="preserve">
     <value>Удалить элемент "{0}" из коллекции "{1}"?</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="ShareYourThoughts" xml:space="preserve">
+    <value>Поделитесь своими мыслями</value>
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Теги</value>

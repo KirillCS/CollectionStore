@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using CollectionStore.Data;
 using CollectionStore.Services;
+using CollectionStore.Hubs;
 
 namespace CollectionStore
 {
@@ -68,6 +69,7 @@ namespace CollectionStore
             services.AddTransient<ItemManager>();
             services.AddTransient<CollectionManager>();
             services.AddTransient<UserChecker>();
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -98,6 +100,7 @@ namespace CollectionStore
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<CommentHub>("/comment");
             });
         }
     }

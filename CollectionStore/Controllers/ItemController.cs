@@ -48,6 +48,8 @@ namespace CollectionStore.Controllers
                 .ThenInclude(f => f.Type)
                 .Include(i => i.ItemTags)
                 .ThenInclude(it => it.Tag)
+                .Include(i => i.Comments)
+                .ThenInclude(c => c.User)
                 .SingleOrDefault(i => i.Id == itemId);
             if(item == null)
             {

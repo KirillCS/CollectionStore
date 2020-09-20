@@ -123,6 +123,9 @@
   <data name="Collection" xml:space="preserve">
     <value>Collection</value>
   </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Сomments</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Item description</value>
   </data>
@@ -138,6 +141,9 @@
   <data name="Item" xml:space="preserve">
     <value>Item "{0}"</value>
   </data>
+  <data name="LoginToWrite" xml:space="preserve">
+    <value>Authorize to write a comment</value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
@@ -149,6 +155,12 @@
   </data>
   <data name="RemoveItem" xml:space="preserve">
     <value>Remove item "{0}" from collection "{1}"?</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="ShareYourThoughts" xml:space="preserve">
+    <value>Share your thoughts</value>
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Tags</value>
