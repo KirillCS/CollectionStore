@@ -59,9 +59,61 @@
             <hr />
             @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole(Role.Admin))
             {
-                <a class="btn btn-outline-primary btn-block mb-3" asp-controller="Item" asp-action="Add"
+                <a class="btn btn-outline-primary btn-block mb-4" asp-controller="Item" asp-action="Add"
                    asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Add"]</a>
             }
+            <div class="dropdown show mx-1 mb-2">
+                <a class="btn btn-secondary btn-sm dropdown-toggle" role="button" id="dropdownSortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @Localizer["SortBy"]
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownSortBy">
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
+                       asp-route-sortBy="AlphabetUp" asp-route-returnUrl="@Model.ReturnUrl">
+                        @Localizer["Alphabet"]
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+                        </svg>
+                    </a>
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
+                       asp-route-sortBy="AlphabetDown" asp-route-returnUrl="@Model.ReturnUrl">
+                        @Localizer["Alphabet"]
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+                        </svg>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
+                       asp-route-sortBy="DateUp" asp-route-returnUrl="@Model.ReturnUrl">
+                        @Localizer["Publication"]
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+                        </svg>
+                    </a>
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
+                       asp-route-sortBy="DateDown" asp-route-returnUrl="@Model.ReturnUrl">
+                        @Localizer["Publication"]
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+                        </svg>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
+                       asp-route-sortBy="LikeUp" asp-route-returnUrl="@Model.ReturnUrl">
+                        @Localizer["Likes"]
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+                        </svg>
+                    </a>
+                    <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
+                       asp-route-sortBy="LikeDown" asp-route-returnUrl="@Model.ReturnUrl">
+                        @Localizer["Likes"]
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
             <div class="list-group bg-light">
                 @foreach (var item in Model.Collection.Items)
                 {

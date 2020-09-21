@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using CollectionStore.Data;
 using Microsoft.EntityFrameworkCore;
+using CollectionStore.Helpers;
 
 namespace CollectionStore.Controllers
 {
@@ -45,19 +46,17 @@ namespace CollectionStore.Controllers
                 Collections = context.Collections.Include(c => c.Theme).Where(c => c.UserId == user.Id).ToList()
             });
         }
-
         [HttpGet]
-        public IActionResult Collection(int? collectionId = null, string returnUrl = null)
+        public IActionResult Collection(int collectionId, SortBy sortBy = SortBy.None, string returnUrl = null)
         {
             returnUrl ??= "~/";
-            collectionId ??= -1;
             var collection = context.Collections
-                .Where(c => c.Id == collectionId.Value)
+                .Where(c => c.Id == collectionId)
                 .Include(c => c.Items)
                 .ThenInclude(i => i.Likes)
                 .Include(c => c.Theme)
                 .Include(c => c.User)
-                .SingleOrDefault(c => c.Id == collectionId.Value);
+                .SingleOrDefault(c => c.Id == collectionId);
             if(collection == null)
             {
                 return View("Error", new ErrorViewModel
@@ -66,7 +65,7 @@ namespace CollectionStore.Controllers
                     ErrorMessage = localizer["CollectionNotFountMessage", "someaddress@problem.com"]
                 });
             }
-            collection.Items = collection.Items.OrderByDescending(i => i.Id).ToList();
+            Sorting.SortItemsInCollection(collection, sortBy);
             return View(new CollectionViewModel
             {
                 Collection = collection,
