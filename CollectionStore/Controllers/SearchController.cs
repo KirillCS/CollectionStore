@@ -50,6 +50,7 @@ namespace CollectionStore.Controllers
             items = context.Items.Where(i => /*EF.Functions.FreeText(i.Name, searchString)*/i.Name.Contains(searchString))
                 .Include(i => i.Collection)
                 .ThenInclude(c => c.User)
+                .Include(i => i.Likes)
                 .OrderByDescending(i => i.Id)
                 .ToList();
             return items;
@@ -60,6 +61,8 @@ namespace CollectionStore.Controllers
                 .Include(it => it.Item)
                 .ThenInclude(i => i.Collection)
                 .ThenInclude(c => c.User)
+                .Include(it => it.Item)
+                .ThenInclude(i => i.Likes)
                 .Where(it => it.Tag.Content == tagContent)
                 .Select(it => it.Item)
                 .OrderByDescending(i => i.Id)

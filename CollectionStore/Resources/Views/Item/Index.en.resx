@@ -141,6 +141,9 @@
   <data name="Item" xml:space="preserve">
     <value>Item "{0}"</value>
   </data>
+  <data name="Like" xml:space="preserve">
+    <value>Like</value>
+  </data>
   <data name="LoginToWrite" xml:space="preserve">
     <value>Authorize to write a comment</value>
   </data>
