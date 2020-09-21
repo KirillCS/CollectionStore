@@ -24,6 +24,8 @@ namespace CollectionStore.Services
                 .ThenInclude(i => i.ItemTags)
                 .Include(c => c.Items)
                 .ThenInclude(i => i.Comments)
+                .Include(c => c.Items)
+                .ThenInclude(i => i.Likes)
                 .FirstOrDefault(c => c.Id == id);
         }
         protected async override Task AddEntity(Collection entity)
@@ -54,6 +56,7 @@ namespace CollectionStore.Services
                 context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.ItemId == item.Id));
                 context.ItemTags.RemoveRange(context.ItemTags.Where(it => it.ItemId == item.Id));
                 context.Comments.RemoveRange(context.Comments.Where(c => c.ItemId == item.Id));
+                context.Likes.RemoveRange(context.Likes.Where(l => l.ItemId == item.Id));
             }
             context.Items.RemoveRange(context.Items.Where(i => i.CollectionId == entity.Id));
         }

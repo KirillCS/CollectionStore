@@ -115,6 +115,7 @@ namespace CollectionStore.Controllers
         {
             await RemoveCollections(user);
             RemoveComments(user);
+            RemoveLikes(user);
             return await userManager.DeleteAsync(user);
         }
         private async Task RemoveCollections(User user)
@@ -128,6 +129,10 @@ namespace CollectionStore.Controllers
         private void RemoveComments(User user)
         {
             context.Comments.RemoveRange(context.Comments.Where(c => c.UserId == user.Id));
+        }
+        private void RemoveLikes(User user)
+        {
+            context.Likes.RemoveRange(context.Likes.Where(l => l.UserId == user.Id));
         }
     }
 }

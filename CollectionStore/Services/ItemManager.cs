@@ -1,5 +1,6 @@
 ﻿using CollectionStore.Data;
 using CollectionStore.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,6 +45,7 @@ namespace CollectionStore.Services
         {
             RemoveFieldValues(entity);
             RemoveComments(entity);
+            RemoveLikes(entity);
             RemoveItemTags(entity);
             context.Items.Remove(entity);
         }
@@ -62,6 +64,10 @@ namespace CollectionStore.Services
         private void RemoveComments(Item entity)
         {
             context.Comments.RemoveRange(context.Comments.Where(c => c.ItemId == entity.Id));
+        }
+        private void RemoveLikes(Item entity)
+        {
+            context.Likes.RemoveRange(context.Likes.Where(l => l.ItemId == entity.Id));
         }
         private void RemoveItemTags(Item entity)
         {
