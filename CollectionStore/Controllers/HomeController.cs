@@ -38,8 +38,10 @@ namespace CollectionStore.Controllers
         }
         private List<Collection> GetCollections()
         {
-            return context.Collections.Include(c => c.Theme)
+            return context.Collections
+                .Include(c => c.Theme)
                 .Include(c => c.User)
+                .Include(c => c.Items)
                 .ToList();
         }
         private List<Item> GetItems()
