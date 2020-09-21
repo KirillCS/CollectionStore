@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Alphabet" xml:space="preserve">
+    <value>alphabet</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -135,11 +138,17 @@
   <data name="ItemsOfCollection" xml:space="preserve">
     <value>Collection items</value>
   </data>
+  <data name="Likes" xml:space="preserve">
+    <value>like count</value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
   <data name="Owner" xml:space="preserve">
     <value>Owner</value>
+  </data>
+  <data name="Publication" xml:space="preserve">
+    <value>publication date</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
@@ -149,6 +158,9 @@
   </data>
   <data name="RemoveItem" xml:space="preserve">
     <value>Remove item "{0}" from collection "{1}"?</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sort by</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

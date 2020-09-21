@@ -65,7 +65,7 @@ namespace CollectionStore.Controllers
                     ErrorMessage = localizer["CollectionNotFountMessage", "someaddress@problem.com"]
                 });
             }
-            Sorting.SortItemsInCollection(collection, sortBy);
+            collection.Items = Sorting.SortItemsByParameter(collection.Items, sortBy);
             return View(new CollectionViewModel
             {
                 Collection = collection,

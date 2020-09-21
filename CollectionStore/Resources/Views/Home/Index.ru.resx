@@ -123,6 +123,9 @@
   <data name="Collections" xml:space="preserve">
     <value>Коллекции</value>
   </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Подробнее</value>
+  </data>
   <data name="GoToCollection" xml:space="preserve">
     <value>Перейти к коллекции {0}</value>
   </data>

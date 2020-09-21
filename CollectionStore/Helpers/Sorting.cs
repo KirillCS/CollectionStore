@@ -18,34 +18,26 @@ namespace CollectionStore.Helpers
     }
     public static class Sorting
     {
-        public static void SortItemsInCollection(Collection collection, SortBy sortBy)
+        public static List<Item> SortItemsByParameter(List<Item> items, SortBy sortBy)
         {
             switch (sortBy)
             {
                 case SortBy.None:
-                    collection.Items = collection.Items.OrderByDescending(i => i.Id).ToList();
-                    break;
+                    return items.OrderByDescending(i => i.Id).ToList();
                 case SortBy.AlphabetUp:
-                    collection.Items = collection.Items.OrderBy(i => i.Name).ToList();
-                    break;
+                    return items.OrderBy(i => i.Name).ToList();
                 case SortBy.AlphabetDown:
-                    collection.Items = collection.Items.OrderByDescending(i => i.Name).ToList();
-                    break;
+                    return items.OrderByDescending(i => i.Name).ToList();
                 case SortBy.DateUp:
-                    collection.Items = collection.Items.OrderByDescending(i => i.Id).ToList();
-                    break;
+                    return items.OrderByDescending(i => i.Id).ToList();
                 case SortBy.DateDown:
-                    collection.Items = collection.Items.OrderBy(i => i.Id).ToList();
-                    break;
+                    return items.OrderBy(i => i.Id).ToList();
                 case SortBy.LikeUp:
-                    collection.Items = collection.Items.OrderByDescending(i => i.Likes.Count).ToList();
-                    break;
+                    return items.OrderByDescending(i => i.Likes.Count).ToList();
                 case SortBy.LikeDown:
-                    collection.Items = collection.Items.OrderBy(i => i.Likes.Count).ToList();
-                    break;
+                    return items.OrderBy(i => i.Likes.Count).ToList();
                 default:
-                    collection.Items = collection.Items.OrderByDescending(i => i.Id).ToList();
-                    break;
+                    return items.OrderByDescending(i => i.Id).ToList();
             }
         }
     }

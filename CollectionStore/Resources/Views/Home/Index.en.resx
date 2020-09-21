@@ -123,6 +123,9 @@
   <data name="Collections" xml:space="preserve">
     <value>Collections</value>
   </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
   <data name="GoToCollection" xml:space="preserve">
     <value>Go to collection {0}</value>
   </data>
