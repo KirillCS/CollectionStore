@@ -114,6 +114,7 @@ namespace CollectionStore.Controllers
         private async Task<IdentityResult> DeleteUser(User user)
         {
             await RemoveCollections(user);
+            RemoveComments(user);
             return await userManager.DeleteAsync(user);
         }
         private async Task RemoveCollections(User user)
@@ -123,6 +124,10 @@ namespace CollectionStore.Controllers
             {
                 await collectionService.RemoveAsync(id);
             }
+        }
+        private void RemoveComments(User user)
+        {
+            context.Comments.RemoveRange(context.Comments.Where(c => c.UserId == user.Id));
         }
     }
 }

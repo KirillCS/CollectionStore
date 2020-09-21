@@ -33,6 +33,7 @@ namespace CollectionStore.Services
             context.Entry(item).Collection(i => i.FieldValues).Load();
             context.Entry(item).Collection(i => i.ItemTags).Load();
             context.Entry(item).Collection(i => i.Comments).Load();
+            context.Entry(item).Collection(i => i.Likes).Load();
             return item;
         }
         protected async override Task AddEntity(Item entity)
