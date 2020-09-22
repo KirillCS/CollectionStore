@@ -1,14 +1,12 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 using CollectionStore.Models;
-using Microsoft.AspNetCore.Http;
 using CollectionStore.ViewModels;
 using CollectionStore.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using CollectionStore.Helpers;
 
 namespace CollectionStore.Controllers
 {
@@ -22,11 +20,11 @@ namespace CollectionStore.Controllers
             this.context = context;
         }
 
-        public IActionResult Index() => View(new HomeViewModel
+        public IActionResult Index(SortBy sortBy = SortBy.None) => View(new HomeViewModel
         {
             Tags = GetTags(),
             Collections = GetCollections(),
-            Items = GetItems()
+            Items = GetItems(sortBy)
         });
 
         private List<Tag> GetTags()
@@ -44,9 +42,9 @@ namespace CollectionStore.Controllers
                 .Include(c => c.Items)
                 .ToList();
         }
-        private List<Item> GetItems()
+        private List<Item> GetItems(SortBy sortBy)
         {
-            return context.Items.Include(i => i.Collection)
+            var items = context.Items.Include(i => i.Collection)
                 .ThenInclude(c => c.User)
                 .Include(i => i.FieldValues)
                 .ThenInclude(fv => fv.Field)
@@ -54,6 +52,7 @@ namespace CollectionStore.Controllers
                 .Include(i => i.Likes)
                 .OrderByDescending(i => i.Id)
                 .ToList();
+            return Sorting.SortItemsByParameter(items, sortBy);
         }
     }
 }
