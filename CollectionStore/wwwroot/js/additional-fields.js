@@ -8,10 +8,7 @@
 
     button.addEventListener("click", e => {
         let table = block.getElementsByClassName("js-additional-fields-table")[0];
-        if (!nameField.value) {
-            alert("Please, fill the field name.");
-        }
-        else {
+        if (nameField.value) {
             if (!table) {
                 table = createTable(nameLabel, typeLabel);
                 block.appendChild(table);
@@ -34,7 +31,7 @@ function createTable(nameLabel, typeLabel) {
     let table = document.createElement("table");
     table.classList.add("table", "table-sm", "table-bordered", "text-center", "text-wrap", "js-additional-fields-table");
     table.createTHead().classList.add("thead-light");
-    table.tHead.innerHTML = `<tr>\n<th scope=\"col\">${nameLabel}</th>\n<th scope=\"col\">${typeLabel}</th>\n<th scope=\"col\"></th>\n</tr>`
+    table.tHead.innerHTML = `<tr>\n<th scope="col">${nameLabel}</th>\n<th scope="col">${typeLabel}</th>\n<th style="width: 50px" scope="col"></th>\n</tr>`
     table.style = "table-layout:fixed;";
     return table;
 }
@@ -53,7 +50,7 @@ function fillRow(row, name, typeField, buttonLabel) {
 function createButton(label) {
     let button = document.createElement("button");
     button.classList.add("btn", "btn-outline-danger", "btn-sm", "js-additional-fields-remove-button");
-    button.innerHTML = label;
+    button.innerHTML = '<svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>';
     button.addEventListener("click", () => removeButtonClicked(button));
     return button;
 }

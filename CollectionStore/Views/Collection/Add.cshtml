@@ -55,58 +55,79 @@
                             </div>
                             <button class="btn btn-block btn-outline-danger btn-sm mb-0 js-reset-button" type="button">@Localizer["ResetImage"]</button>
                         </div>
-                        <div class="form-group mt-4 js-additional-fields-block">
-                            <input class="js-additional-fields-button-label" type="hidden" value="@Localizer["Remove"]" />
-                            <input class="js-additional-fields-name-label" type="hidden" value="@Localizer["FieldName"]" />
-                            <input class="js-additional-fields-type-label" type="hidden" value="@Localizer["FieldType"]" />
-                            <div class="row">
-                                <div class="col-md-6 form-group">
-                                    <label class="col-form-label" for="nameField">@Localizer["FieldName"]</label>
-                                    <input id="nameField" class="form-control js-additional-fields-name" type="text" />
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label class="col-form-label" for="typesField">@Localizer["FieldType"]</label>
-                                    <select id="typesField" class="form-control js-additional-fields-type" asp-items="@GetTypesSelectList()"></select>
+                        <div class="js-additional-fields-block">
+                            <div class="form-group">
+                                <label class="col-form-label">@Localizer["Fields"]</label>
+                                <button type="button" class="btn btn-outline-primary btn-block btn-sm" data-toggle="modal" data-target="#addFieldButton">@Localizer["Add"]</button>
+                                <div class="modal fade" id="addFieldButton" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">@Localizer["CreatingField"]...</h5>
+                                                <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input class="js-additional-fields-button-label" type="hidden" value="@Localizer["Remove"]" />
+                                                <input class="js-additional-fields-name-label" type="hidden" value="@Localizer["FieldName"]" />
+                                                <input class="js-additional-fields-type-label" type="hidden" value="@Localizer["FieldType"]" />
+                                                <div class="form-group">
+                                                    <label class="col-form-label" for="nameField">@Localizer["FieldName"]</label>
+                                                    <input id="nameField" class="form-control js-additional-fields-name" type="text" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label" for="typesField">@Localizer["FieldType"]</label>
+                                                    <select id="typesField" class="form-control js-additional-fields-type" asp-items="@GetTypesSelectList()"></select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary js-additional-fields-add-button" data-dismiss="modal">@Localizer["Create"]</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <button class="btn btn-outline-primary btn-block btn-sm mb-2 js-additional-fields-add-button" type="button">@Localizer["Add"]</button>
-                        </div>
-                        @if (!Model.FieldNames.IsNullOrEmpty() && !Model.FieldTypesIds.IsNullOrEmpty())
-                        {
-                            <table class="table table-sm table-bordered text-center text-wrap js-additional-fields-table" style="table-layout: fixed;">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">@Localizer["FieldName"]</th>
-                                        <th scope="col">@Localizer["FieldType"]</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @for (int i = 0; i < Model.FieldNames.Count; i++)
-                                    {
-                                        if (Model.Types.SingleOrDefault(t => t.Id == Model.FieldTypesIds[i]) != null)
+                            @if (!Model.FieldNames.IsNullOrEmpty() && !Model.FieldTypesIds.IsNullOrEmpty())
+                            {
+                                <table class="table table-sm table-bordered text-center text-wrap js-additional-fields-table" style="table-layout: fixed;">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">@Localizer["FieldName"]</th>
+                                            <th scope="col">@Localizer["FieldType"]</th>
+                                            <th style="width: 50px" scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.FieldNames.Count; i++)
                                         {
-                                            <tr class="js-additional-fields-table-row">
-                                                <td style="word-wrap: break-word;">
-                                                    @Model.FieldNames[i]
-                                                    <input type="hidden" name="FieldNames" value="@Model.FieldNames[i]" />
-                                                </td>
-                                                <td style="word-wrap: break-word;">
-                                                    @Model.Types.SingleOrDefault(t => t.Id == Model.FieldTypesIds[i]).Name
-                                                    <input type="hidden" name="FieldTypesIds" value="@Model.FieldTypesIds[i]" />
-                                                </td>
-                                                <td style="word-wrap: break-word;">
-                                                    <button class="btn btn-outline-danger btn-sm js-additional-fields-remove-button"
-                                                            onclick="removeButtonClicked(this)">
-                                                        @Localizer["Remove"]
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            if (Model.Types.SingleOrDefault(t => t.Id == Model.FieldTypesIds[i]) != null)
+                                            {
+                                                <tr class="js-additional-fields-table-row">
+                                                    <td style="word-wrap: break-word;">
+                                                        @Model.FieldNames[i]
+                                                        <input type="hidden" name="FieldNames" value="@Model.FieldNames[i]" />
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        @Model.Types.SingleOrDefault(t => t.Id == Model.FieldTypesIds[i]).Name
+                                                        <input type="hidden" name="FieldTypesIds" value="@Model.FieldTypesIds[i]" />
+                                                    </td>
+                                                    <td style="word-wrap: break-word;">
+                                                        <button class="btn btn-outline-danger btn-sm js-additional-fields-remove-button"
+                                                                onclick="removeButtonClicked(this)">
+                                                            <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />    
+                                                            </svg>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
-                                    }
-                                </tbody>
-                            </table>
-                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
                         <button class="btn btn-primary btn-block mt-5" type="submit">@Localizer["Create"]</button>
                         <div class="row justify-content-center mt-2"><a class="card-link" href="@Model.ReturnUrl">@Localizer["Back"]</a></div>
                     </form>
