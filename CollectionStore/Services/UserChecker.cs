@@ -29,12 +29,16 @@ namespace CollectionStore.Services
         {
             string userName = context.User.Identity == null ? string.Empty : context.User.Identity.Name;
             var user = await userManager.FindByNameAsync(userName);
-            return user != null ? null : 
-                new ErrorViewModel 
-                { 
+            if (user == null)
+            {
+                await signInManager.SignOutAsync();
+                return new ErrorViewModel
+                {
                     ErrorTitle = localizer["UserNotFoundTitle"],
-                    ErrorMessage = localizer["UserNotFoundMessage"] 
+                    ErrorMessage = localizer["UserNotFoundMessage"]
                 };
+            }
+            return null;
         }
         public async Task<ErrorViewModel> CheckUserBlockStatus()
         {
