@@ -19,6 +19,7 @@ using Microsoft.Extensions.Options;
 using CollectionStore.Data;
 using CollectionStore.Services;
 using CollectionStore.Hubs;
+using Azure.Storage.Blobs;
 
 namespace CollectionStore
 {
@@ -70,6 +71,8 @@ namespace CollectionStore
             services.AddTransient<CollectionManager>();
             services.AddTransient<UserChecker>();
             services.AddSignalR();
+            services.AddSingleton(x => new BlobServiceClient(Configuration["AzureBlobStorageConnectionString"]));
+            services.AddSingleton<IBlobService, BlobService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

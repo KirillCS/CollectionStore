@@ -27,14 +27,19 @@
                     @if (!string.IsNullOrEmpty(collection.ImagePath))
                     {
                         <a asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">
-                            <img class="bd-placeholder-img card-img-top" src="@collection.ImagePath" focusable="false" role="img">
+                            <img class="bd-placeholder-img card-img-top shadow-sm" src="@collection.ImagePath" focusable="false" role="img">
                         </a>
                     }
                     <div class="card-body">
-                        <h5 class="card-title"><a class="card-link text-dark" asp-controller="Profile" asp-action="Collection"
-                                                  asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@collection.Name (@collection.Theme.Name)</a></h5>
-                        <hr />
-                        <div class="js-markdown-element">@collection.Description</div>
+                        <h5 class="card-title">
+                            <a class="card-link text-dark" asp-controller="Profile" asp-action="Collection"
+                               asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@collection.Name (@collection.Theme.Name)</a>
+                        </h5>
+                        @if (!string.IsNullOrEmpty(collection.Description))
+                        {
+                            <hr />
+                            <div class="js-markdown-element">@collection.Description</div>
+                        }
                         @if (User.Identity.Name == Model.UserName || User.IsInRole(Role.Admin))
                         {
                             <button class="btn btn-outline-danger btn-block btn-sm" data-toggle="modal" data-target="@($"#modal{collection.Id}")">@Localizer["Delete"]</button>

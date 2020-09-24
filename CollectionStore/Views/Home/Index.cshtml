@@ -69,7 +69,7 @@
                                     @if (!string.IsNullOrEmpty(collection.ImagePath))
                                     {
                                         <a asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">
-                                            <img class="bd-placeholder-img card-img-top" src="@collection.ImagePath" focusable="false" role="img">
+                                            <img class="bd-placeholder-img card-img-top shadow-sm" src="@collection.ImagePath" focusable="false" role="img">
                                         </a>
                                     }
                                     <div class="card-body">

@@ -24,16 +24,19 @@ namespace CollectionStore.Controllers
         private readonly UserChecker userChecker;
         private readonly CollectionManager collectionService;
         private readonly IStringLocalizer<CollectionController> localizer;
+        private readonly IBlobService blobService;
 
         public CollectionController(UserManager<User> userManager, 
             ApplicationDbContext context, UserChecker userChecker,
-            CollectionManager collectionService, IStringLocalizer<CollectionController> localizer)
+            CollectionManager collectionService, IStringLocalizer<CollectionController> localizer,
+            IBlobService blobService)
         {
             this.userManager = userManager;
             this.context = context;
             this.userChecker = userChecker;
             this.collectionService = collectionService;
             this.localizer = localizer;
+            this.blobService = blobService;
         }
 
         [HttpGet]
@@ -69,7 +72,7 @@ namespace CollectionStore.Controllers
             model.ReturnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var collection = CreateCollection(model);
+                var collection = await CreateCollection(model);
                 if(await collectionService.AddAsync(collection) == OperationResult.Failed)
                 {
                     return View("Error", new ErrorViewModel
@@ -86,7 +89,6 @@ namespace CollectionStore.Controllers
             model.Types = context.FieldTypes.ToList();
             return View(model);
         }
-
         [HttpGet]
         public async Task<IActionResult> Remove(int collectionId, string returnUrl = null)
         {
@@ -96,6 +98,8 @@ namespace CollectionStore.Controllers
             {
                 var view = await CheckUser(collection.User.UserName);
                 if (view != null) return view;
+
+                await DeleteImage(collection);
                 if (await collectionService.RemoveAsync(collection.Id) == OperationResult.Failed)
                 {
                     return View("Error", new ErrorViewModel
@@ -109,16 +113,27 @@ namespace CollectionStore.Controllers
             }
             return Redirect(returnUrl);
         }
-        private Collection CreateCollection (AddingCollectionViewModel model)
+
+        private async Task<Collection> CreateCollection (AddingCollectionViewModel model)
         {
             return new Collection
             {
                 Name = model.Name,
                 Description = model.Description,
+                ImagePath = await UploadImage(model),
                 ThemeId = model.SelectedThemeId,
                 UserId = model.UserId,
                 Fields = GetFields(model)
             };
+        }
+        private async Task<string> UploadImage(AddingCollectionViewModel model)
+        {
+            string blobUri = null;
+            if (model.File != null)
+            {
+                blobUri = await blobService.UploadFileBlobAsync(model.File.OpenReadStream(), model.File.FileName);
+            }
+            return blobUri;
         }
         private List<Field> GetFields(AddingCollectionViewModel model)
         {
@@ -145,6 +160,13 @@ namespace CollectionStore.Controllers
             error = userChecker.CheckUserAccess(ownerUserName);
             if (error != null) return View("Error", error);
             return null;
+        }
+        private async Task DeleteImage(Collection collection)
+        {
+            if (!string.IsNullOrEmpty(collection.ImagePath))
+            {
+                await blobService.DeleteBlobAsync(Path.GetFileName(collection.ImagePath));
+            }
         }
     }
 }

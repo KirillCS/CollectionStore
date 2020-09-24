@@ -34,7 +34,7 @@
             <div class="card bg-light shadow-sm mb-3">
                 @if (!string.IsNullOrEmpty(Model.Collection.ImagePath))
                 {
-                    <img class="bd-placeholder-img card-img-top" src="@Model.Collection.ImagePath" focusable="false" role="img">
+                    <img class="bd-placeholder-img card-img-top shadow-sm" src="@Model.Collection.ImagePath" focusable="false" role="img">
                 }
                 <div class="card-body">
                     <h5 class="card-title">@Model.Collection.Name (@Model.Collection.Theme.Name)</h5>
