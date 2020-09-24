@@ -9,28 +9,6 @@
     <hr class="mb-4 mt-2" />
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            @if (Model.Collection.User.UserName == User.Identity.Name || User.IsInRole(Role.Admin))
-            {
-                <button class="btn btn-outline-danger btn-block mb-3" data-toggle="modal" data-target="#modalCollection">@Localizer["Remove"]</button>
-            }
-            <div class="modal fade" id="modalCollection" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">@Localizer["Remove"]...</h5>
-                            <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">@Localizer["RemoveCollection", Model.Collection.Name]</div>
-                        <div class="modal-footer">
-                            <a type="button" class="btn btn-danger" asp-controller="Collection" asp-action="Remove"
-                               asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["Remove"]</a>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Cancel"]</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="card bg-light shadow-sm mb-3">
                 @if (!string.IsNullOrEmpty(Model.Collection.ImagePath))
                 {
@@ -51,7 +29,40 @@
                     </div>
                     @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole(Role.Admin))
                     {
-                        <a class="btn btn-outline-secondary btn-block mt-3">@Localizer["Edit"]</a>
+
+                        <div class="btn-group mt-2 float-right" role="group">
+                            <div class="btn-group" role="group">
+                                <button id="editDropdownMenu" type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @Localizer["Edit"]
+                                </button>
+
+                                <div class="dropdown-menu" aria-labelledby="editDropdownMenu">
+                                    <a class="dropdown-item" href="#">@Localizer["NameDescription"]</a>
+                                    <a class="dropdown-item" href="#">@Localizer["Cover"]</a>
+                                    <a class="dropdown-item" href="#">@Localizer["ItemFields"]</a>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#modalCollection">@Localizer["Remove"]</button>
+                        </div>
+                        <div class="modal fade" id="modalCollection" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">@Localizer["Remove"]...</h5>
+                                        <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">@Localizer["RemoveCollection", Model.Collection.Name]</div>
+                                    <div class="modal-footer">
+                                        <a type="button" class="btn btn-danger" asp-controller="Collection" asp-action="Remove"
+                                            asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["Remove"]</a>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 </div>
             </div>
