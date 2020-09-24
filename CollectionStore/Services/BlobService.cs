@@ -37,7 +37,7 @@ namespace CollectionStore.Services
                 var containerClient = blobServiceClient.GetBlobContainerClient(ContainerName);
                 var blobClient = await GetFreeBlobClient(fileName, containerClient);
                 await blobClient.UploadAsync(filePath);
-                return blobClient.Name;
+                return blobClient.Uri.AbsoluteUri;
             }
             catch 
             {
@@ -51,7 +51,7 @@ namespace CollectionStore.Services
                 var containerClient = blobServiceClient.GetBlobContainerClient(ContainerName);
                 var blobClient = await GetFreeBlobClient(fileName, containerClient);
                 await blobClient.UploadAsync(stream);
-                return blobClient.Name;
+                return blobClient.Uri.AbsoluteUri;
             }
             catch
             {

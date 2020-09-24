@@ -89,7 +89,6 @@ namespace CollectionStore.Controllers
             model.Types = context.FieldTypes.ToList();
             return View(model);
         }
-
         [HttpGet]
         public async Task<IActionResult> Remove(int collectionId, string returnUrl = null)
         {
@@ -99,6 +98,8 @@ namespace CollectionStore.Controllers
             {
                 var view = await CheckUser(collection.User.UserName);
                 if (view != null) return view;
+
+                await DeleteImage(collection);
                 if (await collectionService.RemoveAsync(collection.Id) == OperationResult.Failed)
                 {
                     return View("Error", new ErrorViewModel
@@ -112,6 +113,7 @@ namespace CollectionStore.Controllers
             }
             return Redirect(returnUrl);
         }
+
         private async Task<Collection> CreateCollection (AddingCollectionViewModel model)
         {
             return new Collection
@@ -126,12 +128,12 @@ namespace CollectionStore.Controllers
         }
         private async Task<string> UploadImage(AddingCollectionViewModel model)
         {
-            string blobName = null;
+            string blobUri = null;
             if (model.File != null)
             {
-                blobName = await blobService.UploadFileBlobAsync(model.File.OpenReadStream(), model.File.FileName);
+                blobUri = await blobService.UploadFileBlobAsync(model.File.OpenReadStream(), model.File.FileName);
             }
-            return blobName;
+            return blobUri;
         }
         private List<Field> GetFields(AddingCollectionViewModel model)
         {
@@ -158,6 +160,13 @@ namespace CollectionStore.Controllers
             error = userChecker.CheckUserAccess(ownerUserName);
             if (error != null) return View("Error", error);
             return null;
+        }
+        private async Task DeleteImage(Collection collection)
+        {
+            if (!string.IsNullOrEmpty(collection.ImagePath))
+            {
+                await blobService.DeleteBlobAsync(Path.GetFileName(collection.ImagePath));
+            }
         }
     }
 }
