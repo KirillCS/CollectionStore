@@ -109,17 +109,26 @@ namespace CollectionStore.Controllers
                 ReturnUrl = returnUrl,
                 ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
             };
+
             if(remoteError != null)
             {
                 ModelState.AddModelError(string.Empty, localizer["ExternalLoginError"]);
                 return View("Login", model);
             }
+
             var info = await signInManager.GetExternalLoginInfoAsync();
             if(info == null)
             {
                 ModelState.AddModelError(string.Empty, localizer["ExternalLoginError"]);
                 return View("Login", model);
             }
+
+            if (await IsUserBlocked(info.Principal.FindFirstValue(ClaimTypes.Email)))
+            {
+                ModelState.AddModelError(string.Empty, localizer["UserBlocked"]);
+                return View("Login", model);
+            }
+
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
             if(result.Succeeded)
             {
@@ -155,6 +164,12 @@ namespace CollectionStore.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        private async Task<bool> IsUserBlocked(string email)
+        {
+            var user = await userManager.FindByNameAsync(email);
+            return user != null && user.IsBlocked;
         }
     }
 }

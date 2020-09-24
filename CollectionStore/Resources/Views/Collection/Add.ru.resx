@@ -123,8 +123,14 @@
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
+  </data>
+  <data name="CreatingField" xml:space="preserve">
+    <value>Создание поля</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Описание коллекции</value>
@@ -134,6 +140,9 @@
   </data>
   <data name="FieldName" xml:space="preserve">
     <value>Название поля</value>
+  </data>
+  <data name="Fields" xml:space="preserve">
+    <value>Поля элементов</value>
   </data>
   <data name="FieldType" xml:space="preserve">
     <value>Тип поля</value>

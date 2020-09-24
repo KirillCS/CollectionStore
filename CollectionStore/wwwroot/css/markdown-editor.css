@@ -1,6 +1,4 @@
-﻿.js-markdown-block { }
-.js-markdown-input { }
-.js-markdown-preview {
+﻿.js-markdown-preview {
     height: auto;
     min-height: 150px;
     border: 2px solid #ccc;

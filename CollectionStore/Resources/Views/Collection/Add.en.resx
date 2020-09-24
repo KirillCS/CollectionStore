@@ -123,8 +123,14 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Create</value>
+  </data>
+  <data name="CreatingField" xml:space="preserve">
+    <value>Creating field</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Collection description</value>
@@ -134,6 +140,9 @@
   </data>
   <data name="FieldName" xml:space="preserve">
     <value>Field name</value>
+  </data>
+  <data name="Fields" xml:space="preserve">
+    <value>Item fields</value>
   </data>
   <data name="FieldType" xml:space="preserve">
     <value>Field type</value>
