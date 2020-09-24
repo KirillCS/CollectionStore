@@ -19,8 +19,8 @@ namespace CollectionStore.Services
     public interface IBlobService
     {
         Task<BlobInfo> GetBlobAsync(string name);
-        Task<bool> UploadFileBlobAsync(string filePath, string fileName);
-        Task<bool> UploadFileBlobAsync(Stream stream, string fileName);
+        Task<string> UploadFileBlobAsync(string filePath, string fileName);
+        Task<string> UploadFileBlobAsync(Stream stream, string fileName);
         Task<bool> DeleteBlobAsync(string blobName);
     }
 }

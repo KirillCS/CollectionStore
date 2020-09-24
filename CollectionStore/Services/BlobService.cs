@@ -30,32 +30,32 @@ namespace CollectionStore.Services
                 return null;
             }
         }
-        public async Task<bool> UploadFileBlobAsync(string filePath, string fileName)
+        public async Task<string> UploadFileBlobAsync(string filePath, string fileName)
         {
             try
             {
                 var containerClient = blobServiceClient.GetBlobContainerClient(ContainerName);
                 var blobClient = await GetFreeBlobClient(fileName, containerClient);
                 await blobClient.UploadAsync(filePath);
-                return true;
+                return blobClient.Name;
             }
             catch 
             {
-                return false;
+                return null;
             }
         }
-        public async Task<bool> UploadFileBlobAsync(Stream stream, string fileName)
+        public async Task<string> UploadFileBlobAsync(Stream stream, string fileName)
         {
             try
             {
                 var containerClient = blobServiceClient.GetBlobContainerClient(ContainerName);
                 var blobClient = await GetFreeBlobClient(fileName, containerClient);
                 await blobClient.UploadAsync(stream);
-                return true;
+                return blobClient.Name;
             }
             catch
             {
-                return false;
+                return null;
             }
         }
         public async Task<bool> DeleteBlobAsync(string blobName)
