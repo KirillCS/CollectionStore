@@ -113,6 +113,20 @@ namespace CollectionStore.Controllers
             }
             return Redirect(returnUrl);
         }
+        [HttpPost]
+        public async Task<IActionResult> EditName(EditingNameCollectionViewModel model)
+        {
+            var collection = collectionService.GetById(model.CollectionId, true);
+            if(collection != null)
+            {
+                var error = await CheckUser(collection.User.UserName);
+                if (error != null) return error;
+                collection.Name = model.Name;
+                collection.Description = model.Description;
+                await context.SaveChangesAsync();
+            }
+            return RedirectToAction("Collection", "Profile", new { collectionId = model.CollectionId, returnUrl = model.ReturnUrl });
+        }
 
         private async Task<Collection> CreateCollection (AddingCollectionViewModel model)
         {

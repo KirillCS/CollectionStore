@@ -135,6 +135,12 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="EditName" xml:space="preserve">
+    <value>Editing name and (or) description</value>
+  </data>
+  <data name="EditType" xml:space="preserve">
+    <value>Editing type</value>
+  </data>
   <data name="GoToProfile" xml:space="preserve">
     <value>Go to profile {0}</value>
   </data>
@@ -168,8 +174,14 @@
   <data name="RemoveItem" xml:space="preserve">
     <value>Remove item "{0}" from collection "{1}"?</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="SortBy" xml:space="preserve">
     <value>Sort by</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Theme</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>

@@ -135,6 +135,12 @@
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>
+  <data name="EditName" xml:space="preserve">
+    <value>Редактирование названия и (или) описания</value>
+  </data>
+  <data name="EditType" xml:space="preserve">
+    <value>Редактирование типа</value>
+  </data>
   <data name="GoToProfile" xml:space="preserve">
     <value>Перейти к профилю {0}</value>
   </data>
@@ -168,8 +174,14 @@
   <data name="RemoveItem" xml:space="preserve">
     <value>Удалить элемент "{0}" из коллекции "{1}"?</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
   <data name="SortBy" xml:space="preserve">
     <value>Сортировать по</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Тему</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Да</value>
