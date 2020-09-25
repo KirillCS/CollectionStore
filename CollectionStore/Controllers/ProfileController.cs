@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using CollectionStore.ViewModels;
 using CollectionStore.Models;
@@ -56,6 +54,8 @@ namespace CollectionStore.Controllers
                 .ThenInclude(i => i.Likes)
                 .Include(c => c.Theme)
                 .Include(c => c.User)
+                .Include(c => c.Fields)
+                .ThenInclude(f => f.Type)
                 .SingleOrDefault(c => c.Id == collectionId);
             if(collection == null)
             {
@@ -70,6 +70,7 @@ namespace CollectionStore.Controllers
             {
                 Collection = collection,
                 Themes = context.CollectionThemes.ToList(),
+                FieldTypes = context.FieldTypes.ToList(),
                 ReturnUrl = returnUrl
             });
         }

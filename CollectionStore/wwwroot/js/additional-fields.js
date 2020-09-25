@@ -2,7 +2,6 @@
     const block = button.closest(".js-additional-fields-block");
     const nameField = block.getElementsByClassName("js-additional-fields-name")[0];
     const typeField = block.getElementsByClassName("js-additional-fields-type")[0];
-    let buttonLabel = getLabel(block, "js-additional-fields-button-label", "Remove");
     let nameLabel = getLabel(block, "js-additional-fields-name-label", "Field name");
     let typeLabel = getLabel(block, "js-additional-fields-type-label", "Field type");;
 
@@ -14,7 +13,7 @@
                 block.appendChild(table);
             }
             let row = table.insertRow();
-            fillRow(row, nameField.value, typeField, buttonLabel);
+            fillRow(row, nameField.value, typeField);
             nameField.value = "";
             typeField.selectedIndex = 0;
         }
@@ -36,7 +35,7 @@ function createTable(nameLabel, typeLabel) {
     return table;
 }
 
-function fillRow(row, name, typeField, buttonLabel) {
+function fillRow(row, name, typeField) {
     row.classList.add("js-additional-fields-table-row");
     let nameCell = row.insertCell(0);
     nameCell.innerHTML = `${name}<input type="hidden" name="FieldNames" value="${name}"/>`;
@@ -44,10 +43,10 @@ function fillRow(row, name, typeField, buttonLabel) {
     let typeCell = row.insertCell(1);
     typeCell.innerHTML = `${typeField.options[typeField.selectedIndex].text}<input type="hidden" name="FieldTypesIds" value="${typeField.value}"/>`;
     typeCell.style = "word-wrap: break-word;";
-    row.insertCell(2).appendChild(createButton(buttonLabel));
+    row.insertCell(2).appendChild(createButton());
 }
 
-function createButton(label) {
+function createButton() {
     let button = document.createElement("button");
     button.classList.add("btn", "btn-outline-danger", "btn-sm", "js-additional-fields-remove-button");
     button.innerHTML = '<svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>';
@@ -58,7 +57,6 @@ function createButton(label) {
 function removeButtonClicked(button) {
     let table = button.closest(".js-additional-fields-table");
     button.closest(".js-additional-fields-table-row").remove();
-    console.log(table.rows.length);
     if (table.rows.length == 1) {
         table.parentNode.removeChild(table);
     }

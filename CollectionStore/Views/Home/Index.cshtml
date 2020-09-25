@@ -184,21 +184,21 @@
                                                         @Localizer["Owner"]: <a class="card-link" asp-controller="Profile"
                                                                                 asp-action="Index" asp-route-userName="@item.Collection.User.UserName"
                                                                                 title="@Localizer["GoToProfile", item.Collection.User.UserName]">@item.Collection.User.UserName</a>
-                                                                            </div>
-                                                                            <div class="card-text m-1">
-                                                                                @Localizer["Collection"]: <a class="card-link" asp-controller="Profile"
-                                                                                                             asp-action="Collection" asp-route-collectionId="@item.CollectionId"
-                                                                                                             asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)"
-                                                                                                             title="@Localizer["GoToCollection", item.Collection.Name]">@item.Collection.Name</a>
-                                                                                                        </div>
-                                                                                                        <hr />
-                                                                                                        <a class="card-text card-link m-1" asp-controller="Item" asp-action="Index"
-                                                                                                           asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Detail"]...</a>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    }
+                                                    </div>
+                                                    <div class="card-text m-1">
+                                                        @Localizer["Collection"]: <a class="card-link" asp-controller="Profile"
+                                                                                        asp-action="Collection" asp-route-collectionId="@item.CollectionId"
+                                                                                        asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)"
+                                                                                        title="@Localizer["GoToCollection", item.Collection.Name]">@item.Collection.Name</a>
+                                                    </div>
+                                                    <hr />
+                                                    <a class="card-text card-link m-1" asp-controller="Item" asp-action="Index"
+                                                        asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Detail"]...</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         }
                     }
@@ -209,6 +209,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="~/js/markdown.js" asp-append-version="true"></script>
+<script src="~/js/markdown.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/home-page-tabs.js"></script>

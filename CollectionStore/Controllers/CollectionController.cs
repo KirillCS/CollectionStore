@@ -133,9 +133,23 @@ namespace CollectionStore.Controllers
             var collection = collectionService.GetById(model.CollectionId, true);
             if (collection != null)
             {
+                var error = await CheckUser(collection.User.UserName);
+                if (error != null) return error;
                 await DeleteImage(collection);
                 collection.ImagePath = await UploadImage(model.File);
                 await context.SaveChangesAsync();
+            }
+            return RedirectToAction("Collection", "Profile", new { collectionId = model.CollectionId, returnUrl = model.ReturnUrl });
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditFields(EditingCollectionFieldsViewModel model)
+        {
+            var collection = collectionService.GetById(model.CollectionId, true);
+            if (collection != null)
+            {
+                var error = await CheckUser(collection.User.UserName);
+                if (error != null) return error;
+                
             }
             return RedirectToAction("Collection", "Profile", new { collectionId = model.CollectionId, returnUrl = model.ReturnUrl });
         }

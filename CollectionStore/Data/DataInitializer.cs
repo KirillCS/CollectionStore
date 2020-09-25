@@ -18,7 +18,13 @@ namespace CollectionStore.Data
             "Phones",
             "Wines",
             "Coins",
-            "Stamps"
+            "Stamps",
+            "Books",
+            "Trinkets",
+            "Tickets",
+            "Stickers",
+            "Buttons",
+            "Technics"
         };
         private readonly string[] FieldTypes =
         {

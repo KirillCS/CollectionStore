@@ -153,8 +153,17 @@
   <data name="EditCover" xml:space="preserve">
     <value>Изменение обложки коллекции</value>
   </data>
+  <data name="EditFields" xml:space="preserve">
+    <value>Редактирование полей</value>
+  </data>
   <data name="EditInfo" xml:space="preserve">
     <value>Редактирование информации о коллекции</value>
+  </data>
+  <data name="FieldName" xml:space="preserve">
+    <value>Название поля</value>
+  </data>
+  <data name="FieldType" xml:space="preserve">
+    <value>Тип поля</value>
   </data>
   <data name="GoToProfile" xml:space="preserve">
     <value>Перейти к профилю {0}</value>
