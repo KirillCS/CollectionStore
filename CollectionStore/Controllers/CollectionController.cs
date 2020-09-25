@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +7,7 @@ using CollectionStore.Models;
 using CollectionStore.Services;
 using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -128,6 +127,18 @@ namespace CollectionStore.Controllers
             }
             return RedirectToAction("Collection", "Profile", new { collectionId = model.CollectionId, returnUrl = model.ReturnUrl });
         }
+        [HttpPost]
+        public async Task<IActionResult> EditCover(EditingCollectionCoverViewModel model)
+        {
+            var collection = collectionService.GetById(model.CollectionId, true);
+            if (collection != null)
+            {
+                await DeleteImage(collection);
+                collection.ImagePath = await UploadImage(model.File);
+                await context.SaveChangesAsync();
+            }
+            return RedirectToAction("Collection", "Profile", new { collectionId = model.CollectionId, returnUrl = model.ReturnUrl });
+        }
 
         private async Task<Collection> CreateCollection (AddingCollectionViewModel model)
         {
@@ -135,18 +146,18 @@ namespace CollectionStore.Controllers
             {
                 Name = model.Name,
                 Description = model.Description,
-                ImagePath = await UploadImage(model),
+                ImagePath = await UploadImage(model.File),
                 ThemeId = model.SelectedThemeId,
                 UserId = model.UserId,
                 Fields = GetFields(model)
             };
         }
-        private async Task<string> UploadImage(AddingCollectionViewModel model)
+        private async Task<string> UploadImage(IFormFile file)
         {
             string blobUri = null;
-            if (model.File != null)
+            if (file != null)
             {
-                blobUri = await blobService.UploadFileBlobAsync(model.File.OpenReadStream(), model.File.FileName);
+                blobUri = await blobService.UploadFileBlobAsync(file.OpenReadStream(), file.FileName);
             }
             return blobUri;
         }

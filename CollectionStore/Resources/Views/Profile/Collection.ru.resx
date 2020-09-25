@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Добавить</value>
   </data>
+  <data name="AddCover" xml:space="preserve">
+    <value>Добавьте обложку</value>
+  </data>
   <data name="Alphabet" xml:space="preserve">
     <value>алфавиту</value>
   </data>
@@ -135,11 +138,20 @@
   <data name="Cover" xml:space="preserve">
     <value>Обложку</value>
   </data>
+  <data name="CurrentCover" xml:space="preserve">
+    <value>Текущая обложка</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
   </data>
+  <data name="DragNDrop" xml:space="preserve">
+    <value>Перетащите изображение или нажмите здесь</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
+  </data>
+  <data name="EditCover" xml:space="preserve">
+    <value>Изменение обложки коллекции</value>
   </data>
   <data name="EditInfo" xml:space="preserve">
     <value>Редактирование информации о коллекции</value>
@@ -158,6 +170,9 @@
   </data>
   <data name="Name" xml:space="preserve">
     <value>Название</value>
+  </data>
+  <data name="NewCover" xml:space="preserve">
+    <value>Новая обложка</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>Нет</value>
@@ -179,6 +194,9 @@
   </data>
   <data name="RemoveItem" xml:space="preserve">
     <value>Удалить элемент "{0}" из коллекции "{1}"?</value>
+  </data>
+  <data name="ResetImage" xml:space="preserve">
+    <value>Сбросить изображение</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>

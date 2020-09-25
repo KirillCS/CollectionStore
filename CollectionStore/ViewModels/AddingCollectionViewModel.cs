@@ -1,11 +1,7 @@
 ﻿using CollectionStore.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CollectionStore.ViewModels
 {
@@ -21,8 +17,6 @@ namespace CollectionStore.ViewModels
 
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
-
-        public string FilePath { get; set; }
 
         public IFormFile File { get; set; }
 

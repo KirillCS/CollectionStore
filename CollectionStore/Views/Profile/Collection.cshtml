@@ -50,7 +50,7 @@
 
                                 <div class="dropdown-menu" aria-labelledby="editDropdownMenu">
                                     <a class="dropdown-item" href="#editInfoModal" data-toggle="modal">@Localizer["CollectionInfo"]</a>
-                                    <a class="dropdown-item" href="#">@Localizer["Cover"]</a>
+                                    <a class="dropdown-item" href="#editCoverModal" data-toggle="modal">@Localizer["Cover"]</a>
                                     <a class="dropdown-item" href="#">@Localizer["ItemFields"]</a>
                                 </div>
                             </div>
@@ -106,6 +106,45 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button id="saveInfoBtn" type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="editCoverModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">@Localizer["EditCover"]...</h5>
+                                        <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post" enctype="multipart/form-data" asp-controller="Collection" asp-action="EditCover"
+                                            asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@Model.ReturnUrl">
+                                        <div class="modal-body">
+                                            <div>
+                                                @if (!string.IsNullOrEmpty(Model.Collection.ImagePath))
+                                                {
+                                                    <div class="form-group">
+                                                        <label class="col-form-label">@Localizer["CurrentCover"]</label>
+                                                        <img class="img-fluid img-thumbnail rounded shadow-sm" src="@Model.Collection.ImagePath" focusable="false" role="img">
+                                                    </div>
+                                                }
+                                                <div class="form-group js-picture-field">
+                                                    <label class="col-form-label">@(!string.IsNullOrEmpty(Model.Collection.ImagePath) ? Localizer["NewCover"] : Localizer["AddCover"])</label>
+                                                    <div class="drop-zone mt-0 mb-2">
+                                                        <input class="js-picture-field-prompt-label" type="hidden" value="@Localizer["DragNDrop"]" />
+                                                        <input class="drop-zone__input" type="file" accept="image/*" name="File"/>
+                                                        <span class="drop-zone__prompt">@Localizer["DragNDrop"]</span>
+                                                    </div>
+                                                    <button class="btn btn-block btn-outline-danger btn-sm mb-0 js-reset-button" type="button">@Localizer["ResetImage"]</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
                                         </div>
                                     </form>
@@ -210,4 +249,5 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/markdown.js"></script>
 <script src="~/js/markdown-editor.js" asp-append-version="true"></script>
+<script src="~/js/drag-n-drop.js" asp-append-version="true"></script>
 <script src="~/js/editing-collection.js"></script>

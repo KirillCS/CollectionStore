@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="AddCover" xml:space="preserve">
+    <value>Add cover</value>
+  </data>
   <data name="Alphabet" xml:space="preserve">
     <value>alphabet</value>
   </data>
@@ -135,11 +138,20 @@
   <data name="Cover" xml:space="preserve">
     <value>Cover</value>
   </data>
+  <data name="CurrentCover" xml:space="preserve">
+    <value>Current cover</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="DragNDrop" xml:space="preserve">
+    <value>Drag image here or click to upload</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="EditCover" xml:space="preserve">
+    <value>Editing collection cover</value>
   </data>
   <data name="EditInfo" xml:space="preserve">
     <value>Editing collection information</value>
@@ -158,6 +170,9 @@
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="NewCover" xml:space="preserve">
+    <value>New cover</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -179,6 +194,9 @@
   </data>
   <data name="RemoveItem" xml:space="preserve">
     <value>Remove item "{0}" from collection "{1}"?</value>
+  </data>
+  <data name="ResetImage" xml:space="preserve">
+    <value>Reset image</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
