@@ -129,17 +129,20 @@
   <data name="Collection" xml:space="preserve">
     <value>Коллекция "{0}"</value>
   </data>
+  <data name="CollectionInfo" xml:space="preserve">
+    <value>Информацию о коллекции</value>
+  </data>
   <data name="Cover" xml:space="preserve">
     <value>Обложку</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>
-  <data name="EditName" xml:space="preserve">
-    <value>Редактирование названия и (или) описания</value>
-  </data>
-  <data name="EditType" xml:space="preserve">
-    <value>Редактирование типа</value>
+  <data name="EditInfo" xml:space="preserve">
+    <value>Редактирование информации о коллекции</value>
   </data>
   <data name="GoToProfile" xml:space="preserve">
     <value>Перейти к профилю {0}</value>
@@ -153,14 +156,17 @@
   <data name="Likes" xml:space="preserve">
     <value>количеству лайков</value>
   </data>
-  <data name="NameDescription" xml:space="preserve">
-    <value>Название и (или) описание</value>
+  <data name="Name" xml:space="preserve">
+    <value>Название</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>Нет</value>
   </data>
   <data name="Owner" xml:space="preserve">
     <value>Владелец</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Предпросмотр описания</value>
   </data>
   <data name="Publication" xml:space="preserve">
     <value>дате публикации</value>
@@ -181,7 +187,7 @@
     <value>Сортировать по</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>Тему</value>
+    <value>Тема</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Да</value>

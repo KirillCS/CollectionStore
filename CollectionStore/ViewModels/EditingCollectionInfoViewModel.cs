@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace CollectionStore.ViewModels
 {
-    public class EditingNameCollectionViewModel
+    public class EditingCollectionInfoViewModel
     {
         public int CollectionId { get; set; }
 
         [Required]
         public string Name { get; set; }
+
+        public int ThemeId { get; set; }
 
         public string Description { get; set; }
 

@@ -10,6 +10,13 @@ namespace CollectionStore.ViewModels
     {
         public Collection Collection { get; set; }
 
+        public List<CollectionTheme> Themes { get; set; }
+
         public string ReturnUrl { get; set; }
+
+        public CollectionViewModel()
+        {
+            Themes = new List<CollectionTheme>();
+        }
     }
 }

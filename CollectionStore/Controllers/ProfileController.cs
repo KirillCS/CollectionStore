@@ -69,6 +69,7 @@ namespace CollectionStore.Controllers
             return View(new CollectionViewModel
             {
                 Collection = collection,
+                Themes = context.CollectionThemes.ToList(),
                 ReturnUrl = returnUrl
             });
         }

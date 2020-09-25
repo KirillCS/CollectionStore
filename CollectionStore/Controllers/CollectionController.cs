@@ -114,7 +114,7 @@ namespace CollectionStore.Controllers
             return Redirect(returnUrl);
         }
         [HttpPost]
-        public async Task<IActionResult> EditName(EditingNameCollectionViewModel model)
+        public async Task<IActionResult> EditInfo(EditingCollectionInfoViewModel model)
         {
             var collection = collectionService.GetById(model.CollectionId, true);
             if(collection != null)
@@ -122,6 +122,7 @@ namespace CollectionStore.Controllers
                 var error = await CheckUser(collection.User.UserName);
                 if (error != null) return error;
                 collection.Name = model.Name;
+                collection.ThemeId = model.ThemeId;
                 collection.Description = model.Description;
                 await context.SaveChangesAsync();
             }

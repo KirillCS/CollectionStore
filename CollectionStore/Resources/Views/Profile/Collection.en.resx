@@ -129,17 +129,20 @@
   <data name="Collection" xml:space="preserve">
     <value>Collection "{0}"</value>
   </data>
+  <data name="CollectionInfo" xml:space="preserve">
+    <value>Collection information</value>
+  </data>
   <data name="Cover" xml:space="preserve">
     <value>Cover</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="EditName" xml:space="preserve">
-    <value>Editing name and (or) description</value>
-  </data>
-  <data name="EditType" xml:space="preserve">
-    <value>Editing type</value>
+  <data name="EditInfo" xml:space="preserve">
+    <value>Editing collection information</value>
   </data>
   <data name="GoToProfile" xml:space="preserve">
     <value>Go to profile {0}</value>
@@ -153,14 +156,17 @@
   <data name="Likes" xml:space="preserve">
     <value>like count</value>
   </data>
-  <data name="NameDescription" xml:space="preserve">
-    <value>Name and (or) description</value>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
   <data name="Owner" xml:space="preserve">
     <value>Owner</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Description preview</value>
   </data>
   <data name="Publication" xml:space="preserve">
     <value>publication date</value>

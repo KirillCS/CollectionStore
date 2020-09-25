@@ -3,6 +3,17 @@
 @{
     ViewData["Title"] = Localizer["Collection", Model.Collection.Name];
 }
+@functions{
+    IEnumerable<SelectListItem> GetThemeSelectList()
+    {
+        return Model.Themes.Select(t => new SelectListItem
+        {
+            Value = t.Id.ToString(),
+            Text = t.Name,
+            Selected = t.Name == Model.Collection.Theme.Name
+        });
+    }
+}
 
 <div class="container">
     <h4 class="mt-2 mx-2 text-wrap">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</h4>
@@ -38,8 +49,7 @@
                                 </button>
 
                                 <div class="dropdown-menu" aria-labelledby="editDropdownMenu">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editNameModal">@Localizer["NameDescription"]</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editThemeModal">@Localizer["Theme"]</a>
+                                    <a class="dropdown-item" href="#editInfoModal" data-toggle="modal">@Localizer["CollectionInfo"]</a>
                                     <a class="dropdown-item" href="#">@Localizer["Cover"]</a>
                                     <a class="dropdown-item" href="#">@Localizer["ItemFields"]</a>
                                 </div>
@@ -64,55 +74,41 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="editNameModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal fade" id="editInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">@Localizer["EditName"]...</h5>
+                                        <h5 class="modal-title">@Localizer["EditInfo"]...</h5>
                                         <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form method="post" asp-controller="Collection" asp-action="EditName" 
-                                          asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@Model.ReturnUrl">
+                                    <form method="post" asp-controller="Collection" asp-action="EditInfo"
+                                            asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@Model.ReturnUrl">
                                         <div class="modal-body">
                                             <div class="form-group">
                                                 <label class="col-form-label" for="name">@Localizer["Name"]</label>
                                                 <input id="nameHiddenInput" type="hidden" value="@Model.Collection.Name" />
                                                 <input id="nameInput" class="form-control" name="Name" />
                                             </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label" for="theme">@Localizer["Theme"]</label>
+                                                <input id="themeHiddenInput" type="hidden" value="@Model.Collection.Theme.Id" />
+                                                <select id="themeInput" class="form-control" asp-items="@GetThemeSelectList()" name="ThemeId"></select>
+                                            </div>
                                             <div class="form-group js-markdown-block">
                                                 <label class="col-form-label" for="description">@Localizer["Description"]</label>
                                                 <input id="descriptionHiddenInput" type="hidden" value="@Model.Collection.Description" />
                                                 <textarea id="descriptionInput" class="form-control js-markdown-input" style="max-height: 250px" rows="5" name="Description"></textarea>
                                                 <label class="col-form-label">@Localizer["Preview"]</label>
-                                                <div class="js-markdown-preview"></div>
+                                                <div id="descriptionPreviewInput" class="js-markdown-preview"></div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button id="saveNameBtn" type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                                            <button id="saveInfoBtn" type="submit" class="btn btn-primary">@Localizer["Save"]</button>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
                                         </div>
                                     </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="editThemeModal" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">@Localizer["EditType"]...</h5>
-                                        <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                            
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button id="saveTypeBtn" type="submit" class="btn btn-primary">@Localizer["Save"]</button>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +120,7 @@
             @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole(Role.Admin))
             {
                 <a class="btn btn-outline-primary btn-block mb-4" asp-controller="Item" asp-action="Add"
-                   asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Add"]</a>
+                    asp-route-collectionId="@Model.Collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Add"]</a>
             }
             @if (!Model.Collection.Items.IsNullOrEmpty())
             {
@@ -135,14 +131,14 @@
 
                     <div class="dropdown-menu" aria-labelledby="dropdownSortBy">
                         <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
-                           asp-route-sortBy="AlphabetUp" asp-route-returnUrl="@Model.ReturnUrl">
+                            asp-route-sortBy="AlphabetUp" asp-route-returnUrl="@Model.ReturnUrl">
                             @Localizer["Alphabet"]
                             <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
                             </svg>
                         </a>
                         <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
-                           asp-route-sortBy="AlphabetDown" asp-route-returnUrl="@Model.ReturnUrl">
+                            asp-route-sortBy="AlphabetDown" asp-route-returnUrl="@Model.ReturnUrl">
                             @Localizer["Alphabet"]
                             <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
@@ -150,14 +146,14 @@
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
-                           asp-route-sortBy="DateUp" asp-route-returnUrl="@Model.ReturnUrl">
+                            asp-route-sortBy="DateUp" asp-route-returnUrl="@Model.ReturnUrl">
                             @Localizer["Publication"]
                             <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
                             </svg>
                         </a>
                         <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
-                           asp-route-sortBy="DateDown" asp-route-returnUrl="@Model.ReturnUrl">
+                            asp-route-sortBy="DateDown" asp-route-returnUrl="@Model.ReturnUrl">
                             @Localizer["Publication"]
                             <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
@@ -165,14 +161,14 @@
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
-                           asp-route-sortBy="LikeUp" asp-route-returnUrl="@Model.ReturnUrl">
+                            asp-route-sortBy="LikeUp" asp-route-returnUrl="@Model.ReturnUrl">
                             @Localizer["Likes"]
                             <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
                             </svg>
                         </a>
                         <a class="dropdown-item" asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@Model.Collection.Id"
-                           asp-route-sortBy="LikeDown" asp-route-returnUrl="@Model.ReturnUrl">
+                            asp-route-sortBy="LikeDown" asp-route-returnUrl="@Model.ReturnUrl">
                             @Localizer["Likes"]
                             <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
@@ -184,7 +180,7 @@
                     @foreach (var item in Model.Collection.Items)
                     {
                         <a class="list-group-item list-group-item-action p-3 px-4" asp-controller="Item" asp-action="Index"
-                           asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">
+                            asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">
                             @item.Name
                             <div class="float-right">
                                 @{
