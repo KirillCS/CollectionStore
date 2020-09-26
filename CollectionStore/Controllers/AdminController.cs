@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CollectionStore.Data;
@@ -9,7 +10,6 @@ using CollectionStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CollectionStore.Controllers
 {
@@ -20,15 +20,17 @@ namespace CollectionStore.Controllers
         private readonly ApplicationDbContext context;
         private readonly UserChecker userChecker;
         private readonly CollectionManager collectionService;
+        private readonly IBlobService blobService;
 
         public AdminController(UserManager<User> userManager,
             ApplicationDbContext context, UserChecker userChecker, 
-            CollectionManager collectionService)
+            CollectionManager collectionService, IBlobService blobService)
         {
             this.userManager = userManager;
             this.context = context;
             this.userChecker = userChecker;
             this.collectionService = collectionService;
+            this.blobService = blobService;
         }
 
         [HttpGet]
@@ -123,7 +125,16 @@ namespace CollectionStore.Controllers
             var collectionsIds = context.Collections.Where(c => c.UserId == user.Id).Select(c => c.Id).ToList();
             foreach (var id in collectionsIds)
             {
+                await DeleteCover(id);
                 await collectionService.RemoveAsync(id);
+            }
+        }
+        private async Task DeleteCover(int collectionId)
+        {
+            var collection = collectionService.GetById(collectionId);
+            if(collection != null && !string.IsNullOrEmpty(collection.ImagePath))
+            {
+                await blobService.DeleteBlobAsync(Path.GetFileName(collection.ImagePath));
             }
         }
         private void RemoveComments(User user)
