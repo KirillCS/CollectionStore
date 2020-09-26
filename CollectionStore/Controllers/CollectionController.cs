@@ -149,7 +149,7 @@ namespace CollectionStore.Controllers
             {
                 var error = await CheckUser(collection.User.UserName);
                 if (error != null) return error;
-                
+                await JoinFieldsInCollection(collection, GetFields(model.FieldNames, model.FieldTypesIds));
             }
             return RedirectToAction("Collection", "Profile", new { collectionId = model.CollectionId, returnUrl = model.ReturnUrl });
         }
@@ -163,7 +163,7 @@ namespace CollectionStore.Controllers
                 ImagePath = await UploadImage(model.File),
                 ThemeId = model.SelectedThemeId,
                 UserId = model.UserId,
-                Fields = GetFields(model)
+                Fields = GetFields(model.FieldNames, model.FieldTypesIds)
             };
         }
         private async Task<string> UploadImage(IFormFile file)
@@ -175,21 +175,70 @@ namespace CollectionStore.Controllers
             }
             return blobUri;
         }
-        private List<Field> GetFields(AddingCollectionViewModel model)
+        private List<Field> GetFields(List<string> fieldNames, List<int> fieldTypesIds)
         {
             var fields = new List<Field>();
-            if (!model.FieldNames.IsNullOrEmpty() && !model.FieldTypesIds.IsNullOrEmpty())
+            if (!fieldNames.IsNullOrEmpty() && !fieldTypesIds.IsNullOrEmpty() && fieldNames.Count == fieldTypesIds.Count)
             {
-                for (int i = 0; i < model.FieldNames.Count; i++)
+                for (int i = 0; i < fieldNames.Count; i++)
                 {
                     fields.Add(new Field
                     {
-                        Name = model.FieldNames[i],
-                        TypeId = model.FieldTypesIds[i]
+                        Name = fieldNames[i],
+                        TypeId = fieldTypesIds[i]
                     });
                 }
             }
             return fields;
+        }
+        private async Task JoinFieldsInCollection(Collection collection, List<Field> modelFields)
+        {
+            /// Add fields to the collection
+            /// Add fieldsvalues to items of collection
+            /// Remove fieldsvalues of items, wich don't use
+            /// Remove fields of the collection, wich don't use
+            await AddFieldsToCollection(collection, modelFields);
+            collection = collectionService.GetById(collection.Id, true);
+            AddFieldValuesToItems(collection);
+            RemoveFieldsFromCollection(collection, modelFields);
+            await context.SaveChangesAsync();
+        }
+        private async Task AddFieldsToCollection(Collection collection, List<Field> modelFields)
+        {
+            foreach (var modelField in modelFields)
+            {
+                if (!collection.Fields.Any(f => f.Name == modelField.Name && f.TypeId == modelField.TypeId))
+                {
+                    collection.Fields.Add(new Field { Name = modelField.Name, TypeId = modelField.TypeId });
+                }
+            }
+            await context.SaveChangesAsync();
+        }
+        private void AddFieldValuesToItems(Collection collection)
+        {
+            foreach (var field in collection.Fields)
+            {
+                foreach (var item in collection.Items)
+                {
+                    if (!item.FieldValues.Any(fv => fv.FieldId == field.Id))
+                    {
+                        item.FieldValues.Add(new FieldValue { FieldId = field.Id, Value = field.Type.Name == "Check box" ? "unchecked" : null });
+                    }
+                }
+            }
+        }
+        private void RemoveFieldsFromCollection(Collection collection, List<Field> modelFields)
+        {
+            for (int i = 0; i < collection.Fields.Count; i++)
+            {
+                var field = collection.Fields[i];
+                if (!modelFields.Any(mf => mf.Name == field.Name && mf.TypeId == field.TypeId))
+                {
+                    context.FieldValues.RemoveRange(context.FieldValues.Where(fv => fv.FieldId == field.Id));
+                    collection.Fields.Remove(field);
+                    i--;
+                }
+            }
         }
         private async Task<IActionResult> CheckUser(string ownerUserName)
         {
