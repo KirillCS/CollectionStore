@@ -45,12 +45,16 @@ namespace CollectionStore.Controllers
         private List<Item> GetItemsByString(string searchString)
         {
             var items = new List<Item>();
-            items = context.Items.Where(i => /*EF.Functions.FreeText(i.Name, searchString)*/i.Name.Contains(searchString))
-                .Include(i => i.Collection)
-                .ThenInclude(c => c.User)
-                .Include(i => i.Likes)
-                .OrderByDescending(i => i.Id)
-                .ToList();
+            items = context.Items.Where(i =>
+                EF.Functions.FreeText(i.Name, searchString) ||
+                EF.Functions.FreeText(context.Collections.FirstOrDefault(c => c.Id == i.CollectionId).Description, searchString) ||
+                EF.Functions.FreeText(context.Collections.FirstOrDefault(c => c.Id == i.CollectionId).Name, searchString) ||
+                context.Comments.Where(c => c.ItemId == i.Id).Any(c => EF.Functions.FreeText(c.Message, searchString)))
+                    .Include(i => i.Collection)
+                    .ThenInclude(c => c.User)
+                    .Include(i => i.Likes)
+                    .OrderByDescending(i => i.Id)
+                    .ToList();
             return items;
         }
         private List<Item> GetItemsByTag(string tagContent)
