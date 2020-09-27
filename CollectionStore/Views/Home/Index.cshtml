@@ -15,7 +15,7 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="mx-2 text-wrap">@Localizer["Tags"]</h5>
-                    <hr class="mt-2" />
+                    <hr class="mt-2 bg-light" />
                     @if (Model.Tags.IsNullOrEmpty())
                     {
                         <div class="alert alert-info text-center my-3">@Localizer["NoTags"]</div>
@@ -65,7 +65,7 @@
                                 {
                                     HasAccess = User.Identity.Name == collection.User.UserName || User.IsInRole(Role.Admin);
                                 }
-                                <div class="card bg-light @(HasAccess ? "border-info" : "") shadow-sm">
+                                <div class="card @(HasAccess ? "border-info" : "") shadow-sm">
                                     @if (!string.IsNullOrEmpty(collection.ImagePath))
                                     {
                                         <a asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">
@@ -74,12 +74,12 @@
                                     }
                                     <div class="card-body">
                                         <h5 class="card-title">
-                                            <a class="card-link text-dark" asp-controller="Profile" asp-action="Collection"
+                                            <a class="card-link" asp-controller="Profile" asp-action="Collection"
                                                asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@collection.Name (@collection.Theme.Name)</a>
                                         </h5>
                                         @if (collection.Description != null)
                                         {
-                                            <hr />
+                                            <hr class="bg-light"/>
                                             <div class="js-markdown-element">@collection.Description</div>
                                         }
                                     </div>
@@ -151,10 +151,10 @@
                                     {
                                         HasAccess = User.Identity.Name == item.Collection.User.UserName || User.IsInRole(Role.Admin);
                                     }
-                                    <div class="card bg-light">
+                                    <div class="card">
                                         <div id="@($"heading{item.Id}")" class="card-header">
                                             <h2 class="mb-0">
-                                                <button class="btn btn-block @(HasAccess ? "text-info font-weight-bold" : "") text-left" type="button" data-toggle="collapse"
+                                                <button class="btn btn-link text-decoration-none btn-block @(HasAccess ? "text-info font-weight-bold" : "") text-left" type="button" data-toggle="collapse"
                                                         data-target="#@($"collapse{item.Id}")" aria-expanded="false" aria-controls="@($"collapse{item.Id}")">
                                                     @item.Name
                                                     <div class="float-right">
@@ -191,7 +191,7 @@
                                                                                         asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)"
                                                                                         title="@Localizer["GoToCollection", item.Collection.Name]">@item.Collection.Name</a>
                                                     </div>
-                                                    <hr />
+                                                    <hr class="bg-light"/>
                                                     <a class="card-text card-link m-1" asp-controller="Item" asp-action="Index"
                                                         asp-route-itemId="@item.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@Localizer["Detail"]...</a>
                                                 </div>

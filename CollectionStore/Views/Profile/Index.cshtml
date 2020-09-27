@@ -8,7 +8,7 @@
     <h4 class="mt-2 mx-2">
         @(User.Identity.Name == Model.UserName ? Localizer["MyCollections"] : Localizer["UserCollections", Model.UserName])
     </h4>
-    <hr class="mb-4 mt-2" />
+    <hr class="mb-4 mt-2 bg-light" />
     @if (User.Identity.Name == Model.UserName || User.IsInRole(Role.Admin))
     {
         <a class="btn btn-primary btn-block" asp-controller="Collection" asp-action="Add"
@@ -23,7 +23,7 @@
         <div class="card-columns py-3">
             @foreach (var collection in Model.Collections)
             {
-                <div class="card bg-light shadow-sm">
+                <div class="card shadow-sm">
                     @if (!string.IsNullOrEmpty(collection.ImagePath))
                     {
                         <a asp-controller="Profile" asp-action="Collection" asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">
@@ -32,12 +32,12 @@
                     }
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a class="card-link text-dark" asp-controller="Profile" asp-action="Collection"
+                            <a class="card-link" asp-controller="Profile" asp-action="Collection"
                                asp-route-collectionId="@collection.Id" asp-route-returnUrl="@UriHelper.GetDisplayUrl(Context.Request)">@collection.Name (@collection.Theme.Name)</a>
                         </h5>
                         @if (!string.IsNullOrEmpty(collection.Description))
                         {
-                            <hr />
+                            <hr class="bg-light"/>
                             <div class="js-markdown-element">@collection.Description</div>
                         }
                         @if (User.Identity.Name == Model.UserName || User.IsInRole(Role.Admin))

@@ -28,8 +28,8 @@ function getLabel(block, className, defaultValue) {
 
 function createTable(nameLabel, typeLabel) {
     let table = document.createElement("table");
-    table.classList.add("table", "table-sm", "table-bordered", "text-center", "text-wrap", "js-additional-fields-table");
-    table.createTHead().classList.add("thead-light");
+    table.classList.add("table", "table-sm", "text-center", "text-wrap", "js-additional-fields-table");
+    table.createTHead();
     table.tHead.innerHTML = `<tr>\n<th scope="col">${nameLabel}</th>\n<th scope="col">${typeLabel}</th>\n<th style="width: 50px" scope="col"></th>\n</tr>`
     table.style = "table-layout:fixed;";
     return table;

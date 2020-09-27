@@ -6,7 +6,7 @@
 
 <div class="container">
     <h4 class="mt-2 mx-2">@Localizer[Model.IsEditing ? "EditingItem" : "CreatingItem", Model.Collection.Name]</h4>
-    <hr class="mb-4 mt-2" />
+    <hr class="mb-4 mt-2 bg-light" />
     <div class="row justify-content-center">
         <div class="col-lg-7">
             <div class="card shadow-sm">
@@ -104,7 +104,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="~/js/markdown-editor.js"></script>
+<script src="~/js/markdown-editor.js" asp-append-version="true"></script>
 <script>
     document.querySelectorAll(".js-check-box").forEach(checkBox => {
         const value = checkBox.closest(".js-check-box-block").querySelector(".js-check-box-value");
@@ -122,4 +122,4 @@
         source: '@Url.Action("GetTags", "Tag")'
     });
 </script>
-<script src="~/js/tag-manager.js"></script>
+<script src="~/js/tag-manager.js" asp-append-version="true"></script>

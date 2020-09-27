@@ -193,10 +193,6 @@ namespace CollectionStore.Controllers
         }
         private async Task JoinFieldsInCollection(Collection collection, List<Field> modelFields)
         {
-            /// Add fields to the collection
-            /// Add fieldsvalues to items of collection
-            /// Remove fieldsvalues of items, wich don't use
-            /// Remove fields of the collection, wich don't use
             await AddFieldsToCollection(collection, modelFields);
             collection = collectionService.GetById(collection.Id, true);
             AddFieldValuesToItems(collection);

@@ -25,10 +25,10 @@
 
 <div class="container">
     <h4 class="mt-2 mx-2 text-wrap">@Localizer["Collection", Model.Collection.Name] (@Model.Collection.Theme.Name)</h4>
-    <hr class="mb-4 mt-2" />
+    <hr class="mb-4 mt-2 bg-light" />
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card bg-light shadow-sm mb-3">
+            <div class="card shadow-sm mb-3">
                 @if (!string.IsNullOrEmpty(Model.Collection.ImagePath))
                 {
                     <img class="bd-placeholder-img card-img-top shadow-sm" src="@Model.Collection.ImagePath" focusable="false" role="img">
@@ -37,10 +37,10 @@
                     <h5 class="card-title">@Model.Collection.Name (@Model.Collection.Theme.Name)</h5>
                     @if (!string.IsNullOrEmpty(Model.Collection.Description))
                     {
-                        <hr />
+                        <hr class="bg-light"/>
                         <div class="js-markdown-element">@Model.Collection.Description</div>
                     }
-                    <hr />
+                    <hr class="bg-light"/>
                     <div class="card-text m-1">
                         @Localizer["Owner"]: <a class="card-link" asp-controller="Profile"
                                                 asp-action="Index" asp-route-userName="@Model.Collection.User.UserName"
@@ -185,8 +185,8 @@
                                                 <button type="button" class="btn btn-outline-primary btn-block btn-sm mb-3 js-additional-fields-add-button">@Localizer["Add"]</button>
                                                 @if (!Model.Collection.Fields.IsNullOrEmpty())
                                                 {
-                                                    <table class="table table-sm table-bordered text-center text-wrap js-additional-fields-table" style="table-layout: fixed;">
-                                                        <thead class="thead-light">
+                                                    <table class="table table-sm text-center text-wrap js-additional-fields-table" style="table-layout: fixed;">
+                                                        <thead>
                                                             <tr>
                                                                 <th scope="col">@Localizer["FieldName"]</th>
                                                                 <th scope="col">@Localizer["FieldType"]</th>
@@ -233,7 +233,7 @@
                 </div>
             </div>
             <h5>@Localizer["ItemsOfCollection"]</h5>
-            <hr />
+            <hr class="bg-light"/>
             @if (User.Identity.Name == Model.Collection.User.UserName || User.IsInRole(Role.Admin))
             {
                 <a class="btn btn-outline-primary btn-block mb-4" asp-controller="Item" asp-action="Add"
@@ -324,9 +324,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/js/markdown.js"></script>
-<script src="~/js/markdown-editor.js"></script>
-<script src="~/js/drag-n-drop.js"></script>
-<script src="~/js/additional-fields.js"></script>
-<script src="~/js/editing-info-collection.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+<script src="~/js/markdown.js" asp-append-version="true"></script>
+<script src="~/js/markdown-editor.js" asp-append-version="true"></script>
+<script src="~/js/drag-n-drop.js" asp-append-version="true"></script>
+<script src="~/js/additional-fields.js" asp-append-version="true"></script>
+<script src="~/js/editing-info-collection.js" asp-append-version="true"></script>

@@ -24,6 +24,9 @@ document.querySelectorAll(".js-comment-send-button").forEach(btn => {
 function addComment(userName, message, date) {
     let commentBlock = document.getElementsByClassName("js-comment-block")[0];
     if (commentBlock) {
+        let hr = document.createElement("hr");
+        hr.classList.add("bg-light");
+
         let div = document.createElement("div");
         div.classList.add("px-2");
 
@@ -45,7 +48,7 @@ function addComment(userName, message, date) {
         div.appendChild(messageDiv);
         div.appendChild(dateDiv);
 
-        commentBlock.appendChild(document.createElement("hr"));
+        commentBlock.appendChild(hr);
         commentBlock.appendChild(div);
     }
 }

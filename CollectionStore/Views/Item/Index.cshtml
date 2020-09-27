@@ -7,13 +7,13 @@
 <div class="container">
     <input id="itemId" type="hidden" value="@Model.Item.Id" />
     <h4 class="mt-2 mx-2 text-wrap">@Localizer["Item", Model.Item.Name]</h4>
-    <hr class="mb-4 mt-2" />
+    <hr class="mb-4 mt-2 bg-light" />
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card bg-light shadow-sm">
+            <div class="card shadow-sm">
                 <div class="card-body">
                     <h5>@Localizer["Description"]</h5>
-                    <hr />
+                    <hr class="bg-light"/>
                     <div class="card-text m-1">@Localizer["Owner"]: <a class="card-link" asp-controller="Profile"
                                                                        asp-action="Index" asp-route-userName="@Model.Item.Collection.User.UserName"
                                                                        title="@Localizer["GoToProfile", Model.Item.Collection.User.UserName]">@Model.Item.Collection.User.UserName</a></div>
@@ -40,7 +40,7 @@
                             }
                         </ul>
                     }
-                    <hr />
+                    <hr class="bg-light"/>
                     @foreach (var fieldValue in Model.Item.FieldValues)
                     {
                         if (fieldValue.Field.Type.Name == "Check box")
@@ -102,10 +102,10 @@
                     }
                 </svg> @Localizer["Like"] <div class="badge badge-light js-like-count-label">@Model.Item.Likes.Count</div>
             </button>
-            <div class="card bg-light shadow-sm mt-3">
+            <div class="card shadow-sm mt-3">
                 <div class="card-body">
                     <h5>@Localizer["Comments"]</h5>
-                    <hr />
+                    <hr class="bg-light"/>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="form-group js-comment-form">
@@ -120,7 +120,7 @@
                     <div class="js-comment-block">
                         @foreach (var comment in Model.Item.Comments)
                         {
-                            <hr />
+                            <hr class="bg-light"/>
                             <div class="px-2">
                                 <a class="card-link font-weight-bold" asp-controller="Profile" asp-action="Index"
                                    asp-route-userName="@comment.User.UserName">@comment.User.UserName</a>
@@ -136,7 +136,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="~/js/markdown.js"></script>
-<script src="~/js/signalr/dist/browser/signalr.min.js"></script>
-<script src="~/js/comment.js"></script>
-<script src="~/js/like.js"></script>
+<script src="~/js/markdown.js" asp-append-version="true"></script>
+<script src="~/js/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+<script src="~/js/comment.js" asp-append-version="true"></script>
+<script src="~/js/like.js" asp-append-version="true"></script>
