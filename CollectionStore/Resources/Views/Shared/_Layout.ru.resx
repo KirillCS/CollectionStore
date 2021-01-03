@@ -132,4 +132,7 @@
   <data name="SignUp" xml:space="preserve">
     <value>Зарегистрироваться</value>
   </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
 </root>
