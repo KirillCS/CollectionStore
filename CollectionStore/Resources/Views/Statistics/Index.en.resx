@@ -117,7 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CollectionsCount" xml:space="preserve">
+    <value>Collections count: {0}</value>
+  </data>
+  <data name="CommentsCount" xml:space="preserve">
+    <value>Comments count: {0}</value>
+  </data>
+  <data name="EmptyCollectionList" xml:space="preserve">
+    <value>No one has created collections yet</value>
+  </data>
+  <data name="EmptyCommentList" xml:space="preserve">
+    <value>No one has commented yet</value>
+  </data>
+  <data name="EmptyTagList" xml:space="preserve">
+    <value>No tags</value>
+  </data>
+  <data name="EmptyThemeList" xml:space="preserve">
+    <value>No themes</value>
+  </data>
+  <data name="FrequencyOfUse" xml:space="preserve">
+    <value>Frequency of use: {0}</value>
+  </data>
+  <data name="GoToProfile" xml:space="preserve">
+    <value>Go to {0} profile</value>
+  </data>
   <data name="Statistics" xml:space="preserve">
-    <value>Статистика</value>
+    <value>Statistics</value>
+  </data>
+  <data name="ThemesChart" xml:space="preserve">
+    <value>Collections themes chart</value>
+  </data>
+  <data name="TopTags" xml:space="preserve">
+    <value>Top-1 tags by frequency of use</value>
+  </data>
+  <data name="TopUsersByCollections" xml:space="preserve">
+    <value>Top-1 users by collections count</value>
+  </data>
+  <data name="TopUsersByCommenting" xml:space="preserve">
+    <value>Top-1 users by commenting</value>
   </data>
 </root>

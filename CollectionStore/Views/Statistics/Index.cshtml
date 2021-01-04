@@ -12,13 +12,13 @@
     <div class="card-columns">
         <div class="card">
             <div class="card-header">
-                Top users by collections count
+                @Localizer["TopUsersByCollections"]
             </div>
             @if (Model.MaxCollectionsCount == 0)
             {
                 <div class="card-body">
                     <div class="alert alert-info text-center my-3">
-                        No one has created collections yet
+                        @Localizer["EmptyCollectionList"]
                     </div>
                 </div>
             }
@@ -35,19 +35,19 @@
                     }
                 </ul>
                 <div class="card-footer">
-                    has @Model.MaxCollectionsCount collections
+                    @Localizer["CollectionsCount", Model.MaxCollectionsCount]
                 </div>
             }
         </div>
         <div class="card">
             <div class="card-header">
-                Top users by commenting
+                @Localizer["TopUsersByCommenting"]
             </div>
             @if (Model.MaxCommentsCount == 0)
             {
                 <div class="card-body">
                     <div class="alert alert-info text-center my-3">
-                        No one has commented yet
+                        @Localizer["EmptyCommentList"]
                     </div>
                 </div>
             }
@@ -64,19 +64,19 @@
                     }
                 </ul>
                 <div class="card-footer">
-                    commented @Model.MaxCommentsCount times
+                    @Localizer["CommentsCount", Model.MaxCommentsCount]
                 </div>
             }
         </div>
         <div class="card">
             <div class="card-header">
-                Top tags by frequency of use
+                @Localizer["TopTags"]
             </div>
             @if (Model.MaxTagsFrequencyOfUse == 0)
             {
                 <div class="card-body">
                     <div class="alert alert-info text-center my-3">
-                        No tags
+                        @Localizer["EmptyTagList"]
                     </div>
                 </div>
             }
@@ -95,20 +95,20 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    used @Model.MaxTagsFrequencyOfUse times
+                    @Localizer["FrequencyOfUse", Model.MaxTagsFrequencyOfUse]
                 </div>
             }
         </div>
     </div>
     <div class="card">
         <div class="card-header">
-            Collections themes chart
+            @Localizer["ThemesChart"]
         </div>
         <div class="card-body">
             @if (Model.ThemesData.IsNullOrEmpty())
             {
                 <div class="alert alert-info text-center my-3">
-                    No themes
+                    @Localizer["EmptyThemeList"]
                 </div>
             }
             else
