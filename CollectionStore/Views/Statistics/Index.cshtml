@@ -1,0 +1,39 @@
+﻿@model StatisticsViewModel
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Statistics"];
+}
+
+<div class="container-md">
+    <h4 class="mt-2 mx-2">@Localizer["Statistics"]</h4>
+    <hr class="mb-4 mt-2 bg-light" />
+    <div class="card-columns">
+        <div class="card">
+            <div class="card-header">
+                Top users by collections count
+            </div>
+            @if (Model.TopUsersByCollections.IsNullOrEmpty())
+            {
+                <div class="card-body">
+                    No data
+                </div>
+            }
+            else
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var user in Model.TopUsersByCollections)
+                    {
+                        <li class="list-group-item">
+                            <a class="card-link" asp-controller="Profile"
+                               asp-action="Index" asp-route-userName="@user.UserName"
+                               title="@Localizer["GoToProfile", user.UserName]">@user.UserName</a>
+                        </li>
+                    }
+                </ul>
+                <div class="card-footer">
+                    has @Model.CollectionsCount collections
+                </div>
+            }
+        </div>
+    </div>
+</div>
