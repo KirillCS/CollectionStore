@@ -20,10 +20,7 @@ namespace CollectionStore.Data
             "Coins",
             "Stamps",
             "Books",
-            "Trinkets",
-            "Tickets",
             "Stickers",
-            "Buttons",
             "Technics"
         };
         private readonly string[] FieldTypes =

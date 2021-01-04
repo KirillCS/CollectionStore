@@ -44,8 +44,7 @@ namespace CollectionStore.Controllers
 
         private List<Item> GetItemsByString(string searchString)
         {
-            var items = new List<Item>();
-            items = context.Items.Where(i => EF.Functions.FreeText(i.Name, searchString) ||
+            var items = context.Items.Where(i => EF.Functions.FreeText(i.Name, searchString) ||
                 context.Collections.Where(c => c.Id == i.CollectionId && EF.Functions.FreeText(c.Name, searchString)).Count() != 0 ||
                 context.Collections.Where(c => c.Id == i.CollectionId && EF.Functions.FreeText(c.Description, searchString)).Count() != 0 ||
                 context.Comments.Where(c => c.ItemId == i.Id && EF.Functions.FreeText(c.Message, searchString)).Count() != 0)

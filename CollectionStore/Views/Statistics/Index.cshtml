@@ -1,4 +1,6 @@
-﻿@model StatisticsViewModel
+﻿@using System.Text;
+
+@model StatisticsViewModel
 @inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = Localizer["Statistics"];
@@ -12,28 +14,159 @@
             <div class="card-header">
                 Top users by collections count
             </div>
-            @if (Model.TopUsersByCollections.IsNullOrEmpty())
+            @if (Model.MaxCollectionsCount == 0)
             {
                 <div class="card-body">
-                    No data
+                    <div class="alert alert-info text-center my-3">
+                        No one has created collections yet
+                    </div>
                 </div>
             }
             else
             {
                 <ul class="list-group list-group-flush">
-                    @foreach (var user in Model.TopUsersByCollections)
+                    @foreach (string userName in Model.TopUsersByCollections)
                     {
                         <li class="list-group-item">
                             <a class="card-link" asp-controller="Profile"
-                               asp-action="Index" asp-route-userName="@user.UserName"
-                               title="@Localizer["GoToProfile", user.UserName]">@user.UserName</a>
+                               asp-action="Index" asp-route-userName="@userName"
+                               title="@Localizer["GoToProfile", userName]">@userName</a>
                         </li>
                     }
                 </ul>
                 <div class="card-footer">
-                    has @Model.CollectionsCount collections
+                    has @Model.MaxCollectionsCount collections
+                </div>
+            }
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Top users by commenting
+            </div>
+            @if (Model.MaxCommentsCount == 0)
+            {
+                <div class="card-body">
+                    <div class="alert alert-info text-center my-3">
+                        No one has commented yet
+                    </div>
+                </div>
+            }
+            else
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (string userName in Model.TopUsersByCommenting)
+                    {
+                        <li class="list-group-item">
+                            <a class="card-link" asp-controller="Profile"
+                               asp-action="Index" asp-route-userName="@userName"
+                               title="@Localizer["GoToProfile", userName]">@userName</a>
+                        </li>
+                    }
+                </ul>
+                <div class="card-footer">
+                    commented @Model.MaxCommentsCount times
+                </div>
+            }
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Top tags by frequency of use
+            </div>
+            @if (Model.MaxTagsFrequencyOfUse == 0)
+            {
+                <div class="card-body">
+                    <div class="alert alert-info text-center my-3">
+                        No tags
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card-body">
+                    <ul class="list-inline m-0">
+                        @foreach (var tag in Model.TopTags)
+                        {
+                            <li class="list-inline-item m-0">
+                                <a class="badge badge-primary p-1" asp-controller="Search" asp-action="SearchByTag" asp-route-tagContent="@tag">
+                                    @tag
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    used @Model.MaxTagsFrequencyOfUse times
                 </div>
             }
         </div>
     </div>
+    <div class="card">
+        <div class="card-header">
+            Collections themes chart
+        </div>
+        <div class="card-body">
+            @if (Model.ThemesData.IsNullOrEmpty())
+            {
+                <div class="alert alert-info text-center my-3">
+                    No themes
+                </div>
+            }
+            else
+            {
+                <canvas id="themeChart"></canvas>
+            }
+        </div>
+    </div>
 </div>
+
+@if (!Model.ThemesData.IsNullOrEmpty())
+{
+    var colors = new[]
+    {
+        "#F44134", "#E91C62", "#363F45", "#9B26AF", "#6639B6",
+        "#3E50B4", "#2095F3", "#02A8F4", "#00BBD3", "#009587",
+        "#4AAE4F", "#8AC24A", "#CDDB38", "#FEEB39", "#FFC006",
+        "#FE9700", "#FE5620", "#785447", "#9D9E9D", "#5F7C89",
+    };
+
+    var labels = new StringBuilder("'");
+    Model.ThemesData.Keys.Aggregate(labels, (labels, label) => labels.Append(label + "', '"));
+    labels.Remove(labels.Length - 3, 3);
+
+    var values = new StringBuilder();
+    Model.ThemesData.Values.Aggregate(values, (values, value) => values.Append(value + ", "));
+    values.Remove(values.Length - 2, 2);
+
+    var random = new Random();
+    var backgroundColors = new StringBuilder("'");
+    for (int i = 0; i < Model.ThemesData.Count; i++)
+    {
+        backgroundColors.Append(colors[random.Next() % colors.Length] + "', '");
+    }
+    backgroundColors.Remove(backgroundColors.Length - 3, 3);
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script>
+        var ctx = document.getElementById('themeChart');
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [@Html.Raw(@labels.ToString())],
+                datasets: [{
+                    data: [@Html.Raw(values.ToString())],
+                    backgroundColor: [@Html.Raw(backgroundColors.ToString())],
+                }]
+            },
+            options: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        padding: 15,
+                        usePointStyle: true,
+                        fontSize: 13
+                    }
+                }
+            }
+        });
+    </script>
+}

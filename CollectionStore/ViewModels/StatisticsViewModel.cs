@@ -1,14 +1,18 @@
-﻿using CollectionStore.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CollectionStore.ViewModels
 {
     public class StatisticsViewModel
     {
-        public List<User> TopUsersByCollections { get; set; }
-        public int CollectionsCount { get; set; }
+        public IEnumerable<string> TopUsersByCollections { get; set; }
+        public int MaxCollectionsCount { get; set; }
+
+        public IEnumerable<string> TopUsersByCommenting { get; set; }
+        public int MaxCommentsCount { get; set; }
+
+        public IEnumerable<string> TopTags { get; set; }
+        public int MaxTagsFrequencyOfUse { get; set; }
+
+        public Dictionary<string, int> ThemesData { get; set; }
     }
 }
